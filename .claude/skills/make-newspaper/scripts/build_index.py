@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""docs/newspaper/issues/*.html から、バックナンバー一覧 docs/newspaper/index.html を作る。"""
+"""docs/newspaper/archive/*.html から、バックナンバー一覧 docs/newspaper/index.html を作る。"""
 import datetime
 import html
 import pathlib
@@ -7,7 +7,7 @@ import re
 
 REPO = pathlib.Path(__file__).resolve().parents[4]
 OUT = REPO / "docs" / "newspaper"
-ISSUES = OUT / "issues"
+ISSUES = OUT / "archive"
 WEEK = "月火水木金土日"
 
 
@@ -41,7 +41,7 @@ def main():
         for it in rows:
             d = it["date"]
             body.append(
-                '<li><a href="issues/{f}"><span class="no">第{no}号</span>'
+                '<li><a href="archive/{f}"><span class="no">第{no}号</span>'
                 '<span class="dt">{m}月{d}日({w})</span>'
                 '<span class="tp">{top}</span>'
                 '<span class="ct">{ct}件</span></a></li>'.format(

@@ -36,7 +36,7 @@ description: 個人用ニュースレター「Daily Dispatch」の今日の号�
 
 ## 事前準備
 - .claude/skills/make-newspaper/template.html を読む(見た目の元になるテンプレート)。
-- docs/newspaper/issues/ の直近3号を読み、掲載済みの話題を把握する。同じ話題は載せない。
+- docs/newspaper/archive/ の直近3号を読み、掲載済みの話題を把握する。同じ話題は載せない。
 
 ## 手順
 1. 上の表に従い、セクションごとに別々にWeb検索して候補を集める。今日の曜日を確認し、土曜以外はFlutterの検索をしない。
@@ -63,7 +63,7 @@ description: 個人用ニュースレター「Daily Dispatch」の今日の号�
 - 確認できない情報は載せない。憶測は書かない。件数が足りない場合は、無理に埋めず、載せられた分だけにして最後に不足を一行で報告する。
 
 ## 出力とpush
-1. 完成したHTMLを docs/newspaper/issues/YYYY-MM-DD.html(日本時間の日付)として保存する。同じ日のファイルがすでにあれば、上書きする。
+1. 完成したHTMLを docs/newspaper/archive/YYYY-MM-DD.html(日本時間の日付)として保存する。同じ日のファイルがすでにあれば、上書きする。
 2. `python3 .claude/skills/make-newspaper/scripts/build_index.py` を実行して、docs/newspaper/index.html(バックナンバー一覧)を更新する。
-3. `git add docs` して、コミットメッセージ「issue YYYY-MM-DD」でコミットし、mainブランチにpushする。mainへのpushが拒否された場合は、claude/ で始まるブランチにpushして、その旨を最後に報告する。
+3. `git add docs` して、コミットメッセージ「issue YYYY-MM-DD」でコミットし、mainブランチに直接pushする。
 4. 最後に、その日のトップ記事の見出しと、セクションごとの掲載件数を数行で報告する。
