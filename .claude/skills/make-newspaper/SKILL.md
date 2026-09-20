@@ -65,5 +65,5 @@ description: 個人用ニュースレター「Daily Dispatch」の今日の号�
 ## 出力とpush
 1. 完成したHTMLを docs/newspaper/archive/YYYY-MM-DD.html(日本時間の日付)として保存する。同じ日のファイルがすでにあれば、上書きする。
 2. `python3 .claude/skills/make-newspaper/scripts/build_index.py` を実行して、docs/newspaper/index.html(バックナンバー一覧)を更新する。
-3. `git add docs` して、コミットメッセージ「issue YYYY-MM-DD」でコミットし、mainブランチに直接pushする。
+3. `git add docs` して、コミットメッセージ「YYYY年MM月DD日 第X号 発刊」（例: 2026年09月21日 第2号 発刊）でコミットし、mainブランチに直接pushする。
 4. 最後に、その日のトップ記事の見出しと、セクションごとの掲載件数を数行で報告する。
