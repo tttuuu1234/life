@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30);
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a; --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ink); font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 860px; margin: 0 auto; padding: 16px 18px 40px; }
+.head { padding: 12px 14px 14px; text-align: center; border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2); }
+.head h1 { margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.1; font-size: clamp(44px, 10vw, 80px); text-shadow: 3px 3px 0 var(--spot-soft); }
+.head p { margin: 2px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.men { margin: 24px 0 8px; padding: 4px 14px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 18px; letter-spacing: .15em; }
+.items { margin: 0; padding: 0; list-style: none; }
+.items li { border-bottom: 1px dotted var(--sub); }
+.items a { display: grid; grid-template-columns: 11em 1fr; gap: 2px 14px; align-items: baseline; padding: 10px 4px; text-decoration: none; }
+.items a:hover { background: var(--spot-soft); }
+.nm { font-family: var(--display); font-size: 18px; color: var(--spot); }
+.ds { font-size: 14px; }
+.foot { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+@media (max-width: 600px) { .items a { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="paper">
+  <header class="head"><h1>life</h1><p>個人のいろいろ置き場</p></header>
+  <h2 class="men">プロジェクト</h2>
+  <ul class="items">
+    <li><a href="newspaper/index.html"><span class="nm">Daily Dispatch</span><span class="ds">技術と暮らしのニュースを、毎日1号の新聞にまとめる。</span></a></li>
+  </ul>
+  <footer class="foot">プロジェクトを増やしたら、この一覧に足す。</footer>
+</div>
+</body>
+</html>
