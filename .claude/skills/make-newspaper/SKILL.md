@@ -65,9 +65,9 @@ description: 個人用ニュースレター「Daily Dispatch」の今日の号�
 ## 出力とpush
 1. 完成したHTMLを docs/newspaper/archive/YYYY-MM-DD.html(日本時間の日付)として保存する。同じ日のファイルがすでにあれば、上書きする。
 2. `python3 .claude/skills/make-newspaper/scripts/build_index.py` を実行して、docs/newspaper/index.html(バックナンバー一覧)を更新する。
-3. コミット前に、このコミットが自分(tttuuu1234)のGitHub草として反映されるよう、次の2つをこの実行環境に対して実行する(使い捨て環境のため毎回実行が必要)。
-   - `git config user.name "tttuuu1234"`
-   - `git config user.email "yidongyi8@gmail.com"`
-   - なお、GitHub連携は`/web-setup`(個人の`gh`トークン経由)で行うこと。Claude GitHub App経由の連携だと、コミットのauthor表示は正しくなってもcontributions(草)としてはカウントされない。
-4. `git add docs` して、コミットメッセージ「YYYY年MM月DD日 第X号 発刊」（例: 2026年09月21日 第2号 発刊）でコミットし、mainブランチに直接pushする。
+3. 変更は `git push`(ローカルのgit CLI)ではなく、`mcp__github__push_files` ツールでリポジトリ `tttuuu1234/life` のmainブランチに直接pushする(owner: `tttuuu1234`, repo: `life`, branch: `main`)。
+   - files には、変更した `docs/newspaper/archive/YYYY-MM-DD.html` と `docs/newspaper/index.html` の内容をそのまま渡す。
+   - message は「YYYY年MM月DD日 第X号 発刊」とする(例: 2026年09月21日 第2号 発刊)。
+   - この方式を使う理由: `git push` は実行環境にあらかじめ入っているClaude GitHub Appの資格情報で認証されてしまい、コミットのauthor表示は正しくてもcontributions(草)としてはカウントされない。一方、`mcp__github__push_files` などのMCP GitHub連携ツールは本人(tttuuu1234)のアカウントとして認証されるため、草として反映される。`git config user.name`/`user.email`の設定や`/web-setup`は不要。
+4. push後、ローカルの作業ツリーが古いまま残らないよう、`git fetch origin main && git reset --hard origin/main` などでリモートの最新コミットに合わせておく。
 5. 最後に、その日のトップ記事の見出しと、セクションごとの掲載件数を数行で報告する。
