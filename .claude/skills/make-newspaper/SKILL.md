@@ -68,5 +68,6 @@ description: 個人用ニュースレター「Daily Dispatch」の今日の号�
 3. コミット前に、このコミットが自分(tttuuu1234)のGitHub草として反映されるよう、次の2つをこの実行環境に対して実行する(使い捨て環境のため毎回実行が必要)。
    - `git config user.name "tttuuu1234"`
    - `git config user.email "yidongyi8@gmail.com"`
+   - なお、GitHub連携は`/web-setup`(個人の`gh`トークン経由)で行うこと。Claude GitHub App経由の連携だと、コミットのauthor表示は正しくなってもcontributions(草)としてはカウントされない。
 4. `git add docs` して、コミットメッセージ「YYYY年MM月DD日 第X号 発刊」（例: 2026年09月21日 第2号 発刊）でコミットし、mainブランチに直接pushする。
 5. 最後に、その日のトップ記事の見出しと、セクションごとの掲載件数を数行で報告する。
