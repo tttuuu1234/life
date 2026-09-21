@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第3号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年9月</span>
+      <span class="d">22</span>
+      <span class="w">火曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49775499">1d, 720p, 193 comments</a></p>
+            <h3 class="hd l"><a href="https://github.com/QwenLM/Qwen-Image-2.1">中国Qwen、透過画像に対応した軽量画像生成モデル「Qwen-Image-2.1」を公開</a></h3>
+            <p><strong>Alibaba</strong>のQwenチームが、テキストからの画像生成と編集を1つのモデルで行う<em>Qwen-Image-2.1</em>を公開した。画像生成部分は70億パラメータと軽量ながら、背景を透過したRGBA画像をそのまま生成・編集できる点が特徴で、最大10枚の参照画像を使った合成にも対応する。</p>
+            <p>ただし、これまでのApache 2.0から一転して商用利用には別途許諾が必要なライセンスに変更されており、Hacker Newsではオープンさの後退を惜しむ声が目立った。</p>
+            <p><a class="more" href="https://github.com/QwenLM/Qwen-Image-2.1">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49780797">23h, 626p, 288 comments</a></p>
+            <h3 class="hd"><a href="https://agentexecutor.io">Googleが、大量のAIエージェントを運用する基盤「AX」をオープンソース公開</a></h3>
+            <p><strong>Google</strong>が、AIエージェントの実行を大規模に管理するオーケストレーター<em>AX</em>をオープンソースで公開した。エージェントを使い捨ての会話ではなく、中断・再開できる長時間のワークフローとして扱う設計で、コマンド体系は<strong>Kubernetes</strong>のkubectlに似せてある。</p>
+            <p>基盤となる<em>Agent Substrate</em>はCNCFへの寄贈も予定されており、実行環境の分離や権限管理など本番運用を見据えたインフラ寄りの機能に絞っているという。Hacker Newsでは、謳い文句の手軽さと、実際に必要なKubernetesクラスタなどの前提の重さとのギャップを指摘する声もあった。</p>
+            <p><a class="more" href="https://agentexecutor.io">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49788838">6h, 436p, 356 comments</a></p>
+            <h3 class="hd"><a href="https://x.ai/news/grok-4-7">xAI、コーディングと知識作業向けの新モデル「Grok 4.7」を公開</a></h3>
+            <p><strong>xAI</strong>が、コーディングや知識作業に強い新モデル<em>Grok 4.7</em>を公開した。長時間のタスクでの安定性や自己検証の精度を高めたとしており、コーディング特化のベンチマーク<em>CursorBench 4.0</em>では<strong>GPT-5.6 Sol</strong>を上回るスコアを示した。</p>
+            <p>価格は入力100万トークンあたり2ドル、出力6ドルで、前モデルの<em>Grok 4.6</em>と同水準に据え置いた。<strong>Cursor</strong>や公式APIなどからすぐに利用できる。</p>
+            <p><a class="more" href="https://x.ai/news/grok-4-7">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49792730">1h, 281p, 121 comments</a></p>
+            <h3 class="hd"><a href="https://mimo.xiaomi.com/mimo-v2-6">Xiaomi、オープンウェイトの新フラグシップ「MiMo-V2.6」を学習過程ごと公開</a></h3>
+            <p><strong>Xiaomi</strong>のMiMoチームが、1兆パラメータ級のオープンウェイトモデル<em>MiMo-V2.6-Pro</em>と、軽量版の<em>Flash</em>を公開した。強化学習の訓練過程をライブダッシュボードで公開しながら開発したのが特徴で、Proはオープンモデルとして初めてArtificial Analysis Intelligence Indexで最高スコアを記録した。</p>
+            <p>7,000件超の強化学習タスク環境や訓練フレームワークも合わせて公開しており、Hacker Newsでは他社にも同様の透明性を求める声が上がった。</p>
+            <p><a class="more" href="https://mimo.xiaomi.com/mimo-v2-6">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://www.forbes.com/sites/jonmarkman/2026/09/21/amazon-blocks-metas-new-muse-ai-agent-from-shopping-on-amazoncom/">9/21</a></p>
+            <h3 class="hd s"><a href="https://www.forbes.com/sites/jonmarkman/2026/09/21/amazon-blocks-metas-new-muse-ai-agent-from-shopping-on-amazoncom/">Amazon、Metaのショッピング代行AI「Muse」を自社サイトから締め出し</a></h3>
+            <p><strong>Amazon</strong>は9月21日、<strong>Meta</strong>のAIエージェント<em>Muse</em>による自社サイトへのアクセスを遮断したと明らかにした。Museが事前連絡なくAmazonで買い物を代行し、名乗らずに巡回していたことに加え、顧客の認証情報を保存しているように見える点を問題視したという。</p>
+            <p>両社はFacebookやInstagramでのAmazon商品販売やAWS Graviton活用で提携関係にもあり、エージェント同士の主導権争いが表面化した形だ。</p>
+            <p><a class="more" href="https://www.forbes.com/sites/jonmarkman/2026/09/21/amazon-blocks-metas-new-muse-ai-agent-from-shopping-on-amazoncom/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49778029">1d, 546p, 436 comments</a></p>
+            <h3 class="hd l"><a href="https://en.sedaily.com/finance/2026/09/20/samsung-to-double-hbm4-output-next-year-sources-say">Samsung、AI向け高帯域メモリHBM4の生産量を来年倍増へ</a></h3>
+            <p>韓国紙Seoul Economic Dailyによると、<strong>Samsung</strong>は来年、<em>HBM4</em>と<em>HBM4E</em>の生産に投入するウエハー枚数を現状の18万枚から25万枚規模に引き上げる方針だという。HBM4系列が出荷全体に占める比率も、現在の4割から8割まで高まる見通しだ。</p>
+            <p>2月に第6世代HBM4の量産出荷を始め、5月には12層のHBM4Eサンプルを<strong>Nvidia</strong>など主要顧客に供給し始めていた。Hacker Newsでは、歩留まりで先行する韓国勢に対し、中国メーカーが量産面でなお苦戦しているとの指摘も出た。</p>
+            <p><a class="more" href="https://en.sedaily.com/finance/2026/09/20/samsung-to-double-hbm4-output-next-year-sources-say">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49791509">3h, 154p, 94 comments</a></p>
+            <h3 class="hd"><a href="https://www.reuters.com/world/us/faa-halts-some-us-east-coast-flights-due-communication-issues-2026-09-21/">光ファイバー切断でFAAが米東海岸の空港を一時停止、1,000便超に影響</a></h3>
+            <p>米連邦航空局(<strong>FAA</strong>)は9月21日、通信回線の障害を理由に<strong>ニューアーク</strong>や<strong>JFK</strong>、<strong>フィラデルフィア</strong>など東海岸主要空港向けの便を一時的に停止した。主回線の故障で予備回線に切り替えようとしたところ、その予備回線も工事業者によって既に切断されていたことが判明したという。</p>
+            <p>1,000便超に遅延や欠航が生じ、国連総会出席のため多数の要人が同地域に到着する日と重なった。Hacker Newsでは、予備系統の稼働を定期的に検証していなかった運用体制を疑問視する声が多かった。</p>
+            <p><a class="more" href="https://www.reuters.com/world/us/faa-halts-some-us-east-coast-flights-due-communication-issues-2026-09-21/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49787436">8h, 449p, 249 comments</a></p>
+            <h3 class="hd"><a href="https://bcantrill.dtrace.org/2026/09/20/what-sun-got-wrong/">「Sunの敗因は技術でなく、商売への無関心だった」元Sunエンジニアが分析</a></h3>
+            <p><strong>Oxide Computer</strong>共同創業者の<strong>Bryan Cantrill</strong>氏が、かつて自身も在籍した<strong>Sun Microsystems</strong>の失敗を振り返るブログを公開した。<em>OpenSolaris</em>を使うスタートアップがサーバー購入を持ちかけても、Sunの営業が反応すらしない一方、<strong>Dell</strong>の担当者が数週間で契約をまとめてしまった逸話を紹介している。</p>
+            <p>同氏は、戦略や技術が優れていても、事業運営という基本作業への関心を失えば会社は傾くと結論づけた。Hacker Newsでは、不透明な価格交渉を求めるSun流の営業慣行そのものが自滅的だったとの声が相次いだ。</p>
+            <p><a class="more" href="https://bcantrill.dtrace.org/2026/09/20/what-sun-got-wrong/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49787313">8h, 216p, 209 comments</a></p>
+            <h3 class="hd"><a href="https://www.macstories.net/stories/m5-ultra-mac-studio-review-the-dream-mac-for-local-ai-agents/">「ローカルAIエージェントの夢のマシン」M5 Ultra Mac Studioレビュー</a></h3>
+            <p><strong>MacStories</strong>によるレビューは、<em>M5 Ultra</em>搭載Mac Studioを、プロンプト処理が前世代<em>M3 Ultra</em>比で約2.5倍、生成速度も7割ほど速いと評価した。統合メモリの大きさを生かし、<em>Qwen3.8-Flash-Next</em>をローカルで常用アシスタントとして使えるレベルになったという。</p>
+            <p>生の演算性能では<strong>Nvidia</strong>のRTX 5090に譲る場面もあるが、消費電力や搭載できるモデルの大きさを含めた総合力で、ローカルAIエージェントを試す開発者に向くと結論づけている。</p>
+            <p><a class="more" href="https://www.macstories.net/stories/m5-ultra-mac-studio-review-the-dream-mac-for-local-ai-agents/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://blog.cloudflare.com/python-workers-ga/">9/21</a></p>
+            <h3 class="hd"><a href="https://blog.cloudflare.com/python-workers-ga/">Cloudflare、Python WorkersをGA公開 JavaScriptを介さずAIライブラリも動作</a></h3>
+            <figure><img src="https://blog.cloudflare.com/_emdash/api/media/file/01M31JM2B4K28B7C67PCT5PB2R.01M31JM35NW9707QDHV86F68M9.png" alt=""><figcaption>画像:Cloudflare</figcaption></figure>
+            <p><strong>Cloudflare</strong>は、サーバーレス環境<em>Workers</em>上でPythonを正式にファーストクラス言語として提供開始した。<em>FastAPI</em>や<em>Django</em>、<em>Flask</em>をASGI/WSGI経由でそのまま動かせるほか、TCPソケット対応により<em>Hyperdrive</em>経由でPostgreSQLやMySQLにも接続できる。</p>
+            <p><em>openai</em>や<em>langchain</em>といったAIライブラリも、JavaScript側の変換を挟まずネイティブに動作するという。CloudflareはWebAssembly版パッケージの標準化を目指すPEP 783の採択にも関わった。</p>
+            <p><a class="more" href="https://blog.cloudflare.com/python-workers-ga/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49786689">9h, 212p, 167 comments</a></p>
+            <h3 class="hd"><a href="https://forums.raspberrypi.com/viewtopic.php?p=2380887#p2380888">Raspberry Pi、ファームウェアでRAMチップの交換を検出しブロック</a></h3>
+            <p><strong>Raspberry Pi財団</strong>が、基板上のRAMチップを交換しても正しく認識されないようにするファームウェア上の仕組みを導入したことが分かった。安価な低容量モデルにチップを載せ替え、高容量品として転売する業者への対策だという。</p>
+            <p>財団側は、検証していないRAMによる不具合の問い合わせが財団に来てしまう問題への対応と説明しているが、正規の自己修理やアップグレードまで妨げるとして、コミュニティでは賛否が分かれている。</p>
+            <p><a class="more" href="https://forums.raspberrypi.com/viewtopic.php?p=2380887#p2380888">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49792067">2h, 80p, 68 comments</a></p>
+            <h3 class="hd s"><a href="https://linear.app/now/ci-bottleneck-reworked">Linear、AIコーディングで詰まったCIパイプラインを作り直す</a></h3>
+            <p>プロジェクト管理ツール<strong>Linear</strong>は、AIによるコード生成でプルリクエストの量が急増し、CIの待ち時間が6分を超えるようになっていたと明かした。より高速な外部ランナーへの移行や、チェックアウトの短縮、テストの並列化などで待ち時間を5分強まで戻したという。</p>
+            <p>テストスイートの規模が4倍近くに膨らんだ中での改善で、ランナーの稼働時間もほぼ半減させたとしている。</p>
+            <p><a class="more" href="https://linear.app/now/ci-bottleneck-reworked">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49769561">2h, 42p, 4 comments</a></p>
+            <h3 class="hd s"><a href="https://gabrieloc.com/2026/09/15/perspective.html">3Dカメラの基本、「深度で割る」だけで透視投影ができる仕組みを解説</a></h3>
+            <p>開発者<strong>Gabriel</strong>氏のブログ記事は、3Dグラフィックスにおける透視投影の核心が、x座標とy座標を奥行き(z)で割るという単純な計算にあると解説する。この基本原理から、実際のグラフィックスパイプラインで使われる投影行列までを、対話的な図を交えて積み上げていく。</p>
+            <p>カメラの仕組みはいくつかの単純な変換の組み合わせに過ぎないとして、必要な部分だけを理解して実装できるように構成されている。</p>
+            <p><a class="more" href="https://gabrieloc.com/2026/09/15/perspective.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gigazine.net/news/20260921-what-happens-to-io-uring-when-process-dies/">9/21</a></p>
+            <h3 class="hd s"><a href="https://gigazine.net/news/20260921-what-happens-to-io-uring-when-process-dies/">io_uringはプロセスが終了してもI/Oが裏で走り続けることがある</a></h3>
+            <p>Linuxの<em>io_uring</em>は、標準設定のままだとプロセスが<code>waitpid()</code>で終了を確認した後も、発行済みのI/O処理がカーネル内で継続してしまうことがあるという検証記事。dm-delayとfioを使った実験では、プロセス終了後にディスクへの書き込みが完了していたことが確認された。</p>
+            <p><em>SQPOLL</em>モードや従来のAIOでは終了確認前に処理完了が保証されるといい、対策として<code>flock()</code>による排他ロックで後続処理をせき止める方法が紹介されている。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260921-what-happens-to-io-uring-when-process-dies/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gigazine.net/news/20260920-tailcat/">9/20</a></p>
+            <h3 class="hd s"><a href="https://gigazine.net/news/20260920-tailcat/">Tailscaleの通信網上で動く「netcat」、複雑な設定なしでP2P接続</a></h3>
+            <figure><img src="https://i.gzn.jp/img/2026/09/20/tailcat/00_m.png" alt=""><figcaption>画像:GIGAZINE</figcaption></figure>
+            <p><strong>Tailscale</strong>が、同社のデータプレーンを使って<em>netcat</em>のように振る舞うツール<em>Tailcat</em>を公開した。WireGuardによる暗号化とNAT越えの仕組みをそのまま使い、片方の端末で生成したアドレスを共有するだけで、直接通信かリレー経由かを自動で選んでP2P接続を確立する。</p>
+            <p>SSH接続やファイル転送、ポートフォワーディング、簡易Webサーバーの共有などに使え、IPアドレスを露出させたりルーターの設定を変更したりする必要がないという。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260920-tailcat/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/mass-scanning-campaign-exploits-vite.html">9/15</a></p>
+            <h3 class="hd l"><a href="https://thehackernews.com/2026/09/mass-scanning-campaign-exploits-vite.html">開発サーバーVite、クエリパラメータでファイル保護を回避される脆弱性が悪用中</a></h3>
+            <p><em>Vite</em>の脆弱性<em>CVE-2026-39364</em>(CVSS 8.2)が、大規模なスキャン攻撃で悪用されていることが分かった。URLに<code>?raw</code>や<code>?import&amp;raw</code>を付け加えるだけで、<code>server.fs.deny</code>設定で保護されているはずの<code>.env</code>ファイルや証明書を読み出せてしまう。</p>
+            <p>攻撃者はこの手口で、開発サーバーが外部に露出したままの環境から<strong>AWS</strong>や<strong>Azure</strong>の認証情報を狙って収集しているという。開発用サーバーをネットワークに公開したままにしないことが対策になる。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/mass-scanning-campaign-exploits-vite.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">9/19</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">セキュリティ企業CrowdSec、npm経由の攻撃で社内リポジトリ170件を窃取される</a></h3>
+            <p><strong>CrowdSec</strong>は、5月22日に約170件の非公開GitHubリポジトリを攻撃者に取得されていたと公表した。原因は、<em>TanStack</em>関連のnpmパッケージを狙ったサプライチェーン攻撃で感染した、元従業員のノートPCから盗まれた認証情報だったという。</p>
+            <p>流出した中には検知アルゴリズムの閾値や社内ツールのほか、83件のメールアドレスや2020年時点の投資家51件分の情報も含まれていた。インフラやデータベース自体への侵入はなかったとしている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/crowdsec-says-tanstack-npm-attack-led.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/critical-docker-sandboxes-flaw-lets.html">9/17</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/critical-docker-sandboxes-flaw-lets.html">Docker Sandboxesの重大な脆弱性、ゲストからmacOSホストのファイルを改ざん可能</a></h3>
+            <p><strong>Docker</strong>の仮想環境機能<em>Docker Sandboxes</em>に、深刻度9.4の脆弱性<em>CVE-2026-77179</em>が見つかった。仮想マシン内の悪意あるコードが、共有ディレクトリの親ディレクトリをシンボリックリンクに置き換えることで、macOSホスト側のファイルを読み書きできてしまう。</p>
+            <p>0.28.0から0.41.9までが影響を受け、9月7日公開の0.42.0で修正済み。Dockerは現時点で実際の悪用は確認されていないとしている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/critical-docker-sandboxes-flaw-lets.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/an-abandoned-cdn-domain-was-re.html">9/18</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/an-abandoned-cdn-domain-was-re.html">放棄されたCDNドメインが再登録、今も数千サイトが読み込み続ける</a></h3>
+            <p>2025年7月、多数のサイトがコード内で参照したまま放置していたCDNドメインが、第三者によって再登録されていたことが分かった。新しい登録者はワイルドカードDNSの制御権を得ており、理論上はそれらのサイトに配信する内容を自由に決められる状態になっている。</p>
+            <p>現状は広告だらけのダウンローダーサイトが表示されるだけだが、2024年に<em>polyfill.io</em>が同様の経緯で乗っ取られ、モバイル利用者を悪意あるリダイレクトに誘導した前例がある。関係者への通知はまだ行われていないという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/an-abandoned-cdn-domain-was-re.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://gigazine.net/news/20260921-meta-muse-ai-agent-read-private-messages/">9/21</a></p>
+            <h3 class="hd"><a href="https://gigazine.net/news/20260921-meta-muse-ai-agent-read-private-messages/">MetaのAIエージェント「Muse」、許可した覚えのないメッセージを読んでいたとの指摘</a></h3>
+            <figure><img src="https://i.gzn.jp/img/2026/09/21/meta-muse-ai-agent-read-private-messages/00_m.png" alt=""><figcaption>画像:GIGAZINE</figcaption></figure>
+            <p>テクノロジーライターの<strong>Jason Aten</strong>氏が、<strong>Meta</strong>のAIエージェント<em>Muse</em>が、Mac上のメッセージデータを同期し、本人が許可した記憶のないまま回答の情報源として使っていたと報告した。Metaの担当者は、メッセージ連携には「フルディスクアクセス」権限への明示的なオプトインが必要だと反論している。</p>
+            <p>同氏は、設定を有効にした覚えがないと主張しており、AIエージェントが個人のメッセージを読む際は、利用者が驚くような形であってはならないと指摘した。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260921-meta-muse-ai-agent-read-private-messages/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://zenn.dev/igz0/articles/skill-without-proof">2/14</a></p>
+            <h3 class="hd"><a href="https://zenn.dev/igz0/articles/skill-without-proof">技術発信を後回しにした私が転職で詰んだ話</a></h3>
+            <p>著者は転職活動で不合格が続いた原因を、当初は技術力不足だと思い込んでいたが、実際は学びの過程を発信してこなかった「見えなさ」にあったと振り返る。解決した問題を短い記事にして公開し始めたところ、面接通過率がほぼ倍になったという。</p>
+            <p>「何を知っているか」と同じくらい「何を記録してきたか」が問われるとして、未完成でも構わないので試行錯誤の記録を発信し始めるよう呼びかけている。</p>
+            <p><a class="more" href="https://zenn.dev/igz0/articles/skill-without-proof">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">LIFE</span><a href="https://alicegg.tech/2026/09/21/attention">9/21</a></p>
+            <h3 class="hd"><a href="https://alicegg.tech/2026/09/21/attention">アルゴリズムに明け渡した「見るもの」を、もう一度自分で選び直す</a></h3>
+            <p>ソフトウェア開発者の<strong>Alice</strong>氏は、今のインターネットでは何を見るかを自分で選んでいるようで、実際はアルゴリズムが選んだものを受け取っているだけだと指摘する。おすすめのままにドゥームスクロールしたりAI生成コンテンツを流し見たりすることは、「自分の脳の鍵をよそに渡す」ことに等しいという。</p>
+            <p>かつてのウェブでは、ひどいものを見るにも自分から探しに行く必要があったと対比しつつ、ブログやRSSのような、更新が緩やかで意図的に選んで読むメディアに戻ることを勧めている。</p>
+            <p><a class="more" href="https://alicegg.tech/2026/09/21/attention">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>自分で創り出せないものを、私は理解していない。</blockquote>
+          <p class="who">リチャード・ファインマン</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>ファインマンは、量子電磁力学の再定式化で1965年にノーベル物理学賞を受けた米国の理論物理学者。カリフォルニア工科大学で教鞭を執り、平易な語り口の講義でも知られた。この言葉は、1988年2月に彼が亡くなった直後、研究室の黒板に書き残されているのが見つかったもので、続けて「解かれたことのある問題は、すべて解けるようになっておくこと」とも記されていた。</p>
+        <p class="src">理論物理学者、1918年〜1988年<br>出典:カリフォルニア工科大学の黒板の書き置き(1988年2月撮影、写真集『ファインマンさんの流儀』所収)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
