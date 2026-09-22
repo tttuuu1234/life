@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第4号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年9月</span>
+      <span class="d">23</span>
+      <span class="w">水曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49805509">4h, 943p, 508 comments</a></p>
+            <h3 class="hd l"><a href="https://openai.com/index/introducing-gpt-6-sol-and-luna/">OpenAIが低価格版「GPT-6 Sol」「GPT-6 Luna」を発表、API価格を半額に</a></h3>
+            <p><strong>OpenAI</strong>が、上位モデル<em>GPT-6 Astra</em>の技術を受け継ぎつつ低コスト化した<em>GPT-6 Sol</em>と<em>GPT-6 Luna</em>を発表した。Solはコーディングやエージェント用途向け、Lunaは低コスト・高速性が求められる大量処理向けと役割を分けており、API価格は前世代の割引価格からさらに半額になったという。</p>
+            <p>ベンチマーク<em>OSWorld 2.0</em>では、Solが最高推論設定で60.5%を記録し、中設定の<strong>Claude Opus 5</strong>(60.3%)をわずかに上回りつつ、コストは約8割抑えられたとしている。ChatGPTのPlus・Pro・Business・Enterprise・Eduユーザー向けに、Codexとあわせて提供が始まった。</p>
+            <p><a class="more" href="https://openai.com/index/introducing-gpt-6-sol-and-luna/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49803892">5h, 990p, 721 comments</a></p>
+            <h3 class="hd"><a href="https://www.anthropic.com/claude-opus-5-5">Anthropic、新系列の第1弾「Claude Opus 5.5」公開 コード移行を1日で完了</a></h3>
+            <p><strong>Anthropic</strong>が、新系列の最初のモデルとなる<em>Claude Opus 5.5</em>を公開した。大規模なコード移行を試したテスターは、68万行規模の移行を1日足らずで終えたという。安全性の自動監査でも過去最高スコアを記録し、後戻りしにくい行動を取る頻度がOpus 5より下がったとしている。</p>
+            <p>価格は入力・出力ともOpus 5比で2割下げ、全体の運用コストは4割削減できるとし、出力速度も3割以上速くなった。<strong>AWS</strong>、<strong>Google Cloud</strong>、<strong>Microsoft Azure</strong>を含む全プラットフォームで即日利用できる。</p>
+            <p><a class="more" href="https://www.anthropic.com/claude-opus-5-5">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49801324">8h, 513p, 346 comments</a></p>
+            <h3 class="hd"><a href="https://www.cryptocellar.org/bgac/the-mvueh-break.html">OpenAIのGPT-6 Astra、2005年から未解読だった第二次大戦のエニグマ暗号を解読</a></h3>
+            <p>研究者<strong>Carter Leffer</strong>氏が、<strong>OpenAI</strong>の<em>GPT-6 Astra</em>を使い、1941年7月10日発信のドイツ陸軍<em>エニグマ</em>暗号文(82文字)を解読したと報告した。転記ミスや珍しい左ローターの周回、他の同日電文と異なる配線・ホイール順という悪条件が重なり、2005年以降誰も解けずにいたという。</p>
+            <p>AIは関連する別電文にある地名の繰り返しを手がかりに、専用のエニグマ・シミュレータとBombeソフトウェアを自作して総当たりを行い、人間なら数週間から数か月かかる作業を2日ほどで終えたとしている。</p>
+            <p><a class="more" href="https://www.cryptocellar.org/bgac/the-mvueh-break.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49806430">3h, 283p, 145 comments</a></p>
+            <h3 class="hd"><a href="https://www.bloomberg.com/graphics/2026-iran-school-attack/">米国防総省、AIへの過度な依存がイランの学校誤爆の一因と結論</a></h3>
+            <p><strong>Bloomberg</strong>の報道によると、2月28日にイラン南部ミナーブの小学校をトマホーク2発が直撃し子ども123人を含む150人超が死亡した事件で、米国防総省の内部調査は、劣化した衛星画像と、<strong>Palantir</strong>製の標的選定システム<em>Maven Smart System</em>への過度な依存が誤爆の一因だったと結論づけたという。</p>
+            <p>ヘグセス国防長官の指示で民間人被害を軽減する部門が9割規模縮小されており、中央軍の担当チームは10人から1人に減らされ、攻撃前に現地を審査した担当者もいなかったとしている。</p>
+            <p><a class="more" href="https://www.bloomberg.com/graphics/2026-iran-school-attack/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49802161">7h, 237p, 177 comments</a></p>
+            <h3 class="hd s"><a href="https://arcturus-labs.com/blog/2026/09/21/will-openai-eat-jevs-lunch/">「文章を生成しないAI」Jevが急拡大、OpenAIも追随できるとの分析</a></h3>
+            <p>新興企業TypeSafeの<em>Jev</em>は、LLMを文章生成ではなく真偽判定や選択肢採点などの分類器として使い、確信度付きの即答を返すモデルで、<strong>Vercel</strong>の<em>AI Gateway</em>史上最速の採用ペースだったという。ブログ<strong>Arcturus Labs</strong>は、仕組み自体は目新しくなく<strong>OpenAI</strong>も追随できるはずだが、真の強みはTypeSafe独自の学習データにあると分析している。</p>
+            <p><a class="more" href="https://arcturus-labs.com/blog/2026/09/21/will-openai-eat-jevs-lunch/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/22/2000001667/">9/22</a></p>
+            <h3 class="hd l"><a href="https://www.itmedia.co.jp/news/article/2609/22/2000001667/">Google、Android×ChromeOS融合のAIノートPC「Googlebook」予約開始 899ドルから</a></h3>
+            <p><strong>Google</strong>が、AIアシスタント<em>Gemini</em>を前提に設計した新カテゴリーのノートPC<em>Googlebook</em>の予約受付を開始した。<strong>Android</strong>の技術基盤と<strong>ChromeOS</strong>のデスクトップ機能を融合させ、スマートフォンで始めた作業をそのまま続けられる点が特徴で、Androidアプリもそのまま動く。</p>
+            <p>最大2.8K有機ELタッチディスプレイやハプティクス対応のガラス製トラックパッドを備え、45TOPS超のNPUを積む<strong>Intel</strong>または<strong>Qualcomm</strong>製プロセッサ、最大14時間のバッテリー駆動をうたう。第1弾はAcer、ASUS、Dell、HP、Lenovoの5社が899ドルから製造し、10月4日に米国で発売するが、日本は当面対象外という。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/22/2000001667/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://thehackernews.com/2026/09/google-fined-403-million-over-gdpr.html">9/22</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/google-fined-403-million-over-gdpr.html">Google、位置情報の取り扱いを巡りアイルランド当局から403億円規模の制裁金</a></h3>
+            <p>アイルランドのデータ保護委員会(DPC)は、<strong>Google</strong>による位置情報の取得・保存方法がGDPRの透明性義務に違反していたとして、403億円相当の制裁金を科した。ウェブ・アプリの利用履歴や位置情報の許可設定に関する2018〜2020年の運用を対象にした調査で、必要以上に長く位置情報を保持していた点も問題視されたという。</p>
+            <p>Googleには是正まで半年の猶予が与えられ、正式決定から28日以内であれば高等裁判所に控訴できる。DPCがGDPR施行後に科した制裁金としては4番目の規模だという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/google-fined-403-million-over-gdpr.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49804683">5h, 225p, 103 comments</a></p>
+            <h3 class="hd"><a href="https://grapheneos.social/@GrapheneOS/117299954135808210">プライバシー重視OS「GrapheneOS」、Motorola端末にプリインストールされる可能性</a></h3>
+            <p>セキュリティ重視のモバイルOS<em>GrapheneOS</em>の開発チームが、<strong>Motorola</strong>と組んだ新端末が2027年に登場する見込みだと明らかにした。大手メーカーが出荷時からGrapheneOSを搭載するのは初めてで、対象機種はGrapheneOSが求める長期アップデートやハードウェアのセキュリティ要件を満たす新設計のフラッグシップになるとみられる。</p>
+            <p>既存のMotorola端末がそのまま対象になるわけではなく、Motorola自身がGrapheneOSを出荷するのではなく、開発チームを技術面で支援する形になるという。</p>
+            <p><a class="more" href="https://grapheneos.social/@GrapheneOS/117299954135808210">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49801939">7h, 546p, 419 comments</a></p>
+            <h3 class="hd"><a href="https://www.techradar.com/phones/iphone/i-wish-apple-would-just-stop-that-crap-apple-has-added-persistent-ads-to-ios-and-its-driving-users-crazy">Appleが「ロック画面広告」をやめない、iOSユーザーの不満が拡大</a></h3>
+            <p><strong>TechRadar</strong>によると、<strong>Apple</strong>が<em>Wallet</em>アプリ経由でロック画面に送る自社サービスの宣伝通知に対し、利用者の不満がSNSで広がっている。明確な「閉じる」ボタンがないまま表示され続けるケースがあり、消すには通知の期限切れを待つか、宣伝されている有料サービスに加入するしかないという。</p>
+            <p>iOS 26では該当の通知を止める設定が追加されたが、根本的な仕組み自体は変わっておらず、<strong>Microsoft</strong>の広告手法になぞらえて批判する声も出ている。</p>
+            <p><a class="more" href="https://www.techradar.com/phones/iphone/i-wish-apple-would-just-stop-that-crap-apple-has-added-persistent-ads-to-ios-and-its-driving-users-crazy">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49794736">23h, 186p, 105 comments</a></p>
+            <h3 class="hd"><a href="https://lwn.net/SubscriberLink/1094575/2385e98583715c2b/">Git 2.56がまもなくリリース、参照操作用の新サブコマンドや性能改善が中心</a></h3>
+            <p>次期<em>Git 2.56</em>は、<code>git status</code>実行時に緩いオブジェクトを列挙する処理を二乗オーダーからO(n log n)に改善するなど、性能面の変更が中心のリリースになる見通し。参照を直接操作する<code>git refs create/delete/update/rename</code>や、コミットを履歴から取り除く実験的な<code>git history drop</code>も追加される。</p>
+            <p>Git 3.0に向けては、コントリビューションガイドラインの更新も進んでおり、パッチの再送前に最低1日は待つよう呼びかける内容が盛り込まれたという。</p>
+            <p><a class="more" href="https://lwn.net/SubscriberLink/1094575/2385e98583715c2b/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49808023">1h, 81p, 46 comments</a></p>
+            <h3 class="hd s"><a href="https://foxscript.org/">Microsoftが2007年に葬った「FoxPro」、Rust製ランタイムで現代に復活</a></h3>
+            <p>開発者が、2007年に<strong>Microsoft</strong>が開発を終了した<em>Visual FoxPro 9</em>のアプリケーションを変換なしでそのまま動かせるランタイム<em>FoxDev Studio</em>を公開した。Rustで書きWebAssembly上で動く仮想マシンにより、旧来の32bit版で2GBまでだったテーブルサイズの上限を、数百GB規模まで拡張したという。</p>
+            <p>挙動の再現度を高めるため、仕様書からの推測ではなく実際のVisual FoxPro自体に問い合わせて検証する方式を採っており、言語リファレンスの要素1,722件のうち1,534件で動作確認済みとしている。</p>
+            <p><a class="more" href="https://foxscript.org/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49806335">3h, 102p, 50 comments</a></p>
+            <h3 class="hd"><a href="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/">「SAMLは悪い設計の見本」、Trail of BitsがOIDCへの移行を提言</a></h3>
+            <p>セキュリティ企業<strong>Trail of Bits</strong>のブログは、SSO業界を築いた<em>SAML</em>について、複雑な<em>XML</em>を基盤にしている点や、署名対象データに署名自体を埋め込む方式が改ざんの温床になってきた点など、設計上の弱点を列挙した。実装の9割は仕様のごく一部しか使っていないとも指摘する。</p>
+            <p>記事は、サービス提供側は<em>OIDC</em>のみの対応で十分とし、IDプロバイダー側も新規のSAML連携を止めて既存顧客をOIDCへ移行させる方針への転換を促している。</p>
+            <p><a class="more" href="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49801329">8h, 148p, 50 comments</a></p>
+            <h3 class="hd s"><a href="https://droprun.sh/">root権限不要のLinuxサンドボックス「Drop」、AIコーディングエージェントの隔離に</a></h3>
+            <p>新ツール<em>Drop</em>は、Linuxのユーザー名前空間だけで動くroot権限不要のサンドボックスで、既存のディストリビューションをそのまま再利用できるため、コンテナと違いインストール済みのプログラムをすぐ使える。設定はTOMLファイルで、アクセスを許すファイルやディレクトリ、ローカルサービスを指定する。</p>
+            <p>権限を緩めたコーディングエージェントを動かしつつプロンプトインジェクションの影響をOSレベルで抑えたり、信頼できないパッケージの実行を隔離したりする用途を想定しており、<em>gVisor</em>と組み合わせてカーネルからの隔離を強めることもできる。</p>
+            <p><a class="more" href="https://droprun.sh/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49805677">3h, 72p, 25 comments</a></p>
+            <h3 class="hd s"><a href="https://discord.com/blog/safer-for-teens-same-discord-for-adults">Discord、メッセージ内容を見ずに年齢層を推定する新方式を導入</a></h3>
+            <p><strong>Discord</strong>が、利用者を「成人」「13〜17歳」「未確認」に自動で分類する仕組みの展開を始めた。サーバーへの参加状況やアクティビティの傾向など行動パターンから推定し、メッセージや通話の内容自体は見ないとしている。</p>
+            <p>同社は生体認証に匹敵する精度があるとし、9割超の利用者は年齢確認を求められずに済むという。誤って分類された場合は、クレジットカードやアプリストアの年齢情報、ビデオ選択などで確認し直せる。</p>
+            <p><a class="more" href="https://discord.com/blog/safer-for-teens-same-discord-for-adults">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49794478">4h, 65p, 24 comments</a></p>
+            <h3 class="hd s"><a href="https://htmx.org/essays/markdown-in-src/">「Markdownもソースコードとして扱う」、htmxが提案する仕様書の残し方</a></h3>
+            <p><em>htmx</em>のブログは、設計意図や仕様を記したMarkdownを、ドキュメントツールに散らばらせるのではなく、生成されたコードと同じ<code>/src</code>以下に置いてバージョン管理すべきだと提案する。コードのそばに置くことで人間だけでなく、後から読むAIエージェントにも文脈が伝わりやすくなるという。</p>
+            <p>LLMによるコード生成が安くなるほど、その背景にある判断根拠を残しておく価値が増すとして、Markdownを一級の成果物として扱う発想を呼びかけている。</p>
+            <p><a class="more" href="https://htmx.org/essays/markdown-in-src/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/new-cvss-100-velocloud-orchestrator.html">9/22</a></p>
+            <h3 class="hd l"><a href="https://thehackernews.com/2026/09/new-cvss-100-velocloud-orchestrator.html">Arista VeloCloud Orchestratorに満点の脆弱性、実際の攻撃で悪用中</a></h3>
+            <p><strong>Arista</strong>のSD-WAN管理製品<em>VeloCloud Orchestrator</em>(オンプレミス版)に、CVSS満点10.0の脆弱性<em>CVE-2026-93952</em>が見つかった。証明書認証でエッジ機器と接続する構成が対象で、ログインなしの遠隔攻撃者が内部の権限昇格用機能を呼び出し、ホストに影響を与えられる。同社は外部からの報告で発覚し、既に実際に悪用されていることを確認したとしている。</p>
+            <p>修正版5.2.3.16以降・6.4.2.8以降への更新に加え、管理画面を信頼できるネットワークに限定すること、特定のIPアドレスや不審なURLパターンなど侵害の痕跡を確認することが呼びかけられている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/new-cvss-100-velocloud-orchestrator.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/check-point-warns-of-management-server.html">9/22</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/check-point-warns-of-management-server.html">Check Pointの管理サーバーにゼロデイ、7月から標的型攻撃で悪用</a></h3>
+            <p><strong>Check Point</strong>のセキュリティ管理サーバーに存在した未知の脆弱性<em>CVE-2026-93616</em>(CVSS 9.8)が、7月23日から一部の標的型攻撃で悪用されていたことが分かった。管理サーバーのWebサービスにアクセスできる攻撃者が、ログインなしでスクリプトを実行できるパストラバーサルの欠陥だという。</p>
+            <p>9月22日に修正が公開されたが、パッチを当てただけでは過去に侵害されていたかは分からないとして、同社は侵害調査用の手がかりも合わせて公開した。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/check-point-warns-of-management-server.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-7hp8-65ch-5whp">9/22</a></p>
+            <h3 class="hd"><a href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-7hp8-65ch-5whp">WordPressコア、パストラバーサルでRCEに繋がる欠陥を修正 21系列に影響</a></h3>
+            <p><strong>WordPress</strong>コアの<em>get_page_template()</em>関数に、認証不要でテーマディレクトリ外の任意のPHPファイルを読み込ませられる脆弱性<em>CVE-2026-87902</em>(CVSS 9.2)が見つかり、7.1.2で修正された。影響はバージョン4.7.0から7.1.1までの21系列に及ぶ。</p>
+            <p>「page-」で始まるトップレベルディレクトリを持つ<em>Twenty Twelve</em>や<em>Neve</em>などのテーマと、pearcmd.phpなど読み込み可能なPHPファイルの組み合わせで悪用が成立するという。研究者Robert Ressl氏が責任開示した。</p>
+            <p><a class="more" href="https://github.com/WordPress/wordpress-develop/security/advisories/GHSA-7hp8-65ch-5whp">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.404media.co/we-hacked-the-fbi-hackers-say-they-have-data-on-all-fbi-employees/">9/22</a></p>
+            <h3 class="hd"><a href="https://www.404media.co/we-hacked-the-fbi-hackers-say-they-have-data-on-all-fbi-employees/">ハッカー集団ShinyHunters、「FBI全職員のデータを窃取した」と主張</a></h3>
+            <p>ハッカー集団<strong>ShinyHunters</strong>が、<strong>Oracle PeopleSoft</strong>のゼロデイ脆弱性を突いてFBIのAWS GovCloud環境に侵入し、職員・応募者の氏名や住所、生年月日、配偶者情報などを含む2〜3テラバイトを持ち出したと主張した。証拠として5,000件分のサンプルを<strong>404 Media</strong>に提供している。</p>
+            <p>404 Mediaが電話番号の一部をOSINTツールで照合したところ、記載された氏名と一致する人物が見つかったといい、FBIの採用サイトも改ざんされた。FBIは調査中としており、被害範囲は確認されていない。</p>
+            <p><a class="more" href="https://www.404media.co/we-hacked-the-fbi-hackers-say-they-have-data-on-all-fbi-employees/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/critical-bifrost-ai-gateway-flaw-lets.html">9/22</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/critical-bifrost-ai-gateway-flaw-lets.html">20以上のLLMをまとめるAIゲートウェイ「Bifrost」に認証回避の重大な欠陥</a></h3>
+            <p>20以上のLLMプロバイダーへの振り分けを担うオープンソースのAIゲートウェイ<em>Bifrost</em>に、CVSS 9.8の脆弱性<em>CVE-2026-90898</em>が見つかった。管理用APIが既定で認証なしのため、攻撃者がMCPクライアントを登録するだけで、ハンドシェイクを待たずにゲートウェイのプロセス権限でコマンドを実行でき、接続先各社のAPIキーにも到達できるという。</p>
+            <p>v2.1.0で修正済みで、管理系の認証を有効にすることと、管理用エンドポイントを外部にさらさないことが推奨されている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/critical-bifrost-ai-gateway-flaw-lets.html">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://zenn.dev/avaintelligence/articles/dont-outsource-understanding-to-ai">8/28</a></p>
+            <h3 class="hd"><a href="https://zenn.dev/avaintelligence/articles/dont-outsource-understanding-to-ai">AIに実装を丸投げすると失う「理解する力」、エンジニアが提案する7段階の開発手順</a></h3>
+            <p>エンジニアの<strong>Keitakn</strong>氏は、AIによる開発では技術的負債に加え、自分が書いていないコードが増えるほど中身が分からなくなる「理解の負債」が溜まると指摘する。自身のサービスへのログイン機能実装を例に、要件整理から実装計画のレビューまでを工程の9割に充て、実装は最後に回す7段階の手順を提案している。</p>
+            <p>コードの細部を把握できなくても、仕様を自分の言葉で説明できる状態を保つことが肝心だとし、計画段階を丁寧に踏むことがAI時代の理解力を保つ鍵になると結んでいる。</p>
+            <p><a class="more" href="https://zenn.dev/avaintelligence/articles/dont-outsource-understanding-to-ai">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">LIFE</span><a href="https://alexn.org/blog/2026/09/22/ai-has-no-wisdom-and-neither-will-you/">9/22</a></p>
+            <h3 class="hd"><a href="https://alexn.org/blog/2026/09/22/ai-has-no-wisdom-and-neither-will-you/">AIに知恵はない、そしてAIに頼るあなたにも宿らない</a></h3>
+            <p>開発者<strong>Alex N.</strong>氏は、コードの保守しやすさは書いてから何か月、何年も経たないと分からないため、AIはその感覚を学べず、平凡なパターンをなぞるしかないと論じる。人間のエンジニアが持つ文脈的な判断力は、失敗を重ねる中でしか育たないという。</p>
+            <p>実装をAIに任せきりにする人は、自ら選択し失敗から学ぶ機会を失うため、いつまでも熟達に至れないと警告し、将来「AIを使わない」ことを強みとして掲げる企業が現れるだろうと予測している。</p>
+            <p><a class="more" href="https://alexn.org/blog/2026/09/22/ai-has-no-wisdom-and-neither-will-you/">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>すぐれた散文とは、一枚の窓ガラスのようなものだ。</blockquote>
+          <p class="who">ジョージ・オーウェル</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>オーウェルは、『動物農場』や『1984年』で知られる英国の小説家・エッセイスト。ジャーナリストや評論家としても活動し、政治と言語の関係を問う文章を数多く残した。この言葉は、自身が書く理由を4つに分けて論じた1946年のエッセイの終盤にあり、政治的な文章にも芸術性を持たせたいという理想を語った文脈で登場する。</p>
+        <p class="src">小説家・エッセイスト、1903年〜1950年<br>出典:エッセイ『なぜ私は書くのか』(1946年、雑誌Gangrel掲載)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
