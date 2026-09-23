@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第5号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年9月</span>
+      <span class="d">24</span>
+      <span class="w">木曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49820134">4h, 354p, 353 comments</a></p>
+            <h3 class="hd l"><a href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system">Claudeが約950体のエージェントで、CRISPRに似た新種の酵素システムを発見</a></h3>
+            <p><strong>Anthropic</strong>は、同社のAI<em>Claude</em>を約950体同時に走らせ、膨大なDNA配列データベースを自律的に探索させることで、バクテリオファージに存在する新種の酵素システム「array-associated reverse transcriptases(ART)」を発見したと発表した。CRISPRのような繰り返し配列を伴う点が特徴で、通常なら人間の研究者が数週間から数か月かける探索作業を代行させたという。</p>
+            <p>ARTは、DNAを操作するプログラム可能な生体分子として知られる<em>CRISPR</em>と似た性質を持つとみられ、その機能が解明されれば同様のバイオテクノロジー応用が見込めるとしている。</p>
+            <p><a class="more" href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49817404">6h, 257p, 218 comments</a></p>
+            <h3 class="hd"><a href="https://drivingbench.org/">OpenAIのGPT-6 Astra、コーン間を縫う実車走行テストで首位に</a></h3>
+            <p>評価企画<em>DrivingBench</em>は、複数の最新AIモデルにトヨタ・カローラのハンドルとアクセル・ブレーキを実際に操作させ、コーンを並べたコースを走らせる検証を行った。<strong>OpenAI</strong>の<em>GPT-6 Astra</em>は2回目の試走でコース進捗100%、タイム5分22秒を記録し、<strong>Claude Fable 5.1</strong>の45%や<strong>Grok 4.6</strong>の11%を大きく引き離して首位となった。</p>
+            <p>各モデルは同一の対話の中で最大3回の試走機会を与えられ、中心線から4メートル以内を保てた距離や完走時間、消費トークン数などで評価されたという。</p>
+            <p><a class="more" href="https://drivingbench.org/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49817615">6h, 216p, 113 comments</a></p>
+            <h3 class="hd"><a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/">Google、声を演出できる音声合成モデル「Gemini 3.8 Flash TTS」を公開</a></h3>
+            <p><strong>Google</strong>が、100以上の言語に対応した新しい音声合成モデル<em>Gemini 3.8 Flash TTS</em>と、大量処理向けの軽量版<em>Flash-Lite TTS</em>を公開した。30秒程度の音声サンプルからカスタムボイスを作れるほか、セリフごとに話し方を指示したり、笑い声や相づちのような自然な間を加えたりできるという。</p>
+            <p>声の複製には本人の同意を確認する録音が必須で、<em>C2PA</em>資格情報や<em>SynthID</em>の電子透かしも組み込まれている。<strong>Google AI Studio</strong>とGemini APIで即日利用できる。</p>
+            <p><a class="more" href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-8-text-to-speech/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49814947">9h, 431p, 239 comments</a></p>
+            <h3 class="hd s"><a href="https://blog.szypowi.cz/p/claude-code-reads-agents.md-only-when-telemetry-is-on/">Claude Codeの「AGENTS.md」対応、テレメトリを切ると読み込まれない不具合</a></h3>
+            <p>開発者が、<strong>Anthropic</strong>の<em>Claude Code</em>に追加された<em>AGENTS.md</em>読み込み機能が、リモートのフィーチャーフラグに依存する実装になっており、テレメトリや非必須通信を無効にしている環境では、警告なしにファイルが読み込まれなくなる不具合を報告した。</p>
+            <p>プライバシーを重視した設定では機能が実質的に働かないため、報告者は代替として1行だけの<em>CLAUDE.md</em>を使う回避策を取っているという。</p>
+            <p><a class="more" href="https://blog.szypowi.cz/p/claude-code-reads-agents.md-only-when-telemetry-is-on/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://gigazine.net/news/20260924-qorl/">9/24</a></p>
+            <h3 class="hd s"><a href="https://gigazine.net/news/20260924-qorl/">4Bパラメータの小型AIモデル、PostgreSQLのクエリプランを1.81倍高速化</a></h3>
+            <p>エンジニアの<strong>Rohan Bansal</strong>氏が、40億パラメータのモデル<em>Qwen3.8-4B-Distill</em>を<em>GPT-6 Astra</em>による教師データで指導した後、実行時間を報酬とする強化学習で追加訓練し、PostgreSQLのクエリプランを最適化するモデルを作った。結合を多く含む113件のクエリからなる<em>Join Order Benchmark</em>で、標準のプランナー比1.81倍の高速化を幾何平均で達成したという。</p>
+            <p>小規模なオープンウェイトモデルでも、特定領域に絞れば最先端の性能に匹敵しうることを示す事例としている。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260924-qorl/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49815381">9h, 227p, 250 comments</a></p>
+            <h3 class="hd l"><a href="https://www.androidauthority.com/samsung-accidentally-freezes-its-smart-fridges-with-a-software-update-3714472/">Samsungのスマート冷蔵庫、誤配信のアップデートで一斉に凍結・停止</a></h3>
+            <p><strong>Samsung</strong>が、社内テスト用のファームウェアを誤って一般向けに配信してしまい、韓国の秋夕(チュソク)連休を目前にした9月22日、高級ライン<em>Bespoke AI 4-Door Refrigerator</em>シリーズを中心に、庫内灯やタッチパネル、冷却機能そのものが一斉に停止する不具合が発生した。<strong>SmartThings</strong>経由の更新後すぐに症状が出た利用者が相次いだという。</p>
+            <p>同社は<em>SmartThings</em>アップデートの配信を停止し「緊急措置」を講じているとし、影響を受けた利用者には技術者を派遣して個別に修理対応しているとしている。</p>
+            <p><a class="more" href="https://www.androidauthority.com/samsung-accidentally-freezes-its-smart-fridges-with-a-software-update-3714472/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001678/">9/23</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001678/">JCOM NETで大規模な通信障害、サポート窓口にもつながらない事態に</a></h3>
+            <p>日本のケーブルテレビ・回線事業者<strong>JCOM</strong>で9月23日朝、インターネット接続サービス「J:COM NET」の障害が発生し、同社は午前10時24分に公式X(旧Twitter)アカウントで復旧作業中と発表した。利用者からは電話サポートやカスタマーセンターにもつながらないとの声が相次いだという。</p>
+            <p>複数の利用者は、DNS設定を<strong>Google Public DNS</strong>に変更すると一時的に接続が回復したと報告しており、JCOM自体のDNSサーバーに問題が生じた可能性がうかがえる。障害の原因や復旧見通しについて、同社からの説明は出ていない。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/23/2000001678/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001675/">9/23</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001675/">Microsoft、Xboxで268人を追加削減 Haloの新規開発はActivisionへ移管</a></h3>
+            <p><strong>Microsoft</strong>は9月22日、Xbox部門でさらに268人を削減すると発表した。7月に公表した部門全体で3,200人規模という削減計画のうち、約4分の3が実施されたことになる。<em>Halo Studios</em>は既存タイトルとコミュニティ対応の小規模チームとなり、新規の<em>Halo</em>開発は専任チームとともに<strong>Activision</strong>へ移管される。</p>
+            <p><strong>Bethesda</strong>には<strong>Obsidian</strong>が編入され、<em>Fallout</em>新作などの開発を続ける一方、売却合意が破談になった<strong>Ninja Theory</strong>は閉鎖に向けた協議に入ったという。Xbox幹部のMatt Booty氏は、組織統合による「フランチャイズと作品の強化」を目指すと説明している。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/23/2000001675/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001677/">9/23</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/23/2000001677/">Apple、ロンドンの旧発電所に収録・生配信対応のライブ会場「Apple Music Hall」開設</a></h3>
+            <p><strong>Apple</strong>が9月21日、ロンドンの歴史的建造物バタシー発電所跡地に、収容600人規模のライブ会場<em>Apple Music Hall</em>を開設した。48基のスピーカーによる空間オーディオ、16台以上のカメラとiPhoneでの撮影に対応した放送用インフラ、2つの録音・ミキシングスタジオを備え、演奏を収録しながら世界に生配信できるという。</p>
+            <p>同じ施設内には新スタジオ<em>Apple Music Radio</em>も同時開設され、番組はすべてこの拠点からの生放送に切り替わるとしている。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/23/2000001677/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/24/2000001682/">9/24</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/24/2000001682/">YouTube、Gemini搭載の対話型編集や3案同時A/Bテストなど新機能を発表</a></h3>
+            <p><strong>YouTube</strong>は9月23日のイベント「Made on YouTube 2026」で、ショート動画向けアプリに<em>Gemini</em>を組み込んだ対話型編集機能を発表した。プロンプトから下書きを作成後、チャットを続けながらカット順の入れ替えや音楽のビート合わせなどの提案を受けられ、手動編集といつでも切り替えられるという。</p>
+            <p>このほか、動画の冒頭部分だけ最大3パターンを比較できるA/Bテストの拡張や、AIが生成する動的サムネイル、チャンネルごとの傾向を学習するコメントモデレーションなども合わせて発表された。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/24/2000001682/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gigazine.net/news/20260923-firefox-pip-speed-new-tab/">9/23</a></p>
+            <h3 class="hd"><a href="https://gigazine.net/news/20260923-firefox-pip-speed-new-tab/">Firefox、ピクチャーインピクチャーの再生速度変更や通知バッジを開発中</a></h3>
+            <p><strong>Mozilla</strong>は<em>Firefox</em>の実験的機能として、ピクチャーインピクチャー再生中に0.75倍から2倍まで速度を変更できる機能を<em>Firefox 156</em>に用意しており、<code>about:config</code>から有効化できる。あわせて、サイトのショートカットに未読通知を示すバッジを付ける機能も<em>Nightly</em>と156に試験実装されている。</p>
+            <p>新しいタブページも、時計やチェックリストなどのウィジェットと記事カードを分けたレイアウトに刷新中で、Linuxではシステムのテーマ配色に合わせる設定も追加される見込みだという。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260923-firefox-pip-speed-new-tab/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gigazine.net/news/20260923-ambient-css/">9/23</a></p>
+            <h3 class="hd"><a href="https://gigazine.net/news/20260923-ambient-css/">影とハイライトを物理演算で自動生成するCSSフレームワーク「Ambient CSS」公開</a></h3>
+            <p>開発者kikkupico氏が、光源の位置に応じて影・ハイライト・表面のグラデーションを自動生成するCSSフレームワーク<em>Ambient CSS</em>を公開した。要素ごとに個別スタイルを当てるのではなく、キーライトとフィルライトという2種類の光源を仮想的に設定し、5層の陰影を一括で合成する仕組みで、物理的な精度は<em>Blender</em>のレイトレース結果と照合して調整したという。</p>
+            <p>素のCSSとしても、専用のReactコンポーネントとしても導入でき、CSS変数で光の向きや強さ、色合いを細かく調整できる。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260923-ambient-css/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://theremin.bizibah.com/">9/23</a></p>
+            <h3 class="hd s"><a href="https://theremin.bizibah.com/">手を触れずに演奏、ブラウザで動くテルミン風楽器「Air Theremin」</a></h3>
+            <p>1920年に発明された世界初の電子楽器テルミンをブラウザ上で再現した<em>Air Theremin</em>が公開された。スマートフォンを傾けたりマウスを動かしたりする「GYRO」モードのほか、カメラで手の動きを捉え、手を近づけたり開閉したりして音程と音量を変える「HANDS」モードを備えるという。</p>
+            <p>波形やエフェクトも画面上で調整でき、インストール不要でブラウザから無料で試せる。</p>
+            <p><a class="more" href="https://theremin.bizibah.com/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49800513">16h, 61p, 12 comments</a></p>
+            <h3 class="hd s"><a href="https://github.com/hsfzxjy/npunlock">Intel製NPU向けに自作Cカーネルを書いて実行できるツール「npunlock」公開</a></h3>
+            <p>開発者hsfzxjy氏が、Intel Core UltraのNPUに搭載されたACT-SHAVEプロセッサ向けに、独自のC実装をカーネルとして書いて実行できるツール<em>npunlock</em>を公開した。Intel純正のソフトウェアはコンパイラが対応する演算しか受け付けず、C実装を渡す公式な手段が用意されていない点を補うものだという。</p>
+            <p><em>OpenVINO</em>をランタイムやコンパイラのフロントエンドとして使う必要はないが、インストール済みのIntelドライバー向けにOpenVINO形式の中間表現は出力する仕組みで、現時点ではWindows x64とMeteor Lake(NPU3720)、静的な形状に対応が限られるとしている。</p>
+            <p><a class="more" href="https://github.com/hsfzxjy/npunlock">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49807021">1d, 124p, 53 comments</a></p>
+            <h3 class="hd s"><a href="https://github.com/geastack/examples">TypeScriptとCSSだけでWeb・ESP32・デスクトップ向けネイティブアプリを書けるフレームワーク</a></h3>
+            <p>オープンソースのフレームワーク<em>GeaStack</em>は、TypeScriptとCSSで書いたUIコードを、Webブラウザ、<em>ESP32</em>マイコン、独自OS「GeaOS」など複数の対象に向けてビルドできるようにするプロジェクト。各サンプルアプリは<code>package.json</code>内に対象プラットフォームやエントリーポイントを記した専用のマニフェストを持つという。</p>
+            <p>プラットフォームごとに別々のコードベースを保守する手間を減らし、共通のUIコードを中心に据えつつ、ビルドシステム側で差異を吸収する設計を掲げている。</p>
+            <p><a class="more" href="https://github.com/geastack/examples">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">設計論</span><span class="en">DESIGN &amp; ENGINEERING</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://lobste.rs/s/wx3qsm/fearless_simd_v1_0_is_here">9/22</a></p>
+            <h3 class="hd l"><a href="https://linebender.org/blog/fearless-simd-1-0/">Rustで安全にSIMDを書けるクレート「Fearless SIMD」が正式版1.0に</a></h3>
+            <p>Rust向けのSIMD抽象化クレート<em>Fearless SIMD</em>が、正式版となるv1.0を公開した。従来のSIMD抽象化は数千か所ものunsafeブロックを抱え監査が難しかったのに対し、<code>kernel!</code>マクロと<em>bytemuck</em>や<em>zerocopy</em>に着想を得た安全なtransmute機構という2つの土台だけに絞ることで、unsafeを局所化したという。</p>
+            <p>プラットフォームごとの高速な実装と、環境に依存しない一貫した実装の両方を選べる設計で、必要な箇所だけプラットフォーム固有の命令に安全に降りられる。すでに1,000以上のクレートが直接・間接に依存しているといい、3年間のセキュリティ更新も約束している。</p>
+            <p><a class="more" href="https://linebender.org/blog/fearless-simd-1-0/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://blog.guillaume-gomez.fr/articles/2026-09-22+Syncing+Rust+GCC+backend+or+how+to+test+Murphy's+law">9/22</a></p>
+            <h3 class="hd"><a href="https://blog.guillaume-gomez.fr/articles/2026-09-22+Syncing+Rust+GCC+backend+or+how+to+test+Murphy's+law">Rust用GCCバックエンド同期作業、2か月がかりの"マーフィーの法則"体験記</a></h3>
+            <p>開発者<strong>Guillaume Gomez</strong>氏は、独立リポジトリで開発が進む<em>rustc_codegen_gcc</em>と、Rustコンパイラ本体に組み込まれたコード資産を<code>git subtree</code>で同期する作業が、数週間の予定から2か月に及んだ顛末を記録した。ライセンス確認やCI基盤の不備、GCCの自己設定がリンカ機能を無効化するバグなど、想定外の不具合が次々と連鎖したという。</p>
+            <p>一連の作業を通じてキャッシュの不具合やテストの限界が見つかり修正にはつながったものの、<code>git subtree</code>方式自体の脆さが露呈したとして、他のRustのサブツリーで採用例のあるツール<em>josh</em>への移行を検討しているとしている。</p>
+            <p><a class="more" href="https://blog.guillaume-gomez.fr/articles/2026-09-22+Syncing+Rust+GCC+backend+or+how+to+test+Murphy's+law">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/mikrotrick-chain-let-attackers-take.html">9/23</a></p>
+            <h3 class="hd l"><a href="https://thehackernews.com/2026/09/mikrotrick-chain-let-attackers-take.html">MikroTikルーターの認証を丸ごと迂回する攻撃チェーン「MikroTrick」が悪用中</a></h3>
+            <p><strong>MikroTik</strong>の<em>RouterOS</em>に存在した2つの欠陥を組み合わせた攻撃手法「MikroTrick」(<em>CVE-2026-67279</em>、<em>CVE-2026-86060</em>)が、パスワードなしでルーターの完全な管理者権限を奪う手口として悪用されていたことが、<strong>CERT Polska</strong>の調査で判明した。SSHの鍵再交渉を悪用して認証を素通りし、ログイン処理のユーザー名検証の不備を突いて資格情報を読み取るという。</p>
+            <p>攻撃ログは、MikroTikが修正版を出荷する前日の9月2日まで遡って確認されており、攻撃者が管理者権限を持つ「ops」アカウントを作成し、設定情報を外部に持ち出していたという。RouterOS 6.49.21・7.23.4・7.24.2以降への更新が呼びかけられている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/mikrotrick-chain-let-attackers-take.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/f5-patches-critical-big-ip-apm-zero-day.html">9/23</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/f5-patches-critical-big-ip-apm-zero-day.html">F5 BIG-IP APMのゼロデイが実際に悪用、CISAが連邦機関に緊急対応を指示</a></h3>
+            <figure><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj_ZqCwuuKS7TqNWQ7GpeE07JLzHNn4Jdb2O6iQAlY34SiP2it2VwgmeVm5OjAzoAEHFQRVJENdDNGQL94ibPy1AiB9qkpNxZ3ILA89tYlwqm2OO9tEOH_BZ9HZyObw0nrzszQoKnaCQ-Q8ez5DPsnrKjq40qhm2tu_DhMSFunkVRsHeEIc0IA2NL-yZ5g/s1700-nu-rw-lo-l85-e365/f5-zero-day.jpg" alt=""><figcaption>画像:The Hacker News</figcaption></figure>
+            <p><strong>F5</strong>のアクセス管理製品<em>BIG-IP Access Policy Manager(APM)</em>にヒープバッファオーバーフローの脆弱性<em>CVE-2026-94127</em>(CVSS 9.8)が見つかり、ログインなしでコードを実行される攻撃が既に確認された。APMがOAuth認可サーバーとして動作する構成が対象で、CISAは9月22日に悪用確認リストに追加、連邦機関に9月25日までの対応を指示した。</p>
+            <p>21.1・17.5・17.1系向けの修正パッチが提供されているほか、恒久対応までの一時的な回避策として<em>iRule</em>による緩和策も用意されている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/f5-patches-critical-big-ip-apm-zero-day.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/critical-nextjs-imageresponse-flaw-can.html">9/23</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/critical-nextjs-imageresponse-flaw-can.html">Next.jsの画像生成機能にリモートコード実行の重大な脆弱性、16.3.6で修正</a></h3>
+            <figure><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhBxfEfPNHZcocTp156lW-VbOENuCxmLM_7xUUY5QWEppPDsL04KhbN7yaT52b_XTCXW6ensPqjF8QBXuQWUgna8jerFExtxAfkCd4NqOGcQwUn8088DU87PMD7cgYhQ-dY2_xFdwPyaKU-kD9HBx_YcjAzvzwEQzLoKUu1cRRpOT5A1luhBCE6e6ChORw/s1700-nu-rw-lo-l85-e365/next.jpg" alt=""><figcaption>画像:The Hacker News</figcaption></figure>
+            <p><strong>Vercel</strong>の<em>Next.js</em>で、<em>next/og</em>パッケージが提供する<em>ImageResponse</em>機能が、利用者が指定した値をSVGとして適切にエスケープせず埋め込んでしまう脆弱性<em>CVE-2026-94545</em>(CVSS 9.5)が見つかった。SVG変換に使う内部ライブラリ<em>Satori</em>を通じて、サーバー側でのコード実行につながる恐れがあるという。</p>
+            <p>影響を受けるのはNode.jsランタイムを使うバージョン16.2.0〜16.3.5で、Next.js 15やEdgeランタイムは対象外。9月23日時点で実際の悪用は確認されていないが、16.3.6への更新が推奨されている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/critical-nextjs-imageresponse-flaw-can.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/new-cpanel-flaw-lets-hosting-account_0272795595.html">9/23</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/new-cpanel-flaw-lets-hosting-account_0272795595.html">cPanelにroot権限でのコード実行を許す脆弱性、WP Toolkitの欠陥も同時公表</a></h3>
+            <p><strong>cPanel</strong>&amp;<strong>WHM</strong>のCalDAV・CardDAV機能に、ログイン済みの一般アカウント保持者がroot権限でコードを実行できる脆弱性<em>CVE-2026-87899</em>と、他人のカレンダー・連絡先情報にアクセスできる<em>CVE-2026-68490</em>が見つかった。あわせて、<em>WP Toolkit</em>で他アカウントのデータベースを改変できる<em>CVE-2026-87900</em>も公表された。</p>
+            <p>研究者Ali Mustafa氏らが報告し、cPanel &amp; WHM 120以降とWP Toolkit 6.11.2以前が対象。悪用は確認されていないが、いずれも最新版への更新が呼びかけられている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/new-cpanel-flaw-lets-hosting-account_0272795595.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/malicious-npm-package-poses-as-twilio.html">9/22</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/malicious-npm-package-poses-as-twilio.html">Twilioの正規ツールを装うnpmパッケージ、認証情報を窃取する不正コードを混入</a></h3>
+            <p>セキュリティ企業<strong>ReversingLabs</strong>の研究者Lucija Valentić氏が、<strong>Twilio</strong>のバグバウンティ用「認可済み調査ツール」を装ったnpmパッケージ<em>tw-pkgprobe-7731</em>を発見した。実際には環境変数やシステム情報を収集し、<strong>Twilio</strong>アカウントの資格情報を探索するほか、後のバージョンでは<code>node_modules</code>に悪質なコードを注入し、認証トークンをWebhook経由で外部に送信していたという。</p>
+            <p>8月には11個のバージョンが45分間で連続公開されており、公開元アカウントは既に存在しない。Twilioは自社システムへの侵害は無かったとしつつ、パッケージ導入前の確認を呼びかけている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/malicious-npm-package-poses-as-twilio.html">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://michaelheap.com/i-dont-want-the-details">9/23</a></p>
+            <h3 class="hd"><a href="https://michaelheap.com/i-dont-want-the-details">"詳細はいらない" 上司の一言が教えてくれた、障害対応で本当に直すべきもの</a></h3>
+            <p>エンジニアの<strong>Michael Heap</strong>氏は、障害の経緯を説明しようとした際に上司から「詳細はいらない」と遮られた経験を振り返り、これはチームへの信頼の表れであり、原因の理解よりも再発防止の仕組みづくりへ意識を向けさせる問いかけだったと分析する。</p>
+            <p>経緯を丁寧に説明し担当者の判断は妥当だったと納得してしまうほど、変化を起こす切迫感は失われるとし、「なぜ起きたか」ではなく「同じ種類の失敗が起きにくくなるために何を変えるか」を問うべきだと説く。人の記憶や注意力に頼る対策は本当の解決にならないと結んでいる。</p>
+            <p><a class="more" href="https://michaelheap.com/i-dont-want-the-details">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">LIFE</span><a href="https://www.raptitude.com/2026/09/how-to-outlive-your-bucket-list/">9/7</a></p>
+            <h3 class="hd"><a href="https://www.raptitude.com/2026/09/how-to-outlive-your-bucket-list/">バケットリストはなぜ人を縛るのか ― 10年越しの"やりたいことリスト"を見つめ直す</a></h3>
+            <p>ブロガーの<strong>David Cain</strong>氏は、15歳でリストを作り生涯をかけてそのほとんどを達成したとされる冒険家<strong>John Goddard</strong>のような例外を除けば、多くのバケットリストはFOMOに突き動かされた思いつきの寄せ集めに過ぎないと指摘する。10年前に自分が作ったリストを見返すと、もはやどうでもよくなった項目ばかりなのに、なぜか未達成への漠然とした罪悪感だけが残っていたという。</p>
+            <p>氏は「経験の9割5分は、その対価を払うことそのものだ」と述べ、リストという固定された目標を消化する発想ではなく、今この瞬間に本当に大切だと思える「伝えたい考え」や「助けたい人」を起点に生きることを勧めている。</p>
+            <p><a class="more" href="https://www.raptitude.com/2026/09/how-to-outlive-your-bucket-list/">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">AI活用法欄<small>AI USE</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://gigazine.net/news/20260924-ai-writing-copyeditor/">9/24</a></p>
+            <h3 class="hd"><a href="https://gigazine.net/news/20260924-ai-writing-copyeditor/">AIに編集させても"自分の声"を失わないための2つの心得</a></h3>
+            <p>セキュリティ研究者Thomas H. Ptacek氏は、文章をAIに校正させる際の心得として、まず「AIが提案した言い回しをそのまま採用しない」ことを挙げる。AIは見栄えの良い表現を作るのが得意な一方、積み重なると文章全体が広告見出しのように均質になってしまうためだという。</p>
+            <p>もう一つの心得は「AIに原稿を褒めさせない」こと。出来の悪い原稿でもAIは褒めてしまうため、書き手がそれに安心して手直しを怠る危険があるとし、あくまで問題点の指摘だけを受け取り、書き直しは自分で行うという運用を勧めている。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260924-ai-writing-copyeditor/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://qiita.com/ishisaka/items/03f3b923ba703af2e7ee">9/22</a></p>
+            <h3 class="hd"><a href="https://qiita.com/ishisaka/items/03f3b923ba703af2e7ee">OpenAI、GPT-6のプロンプトキャッシュを刷新 長時間稼働のAIエージェント向けに最大9割減</a></h3>
+            <p><strong>OpenAI</strong>が<em>GPT-6</em>系モデルのプロンプトキャッシュ機能を刷新し、共通する前置き部分を30分以内に再利用した場合、読み出しコストを最大9割削減できるようにした。あわせて、キャッシュの状態や効率を可視化するダッシュボードや、キャッシュ関連のエラーを特定する診断機能も追加されたという。</p>
+            <p>自律的に動き続けるAIエージェントを本番運用する開発者にとって、コスト予測が立てやすくなる実務的な改善だとしている。</p>
+            <p><a class="more" href="https://qiita.com/ishisaka/items/03f3b923ba703af2e7ee">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>七十三歳にして、ようやく鳥獣虫魚の骨格や草木の生い立ちを悟り得た</blockquote>
+          <p class="who">葛飾北斎</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>葛飾北斎は、江戸時代後期を代表する浮世絵師で、《冨嶽三十六景》の一図「神奈川沖浪裏」などで世界的に知られる。生涯に3万点を超える作品を残したとされ、晩年まで「画狂老人卍」と号して制作を続けた。この言葉は75歳の時に手がけた《富嶽百景》の跋文にあり、6歳から絵を描き続けてきた自身の画業を振り返りつつ、なお百十歳まで描き続ける意欲を語った文脈にある。</p>
+        <p class="src">浮世絵師、1760年〜1849年<br>出典:《富嶽百景》跋文(1834年)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
