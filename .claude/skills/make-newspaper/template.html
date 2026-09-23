@@ -201,11 +201,19 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         </div>
       </section>
 
-      <!-- [ITニュース] 必ず5件。AI関連、セキュリティ、Flutter/Dart関連は入れない。記事ブロックは同じ形式(カテゴリはIT) -->
+      <!-- [ITニュース] 必ず10件。AI関連、セキュリティ、Flutter/Dart関連、設計論に該当する技術記事は入れない。記事ブロックは同じ形式(カテゴリはIT) -->
       <section class="men">
         <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
         <div class="cols">
-          <!-- 記事ブロック x5 -->
+          <!-- 記事ブロック x10 -->
+        </div>
+      </section>
+
+      <!-- [設計論] 最大5件。AIを主題としない、プログラミング・ソフトウェア設計に関する技術的な議論や解説。候補が無い日はセクションごと省略。記事ブロックは同じ形式(カテゴリはDESIGN) -->
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">設計論</span><span class="en">DESIGN &amp; ENGINEERING</span></h2>
+        <div class="cols">
+          <!-- 記事ブロック x5以内 -->
         </div>
       </section>
 
@@ -238,6 +246,12 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
       <section class="side-box">
         <h2 class="side-head">人生観欄<small>LIFE</small></h2>
         <!-- 記事ブロック x1 (カテゴリはLIFE) -->
+      </section>
+
+      <!-- [AI活用法欄] 最大2件。生成AIを実務に活用する方法論・ワークフローの実践知。候補が無い日はセクションごと省略。ここの記事も class="story"(topにしない)、h3 は class="hd" -->
+      <section class="side-box">
+        <h2 class="side-head">AI活用法欄<small>AI USE</small></h2>
+        <!-- 記事ブロック x2以内 (カテゴリはAI USE) -->
       </section>
 
       <!-- [名言欄] 必ず1件 -->
