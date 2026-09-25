@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第7号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年9月</span>
+      <span class="d">26</span>
+      <span class="w">土曜日</span>
+    </div>
+  </header>
+
+  <section class="urgent">
+    <span class="tag">号外</span>
+    <div class="body">
+      <h2>緊急のお知らせ</h2>
+      <ul>
+        <li>CISAが<strong>WSO2</strong>の<em>API Manager</em>や<strong>Adobe Commerce</strong>、<strong>SharePoint</strong>の実悪用中の脆弱性3件をKEVカタログに追加。連邦機関は9月27日までの対応を義務付けられ、CVSS9.8の<strong>WSO2</strong>の欠陥は9月13日からハニーポットで悪用が確認されている。<a class="more" href="https://thehackernews.com/2026/09/wso2-and-adobe-commerce-flaws-exploited.html">詳細を読む</a></li>
+        <li>ウェブメール<em>Roundcube</em>の未認証SQLインジェクション(CVE-2026-48842)が実悪用中。5月にパッチが公開済みだが、インターネット上に52万台超が未更新のまま露出しているとカナダ政府が警告した。<a class="more" href="https://thehackernews.com/2026/09/roundcube-pre-auth-sql-injection-flaw.html">詳細を読む</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49845977">9/25, 322p, 561 comments</a></p>
+            <h3 class="hd l"><a href="https://www.cnbc.com/2026/09/25/pentagon-anthropic-ai-risk-appeals-court.html">米連邦控訴裁、国防総省の「Anthropicはサプライチェーンリスク」認定を支持</a></h3>
+            <p>米国防総省が<strong>Anthropic</strong>の<em>Claude</em>を「安全保障上のサプライチェーンリスク」に指定した問題をめぐり、ワシントンDC巡回区控訴裁判所は2対1でこの認定を支持する判断を示した。背景には、同社が完全自律型兵器や国内での大量監視へのClaude提供を拒んだことで国防総省との契約交渉が決裂した経緯がある。</p>
+            <p><strong>Anthropic</strong>は連邦最高裁への上訴も検討しているとみられ、AI企業と国家安全保障の間の緊張を象徴する係争としてHacker Newsでも今週最大級の議論を呼んだ。</p>
+            <p><a class="more" href="https://www.cnbc.com/2026/09/25/pentagon-anthropic-ai-risk-appeals-court.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://www.computerworld.com/article/4226640/google-plans-gemini-4-release-before-year-end.html">9/25</a></p>
+            <h3 class="hd"><a href="https://www.computerworld.com/article/4226640/google-plans-gemini-4-release-before-year-end.html">Google DeepMindの新トップ、次期モデル「Gemini 4」を前倒し投入へ</a></h3>
+            <p>8月に<strong>Demis Hassabis</strong>氏から<strong>Google DeepMind</strong>を引き継いだ<strong>Koray Kavukcuoglu</strong>氏がメディアに初登場し、次期フラッグシップモデル<em>Gemini 4</em>を事前予想より大幅に早く投入すると明らかにした。完成を待たず早期バージョンを段階的にリリースし、実運用のフィードバックを反映していく方針だという。</p>
+            <p><a class="more" href="https://www.computerworld.com/article/4226640/google-plans-gemini-4-release-before-year-end.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://gizmodo.com/googles-project-suncatcher-is-sending-ai-chips-into-space-next-week-2000816985">9/24</a></p>
+            <h3 class="hd"><a href="https://gizmodo.com/googles-project-suncatcher-is-sending-ai-chips-into-space-next-week-2000816985">Google、宇宙用AIチップの試験衛星「Project Suncatcher」を来週打ち上げへ</a></h3>
+            <p><strong>Google</strong>が、<strong>TPU</strong>4基を搭載した試験衛星を<strong>SpaceX</strong>の相乗り打ち上げで10月1日ごろに低軌道へ送り込むと発表した。打ち上げ時の振動や宇宙放射線、真空中での熱管理がTPU性能に与える影響を検証する狙いで、軌道上に太陽光発電を活用したAIデータセンターを築く長期構想の第一歩と位置付けている。</p>
+            <p><a class="more" href="https://gizmodo.com/googles-project-suncatcher-is-sending-ai-chips-into-space-next-week-2000816985">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://www.bankinfosecurity.com/google-openai-anthropic-plan-frontier-ai-standards-body-a-32926">9/24</a></p>
+            <h3 class="hd s"><a href="https://www.bankinfosecurity.com/google-openai-anthropic-plan-frontier-ai-standards-body-a-32926">Google・OpenAI・Anthropic、自主規制の「フロンティアAI標準機構」設立を計画</a></h3>
+            <p>大手AI3社が、金融業界の自主規制団体<em>FINRA</em>をモデルにした業界団体「フロンティアAI標準機構」の設立を計画していると報じられた。トップ候補として元ホワイトハウスAI政策顧問の<strong>Sriram Krishnan</strong>氏に打診しており、政府主導ではなく業界主導での安全性評価・監査の枠組みを目指すという。</p>
+            <p><a class="more" href="https://www.bankinfosecurity.com/google-openai-anthropic-plan-frontier-ai-standards-body-a-32926">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://www.usnews.com/news/top-news/articles/2026-09-24/white-house-asks-openai-anthropic-to-hold-models-from-british-testers-politico-reports">9/24</a></p>
+            <h3 class="hd s"><a href="https://www.usnews.com/news/top-news/articles/2026-09-24/white-house-asks-openai-anthropic-to-hold-models-from-british-testers-politico-reports">ホワイトハウス、OpenAIとAnthropicに新モデルの英国提供保留を要請</a></h3>
+            <p>ホワイトハウスの国家サイバー長官室が、<strong>OpenAI</strong>と<strong>Anthropic</strong>に対し、新モデルを英国のテスターへ提供する前に米国側の審査を先行させるよう求めたと報じられた。<strong>Anthropic</strong>はすでに最新モデルの提供を米国組織限定にするなど対応済みとされ、一連のAIセキュリティ事案を受けた動きとみられる。</p>
+            <p><a class="more" href="https://www.usnews.com/news/top-news/articles/2026-09-24/white-house-asks-openai-anthropic-to-hold-models-from-british-testers-politico-reports">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AI活用法</span><span class="en">AI USE</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://zenn.dev/sprix_it/articles/f3ef77c1d46554">9/24</a></p>
+            <h3 class="hd l"><a href="https://zenn.dev/sprix_it/articles/f3ef77c1d46554">Claude Codeの依存追加に「調べてから聞く」を強制するHook</a></h3>
+            <figure><img src="https://static.zenn.studio/user-upload/5aa015c500b8-20260924.png" alt=""><figcaption>画像:Zenn</figcaption></figure>
+            <p>エンジニアの<strong>a.kobayashi</strong>氏が、<em>Claude Code</em>の<em>PreToolUse</em>フックを使い、npm/pnpm/yarnなどでの依存追加コマンドを検知して、初回は代替可能性・保守状況・ライセンス・CVEなど7項目の調査をAIに強制する仕組みを公開した。再実行時には調査サマリーを確認ダイアログに埋め込み、目視確認してから承認する運用にしているという。</p>
+            <p>BashとawkでコマンドをパースするスクリプトをGitHub上で公開しており、AIエージェントに「調べてから提案させる」型のガードレールをどう実装するかの具体例として参考になる。</p>
+            <p><a class="more" href="https://zenn.dev/sprix_it/articles/f3ef77c1d46554">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://qiita.com/AsilHatake/items/de5752aedfa7790988b7">9/18</a></p>
+            <h3 class="hd"><a href="https://qiita.com/AsilHatake/items/de5752aedfa7790988b7">自作フレームワーク+AIで業務システムを1本開発、21人日が3.75人日に</a></h3>
+            <p>開発会社エイシルが、自作フレームワーク「hatake」とAIを組み合わせ、業務システムの画面・API・設計書を「定義」から自動生成する仕組みを使い、見積21人日の業務システムを実測3.75人日(削減率82%)で完成させた事例を公開した。要件定義や業務判断、成果物の最終確認は人間が担うと明記し、AIに任せる範囲を明確に線引きしている点が特徴。</p>
+            <p><a class="more" href="https://qiita.com/AsilHatake/items/de5752aedfa7790988b7">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://qiita.com/Ito_110/items/e4251c0ac57cae4955bc">9/25</a></p>
+            <h3 class="hd"><a href="https://qiita.com/Ito_110/items/e4251c0ac57cae4955bc">「コードレビューして」だけでは弱い、AIコードレビュー用プロンプトの設計法</a></h3>
+            <p>曖昧な指示のままAIにレビューさせるのではなく、レビューの目的・観点を明確化し、指摘に重大度を付けさせ、根拠と発生条件まで要求するなど、プロンプト自体をコードのように設計・管理する手法を解説する記事。業務ロジックの妥当性判断には仕様を渡す必要があるとし、レビューと修正作業を分離する運用も勧めている。</p>
+            <p><a class="more" href="https://qiita.com/Ito_110/items/e4251c0ac57cae4955bc">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://zenn.dev/ml_bear/articles/e5cc1047cba176">9/9</a></p>
+            <h3 class="hd s"><a href="https://zenn.dev/ml_bear/articles/e5cc1047cba176">LLM利用のコストを抑える、トークン効率化のチェックリスト</a></h3>
+            <p>Kaggle Masterでもあるエンジニアが、モデル選定やキャッシュ戦略、不要なMCP・ツール説明の削減、決定的な検証はLLM判定に頼らずコードで行うなど、LLM利用のコストとトークン消費を抑える実践的な知見をまとめている。</p>
+            <p><a class="more" href="https://zenn.dev/ml_bear/articles/e5cc1047cba176">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://zenn.dev/explaza/articles/94eade5134fff3">9/24</a></p>
+            <h3 class="hd s"><a href="https://zenn.dev/explaza/articles/94eade5134fff3">回帰テストはAIにTDDより「影響範囲」を渡した方がいいかもしれない</a></h3>
+            <p><em>TDAD(Test-Driven Agentic Development)</em>という研究を検証した記事。AIエージェントにTDD手順をそのまま指示すると回帰がかえって増える(6.08%→9.94%)という結果を紹介し、代わりに変更の影響範囲を渡す方が網羅的なテストを生成できると、権限処理の修正を例に検証している。</p>
+            <p><a class="more" href="https://zenn.dev/explaza/articles/94eade5134fff3">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49843269">9/25, 332p, 124 comments</a></p>
+            <h3 class="hd l"><a href="https://go.dev/blog/simd-experiment">Go言語、プラットフォーム非依存のSIMD実験的APIを公開</a></h3>
+            <p><strong>Go</strong>チームが公式ブログで、<em>Go 1.26/1.27</em>向けにプラットフォームに依存しないSIMDの実験的APIを解説した。アーキテクチャごとの実装差異を吸収する新パッケージ<code>simd</code>を導入し、対応ハードウェアが無い環境でもソフトウェアエミュレーションで動作するという。</p>
+            <p>低レイヤーの性能最適化をGo標準の書き方のまま扱えるようにする試みとして、Hacker Newsでも活発に議論されている。</p>
+            <p><a class="more" href="https://go.dev/blog/simd-experiment">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.publickey1.jp/blog/26/cloudflarepython_wrokerspythonweb.html">9/24</a></p>
+            <h3 class="hd"><a href="https://www.publickey1.jp/blog/26/cloudflarepython_wrokerspythonweb.html">Cloudflare、サーバーレス基盤でPythonを動かす「Python Workers」を正式サービス化</a></h3>
+            <p><strong>Cloudflare</strong>が、WebAssembly版Pythonランタイム<em>Pyodide</em>を採用したサーバーレス実行基盤「<em>Python Workers</em>」を正式サービス化した。<em>Django</em>・<em>Flask</em>・<em>FastAPI</em>など主要フレームワークに対応し、Python本体への提案<em>PEP 783</em>採択に向けた動きなど、Wasm上のPythonエコシステム拡大にも力を入れているという。</p>
+            <p><a class="more" href="https://www.publickey1.jp/blog/26/cloudflarepython_wrokerspythonweb.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001757/">9/25</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001757/">ドコモ「ahamo」、サービス開始以来初の値上げ</a></h3>
+            <p><strong>NTTドコモ</strong>が、格安プラン「<em>ahamo</em>」を12月1日から初めて値上げすると発表した。30GBプランは40GBへ増量した上で3135円になり、110GBの「大盛りオプション」は廃止して40/60/120GBの3段階制に再編する。物価と人件費の上昇が理由という。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/25/2000001757/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001739/">9/25</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001739/">クラウド会計freeeで障害、給料日の朝にログイン不能に</a></h3>
+            <p><strong>freee</strong>が提供する会計・人事労務など15サービスで9月25日朝、ログインやサインアップができない障害が発生した。給料日・月末処理と重なり「勤怠を打刻できない」といった声が広がったが、同日中に復旧した。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/25/2000001739/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001745/">9/25</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001745/">ドコモSMTBネット銀行で障害、給料日の振込に影響</a></h3>
+            <p><strong>ドコモSMTBネット銀行</strong>で9月25日午前、振込エラーや証券口座からの出金遅延が発生した。給料日と重なり利用者から困惑の声が上がったが、午前中に障害を告知し、午後2時過ぎに復旧を発表した。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/25/2000001745/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://gigazine.net/news/20260925-ifixit-inside-iphone-18-pro-max/">9/25</a></p>
+            <h3 class="hd"><a href="https://gigazine.net/news/20260925-ifixit-inside-iphone-18-pro-max/">iFixitがiPhone 18 Proを分解、可変絞りカメラの構造判明</a></h3>
+            <figure><img src="https://i.gzn.jp/img/2026/09/25/ifixit-inside-iphone-18-pro-max/00.jpg" alt=""><figcaption>画像:GIGAZINE</figcaption></figure>
+            <p><strong>iFixit</strong>が<em>iPhone 18 Pro</em>の分解動画を公開した。<strong>Apple</strong>初の可変絞りカメラは極薄の羽根6枚でf1.48〜f4.0まで光量を調整する精密機構だが、実際の描写効果への影響は限定的だという。総合修理性スコアは10点中7点だった。</p>
+            <p><a class="more" href="https://gigazine.net/news/20260925-ifixit-inside-iphone-18-pro-max/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49848819">9/25, 51p, 24 comments</a></p>
+            <h3 class="hd s"><a href="https://www.worldofreel.com/blog/2026/9/24/letterboxd-is-up-for-sale-and-a24-sony-and-the-new-york-times-bidding">映画レビューSNS「Letterboxd」売却へ、A24・ソニー・NYTが争奪戦</a></h3>
+            <figure><img src="http://static1.squarespace.com/static/5bbcad0f2727be3646b9fee1/t/6ab574a31976a137223b453f/1790276771565/IMG_9953.webp" alt=""><figcaption>画像:World of Reel</figcaption></figure>
+            <p>3000万ユーザーを抱える映画レビューサービス<em>Letterboxd</em>が売却対象となり、<strong>A24</strong>・<strong>ソニー・ピクチャーズ</strong>・<strong>ニューヨーク・タイムズ</strong>が3億ドル超で争奪戦を展開していると報じられた。2011年創業のサービスで、コミュニティとの相性からA24を推す声もあるという。</p>
+            <p><a class="more" href="https://www.worldofreel.com/blog/2026/9/24/letterboxd-is-up-for-sale-and-a24-sony-and-the-new-york-times-bidding">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/24/2000001687/">9/24</a></p>
+            <h3 class="hd s"><a href="https://www.itmedia.co.jp/news/article/2609/24/2000001687/">Meta、重さ約100gのメガネ型VR「Meta VR Glasses」発表</a></h3>
+            <figure><img src="https://www.itmedia.co.jp/news/article/ogp/2609/24/2000001687/10007266/2048" alt=""><figcaption>画像:ITmedia NEWS</figcaption></figure>
+            <p><strong>Meta</strong>が「Meta Connect 2026」で新型VRデバイス「<em>Meta VR Glasses</em>」を発表した。バッテリーとSoCを外付けパックに逃がすことでグラス部分を約100gまで軽量化し、5K相当のマイクロOLEDディスプレイを搭載する。2027年春に1299.99ドルで日本を含む13カ国での発売を予定している。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/24/2000001687/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.gizchina.com/xiaomi-phones/xiaomi-18-pro-series-launches-with-snapdragon-8-elite-gen-6-and-an-8500mah-battery">9/25</a></p>
+            <h3 class="hd s"><a href="https://www.gizchina.com/xiaomi-phones/xiaomi-18-pro-series-launches-with-snapdragon-8-elite-gen-6-and-an-8500mah-battery">Xiaomi、Snapdragon 8 Elite Extreme Gen 6搭載の新フラッグシップ発表</a></h3>
+            <figure><img src="https://r.testifier.nl/Acbs8526SDKI/resizing_type:fill/width:1200/height:630/plain/https%3A%2F%2Fs3-newsifier.ams3.digitaloceanspaces.com%2Fgizchina.com%2Fimages%2F2026-09%2Fxiaomi-18-pro-1790170327375-6ab3d4df69075.jpg" alt=""><figcaption>画像:GizChina</figcaption></figure>
+            <p><strong>Xiaomi</strong>が最新フラッグシップ「<em>Xiaomi 18 Pro</em>」「<em>18 Pro Max</em>」を発表した。<strong>Qualcomm</strong>最新の<em>Snapdragon 8 Elite Extreme Gen 6</em>を搭載し、200MPのLeicaデュアルカメラと8500mAhの大容量バッテリーを備える。まず中国国内から展開し、順次グローバル発売する予定という。</p>
+            <p><a class="more" href="https://www.gizchina.com/xiaomi-phones/xiaomi-18-pro-series-launches-with-snapdragon-8-elite-gen-6-and-an-8500mah-battery">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001718/">9/25</a></p>
+            <h3 class="hd s"><a href="https://www.itmedia.co.jp/news/article/2609/25/2000001718/">東京ゲームショウに「七輪型コントローラー」、学生作品が話題</a></h3>
+            <p>神奈川工科大学の学生が開発した体感型ゲーム機が<em>TGS2026</em>に出展された。うちわで七輪型コントローラーをあおぎ、風車の回転をセンサーで検知して火力を調整し、アルミホイルの魚を焼く仕組みで、身体性をテーマにした教育目的の作品だという。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/25/2000001718/">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">設計論</span><span class="en">DESIGN &amp; ENGINEERING</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://news.ycombinator.com/item?id=49806335">9/22, 351p, 188 comments</a></p>
+            <h3 class="hd l"><a href="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/">SAMLという「悪い設計の見本市」、OIDCへの移行を訴える</a></h3>
+            <figure><img src="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/saml-banner.png" alt=""><figcaption>画像:Trail of Bits</figcaption></figure>
+            <p>セキュリティ企業<strong>Trail of Bits</strong>のブログは、SSO業界を築いた<em>SAML</em>について、<em>XML</em>ベースゆえの正規化の曖昧さや、署名対象データの中に署名自体を埋め込む「封入署名」構造など、根本的な設計上の欠陥を指摘する。仕様の9割は誰も使っていない「なんでも詰め込み」設計になっているとも論じている。</p>
+            <p>プロトコル設計の失敗パターンを具体的な技術要素に分解した上で、よりシンプルな<em>OIDC</em>への移行を提案しており、Hacker Newsでも今週最大級の反響を呼んだ。</p>
+            <p><a class="more" href="https://blog.trailofbits.com/2026/09/21/saml-a-fractal-of-bad-design/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://news.ycombinator.com/item?id=49819880">9/23, 245p, 106 comments</a></p>
+            <h3 class="hd"><a href="https://tailscale.com/blog/making-tailscale-faster">Tailscaleを高速化した話、メモリコピー削減とマルチキュー化の舞台裏</a></h3>
+            <figure><img src="https://cdn.sanity.io/images/w77i7m8x/production/a61f95892ebd9647722faaff16ac3a9f6787490a-2304x1188.png" alt=""><figcaption>画像:Tailscale</figcaption></figure>
+            <p><strong>Tailscale</strong>チームが、ネットワークスタックの性能改善記録を公開した。1KiBの小さなパケットを64KiBバッファへ無駄にコピーしていた処理を削減し、単一パイプラインだった処理を複数CPUコアで並列化する「マルチキュー化」を実施、<code>writev</code>呼び出しでカーネル呼び出し自体も減らしたという。ネットマップのローカルキャッシュにより、再接続時の起動時間を1〜2桁高速化した点も紹介している。</p>
+            <p><a class="more" href="https://tailscale.com/blog/making-tailscale-faster">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://news.ycombinator.com/item?id=49768833">9/19, 179p, 190 comments</a></p>
+            <h3 class="hd"><a href="https://bartosz.fenski.pl/modern-fs-benchmark/">定番ベンチマークが見落とす観点で、Btrfs・ZFS・bcachefsを比較する</a></h3>
+            <p>Linuxのモダンなファイルシステムである<em>Btrfs</em>・<em>ZFS</em>・<em>bcachefs</em>を、スループットだけでなくRAID構成や圧縮、ティアードストレージ、実機のSAS HDD/SSDなど複数条件で継続的に計測するベンチマークダッシュボードが公開された。作者は「本当に重要なのは性能よりデータ整合性だ」と述べており、Btrfsの容量逼迫時の挙動や修復ツールの信頼性についても議論が広がっている。</p>
+            <p><a class="more" href="https://bartosz.fenski.pl/modern-fs-benchmark/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://zenn.dev/jisou/articles/b7e19c4a2d80f6">9/21</a></p>
+            <h3 class="hd s"><a href="https://zenn.dev/jisou/articles/b7e19c4a2d80f6">ドメインオブジェクトの生成はHandlerとUseCase、どちらが担うべきか</a></h3>
+            <p>型付き言語でドメインモデルを持つアプリケーションにおいて、ドメインオブジェクトの生成責務をHTTPハンドラ層とユースケース層のどちらに置くべきかを論じる記事。ユースケース専用のParams構造体を介してユースケース側で生成する方が、外部の関心事がドメインの内側に混入するのを防ぎやすいと提案しており、クリーンアーキテクチャ的な層分割を採るモバイルアプリ開発者にも参考になる論点だ。</p>
+            <p><a class="more" href="https://zenn.dev/jisou/articles/b7e19c4a2d80f6">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">DESIGN</span><a href="https://zenn.dev/aakei/articles/dotnet-copy-split-write-barrier">9/23</a></p>
+            <h3 class="hd s"><a href="https://zenn.dev/aakei/articles/dotnet-copy-split-write-barrier">.NETの参照代入は単なるコピーではない、GC write barrierの正体</a></h3>
+            <p><em>.NET</em>で参照型を代入する際、単純なポインタコピーではなく「<em>GC write barrier</em>」という処理が挟まることを実験的に検証した記事。JITが代入先の情報を把握できる場合はbarrier呼び出しを省略でき、null代入を明示的に分岐させるだけで、全null入力時には約4.7倍高速化することを実測で示している。</p>
+            <p><a class="more" href="https://zenn.dev/aakei/articles/dotnet-copy-split-write-barrier">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">Flutter</span><span class="en">FLUTTER &amp; DART</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://github.com/flutter/flutter/issues/193164">9/22</a></p>
+            <h3 class="hd l"><a href="https://github.com/flutter/flutter/issues/193164">Flutter 3.47.6 安定版ホットフィックスがリリース</a></h3>
+            <p><em>Flutter</em> stableチャンネル向けの定期ホットフィックス<em>3.47.6</em>が公開された。実機iOSデバッグ時のクラッシュや<em>Widget Previewer</em>関連の修正を含む9月15日の<em>3.47.5</em>に続くもので、開発者は<code>flutter upgrade</code>で即座に取得できる。</p>
+            <p><a class="more" href="https://github.com/flutter/flutter/issues/193164">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://flutter.dev/blog/converted-genlatte-fullstack-dart">9/22</a></p>
+            <h3 class="hd"><a href="https://flutter.dev/blog/converted-genlatte-fullstack-dart">GenLatteをフルスタックDart化した事例、公式ブログが紹介</a></h3>
+            <figure><img src="https://flutter.dev/assets/DartFullStack_GenLatteArt.3f352afe8df9bc6feeea4b5dab5a7889.webp" alt=""><figcaption>画像:Flutter公式ブログ</figcaption></figure>
+            <p><strong>Flutter</strong>公式ブログが、NodeバックエンドをDartへ全面移行した事例を紹介した。15以上あった<em>Firebase Cloud Run</em>関数を<em>freezed</em>ベースの型付きメッセージングで1つに統合し、サーバー費用を大幅に削減したという。クライアント〜サーバー間の型安全性とE2Eテストのしやすさも向上したと報告している。</p>
+            <p><a class="more" href="https://flutter.dev/blog/converted-genlatte-fullstack-dart">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://flutterconflatam.dev/">9/22</a></p>
+            <h3 class="hd"><a href="https://flutterconflatam.dev/">ラテンアメリカ最大級「FlutterConf LATAM 2026」、メキシコ・カンクンで開催</a></h3>
+            <p>ラテンアメリカ最大級の<em>Flutter</em>カンファレンス「<em>FlutterConf LATAM 2026</em>」が、9月22〜23日にメキシコ・カンクンで開催された。前回のエクアドル・キトからの継続開催地拡大で、北米とラテンアメリカのFlutterコミュニティをつなぐ狙いがあるとみられる。</p>
+            <p><a class="more" href="https://flutterconflatam.dev/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://qiita.com/akiba-eda/items/b3febae692337c4e08da">9/21</a></p>
+            <h3 class="hd s"><a href="https://qiita.com/akiba-eda/items/b3febae692337c4e08da">普段は雨雲レーダー、災害時は避難経路を提案するFlutter製AI防災アプリ</a></h3>
+            <p><em>Flutter</em>で作られた防災AIアプリ「ヒナミチ」の開発記。普段は雨雲レーダーや位置共有として使い、災害時にはAIナビ機能が避難経路を自動提案する設計で、座標をLLMに直接送らずラベルに変換するなどプライバシーに配慮した実装が特徴だという。</p>
+            <p><a class="more" href="https://qiita.com/akiba-eda/items/b3febae692337c4e08da">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://qiita.com/gitmeshi/items/05389f0881bf0b19f461">9/19</a></p>
+            <h3 class="hd s"><a href="https://qiita.com/gitmeshi/items/05389f0881bf0b19f461">クロスプラットフォーム開発基盤としてのFlutterを整理する</a></h3>
+            <p>複数OS対応アプリの技術選定にあたり、<em>Flutter</em>のDart統一言語、ネイティブコンパイル、<em>Material</em>/<em>Cupertino</em>の2系統ウィジェット、FFI連携などの特徴をあらためて整理した記事。実運用でのビルド時間や移行コストへの言及はない点に注意したい。</p>
+            <p><a class="more" href="https://qiita.com/gitmeshi/items/05389f0881bf0b19f461">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://qiita.com/SKY-HaYaTo/items/5d74cfd3d6246fb7b6e9">9/20</a></p>
+            <h3 class="hd s"><a href="https://qiita.com/SKY-HaYaTo/items/5d74cfd3d6246fb7b6e9">fvmを使ったFlutter環境構築ガイド(Mac編)</a></h3>
+            <p><strong>Homebrew</strong>からDart SDKと<em>fvm</em>を導入し、特定バージョンの<em>Flutter</em>をインストールするまでの手順を解説した実践ガイド。PATH設定まわりのトラブルシューティングも収録している。</p>
+            <p><a class="more" href="https://qiita.com/SKY-HaYaTo/items/5d74cfd3d6246fb7b6e9">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://qiita.com/SKY-HaYaTo/items/8d3e5cafc0fa10922478">9/22</a></p>
+            <h3 class="hd s"><a href="https://qiita.com/SKY-HaYaTo/items/8d3e5cafc0fa10922478">Flutter 3.47.5でAndroidエミュレータが起動しない問題の解決法</a></h3>
+            <p><em>mise</em>管理下の<em>Flutter</em>が古いJavaパスを保持し<code>JAVA_HOME</code>と食い違ってしまう問題への対処法を紹介。<code>fvm flutter config --jdk-dir</code>でHomebrew版JDKを明示指定することで解決したという、<em>Flutter 3.47.5</em>利用時の実体験に基づくTips。</p>
+            <p><a class="more" href="https://qiita.com/SKY-HaYaTo/items/8d3e5cafc0fa10922478">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.helpnetsecurity.com/2026/09/24/remcontrol-android-banking-trojan-fake-tv-app/">9/24</a></p>
+            <h3 class="hd l"><a href="https://www.helpnetsecurity.com/2026/09/24/remcontrol-android-banking-trojan-fake-tv-app/">偽IPTVアプリ経由の新Androidバンキング型トロイ「RemControl」</a></h3>
+            <p>マルウェア・アズ・ア・サービス型のAndroidバンキング型トロイ「<em>RemControl</em>」が、偽の<em>TVTap</em> IPTVアプリを装い、イタリア・フランス・スペイン・ポーランド・ポルトガル・カナダ・湾岸諸国の銀行利用者を標的にしていることが分かった。VPN権限を悪用して<em>Google Play Protect</em>の検査を妨害するという。</p>
+            <p>アクセシビリティサービス権限を使ってPINの窃取や画面制御、アンインストール妨害まで行う手口で、モバイル開発者にとっても「野良アプリのアクセシビリティ権限乱用」の典型例として押さえておきたい事例だ。</p>
+            <p><a class="more" href="https://www.helpnetsecurity.com/2026/09/24/remcontrol-android-banking-trojan-fake-tv-app/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/bitget-says-suspected-north-korean.html">9/25</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/bitget-says-suspected-north-korean.html">仮想通貨取引所Bitget、北朝鮮系ハッカーに3.5億ドル超を窃取される</a></h3>
+            <figure><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpydVf-1UN81MyiMH8sAYBd4xiIBuM52UV7kyWmhhBlqohwuaFwgnP5wVx35gG3dHMWrtw0aoPh2zPLW-NaUI4qc_nmpybfA87lo6bzZmLb4WXnpNkYyEYEYMk7kaHeKH4G01yOeEBm44R8a7uAQmabg1k2pEd7MBRp9FM4QN4uA3rsXxkAfuKLWBUxQd_/s1700-nu-rw-lo-l85-e365/bitget.jpg" alt=""><figcaption>画像:The Hacker News</figcaption></figure>
+            <p>北朝鮮関連とみられるハッカー集団が、仮想通貨取引所<strong>Bitget</strong>のバックエンドシステムを侵害し、ホットウォレットから3億5160万ドル相当を窃取した。コールドウォレットと大部分の資産は無事だったといい、同社は9月24日18時31分(UTC)に不正送金を検知したとしている。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/bitget-says-suspected-north-korean.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.irishtimes.com/business/2026/09/24/irish-revolut-customers-affected-by-third-party-data-breach/">9/24</a></p>
+            <h3 class="hd"><a href="https://www.irishtimes.com/business/2026/09/24/irish-revolut-customers-affected-by-third-party-data-breach/">Revolut利用者、提携先DriveWealthのデータ漏洩に再び巻き込まれる</a></h3>
+            <figure><img src="https://www.irishtimes.com/resizer/v2/73ENBVG6UZHNDLSHDBF3JVVROM.jpg?auth=045a99096e61ebb03fa68aaa82842d0039c705d654b0a757873520c0b7ba8989&smart=true&width=1024&height=682" alt=""><figcaption>画像:The Irish Times</figcaption></figure>
+            <p>米国株取引を仲介する<strong>DriveWealth</strong>が高度なソーシャルエンジニアリング攻撃を受け、9月4〜5日に不正アクセスされたことが判明した。<strong>Revolut</strong>利用者(主に2023年12月以前の記録)の氏名・電話番号・住所・雇用情報などが流出したが、パスワードやカード情報、Revolut自体のシステムは無事だという。</p>
+            <p><a class="more" href="https://www.irishtimes.com/business/2026/09/24/irish-revolut-customers-affected-by-third-party-data-breach/">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/threatsday-ai-search-poisoning-ai.html">9/24</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/threatsday-ai-search-poisoning-ai.html">AIコーディングツールが無断でコード送信、VS Codeにはワンクリック実行の欠陥</a></h3>
+            <figure><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHP9KRFkaxKFUKQNRU3CkfxCyJLEuIfmo6ov7iWHHRBE1ShJKfXdPvozMZMVuvOJipQ8Qbap3UBmtjKvZh-xBqLeUartPWmRuQj2W8nqdCk2_XlYLXpj15R4Du2oJ1nNVPqIuR-TwbMyPQe4gxxCcMYvUMbFO_Nin2OdhyzkJvX8Sn83aEbM1C5sgaaCqI/s728-nu-rw-lo-l85-e365/wiz-sep-d.png" alt=""><figcaption>画像:The Hacker News</figcaption></figure>
+            <p>AIコーディングアシスタント「<em>ZCode</em>」のデフォルト設定が、ユーザーのローカルリポジトリ全体を<strong>Alibaba Cloud</strong>へ無断送信していたことが分かった。あわせて<em>VS Code</em>にはワークスペース信頼機能を回避し、リンク一つでコードを実行できる欠陥も報告されており、SSHキーやクラウドトークンが危険にさらされるという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/threatsday-ai-search-poisoning-ai.html">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/hacked-ukrainian-sites-serve-fake.html">9/24</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/09/hacked-ukrainian-sites-serve-fake.html">ウクライナの正規サイトが乗っ取られ、偽Cloudflare認証でマルウェア配布</a></h3>
+            <p>攻撃者がウクライナの正規ビジネスサイトを改ざんし、偽の<em>Cloudflare</em>確認ページを注入する「<em>ClickFix</em>」型の手口でマルウェアを配布していたことが分かった。訪問者にWindowsの実行ダイアログへコマンドを貼り付けさせて誘導し、新種の情報窃取マルウェアでブラウザのパスワードや認証トークン、暗号資産ウォレット情報を狙うという。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/hacked-ukrainian-sites-serve-fake.html">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+        <article class="story">
+          <p class="meta"><span class="cat">CAREER</span><a href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">9/19</a></p>
+          <h3 class="hd"><a href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">「シニアエンジニアの死のスパイラル」から抜け出す逆説的な処方箋</a></h3>
+          <p><strong>Cloudflare</strong>のエンジニアが、シニアエンジニアが陥りがちな「背伸びして進捗を隠し、無理を重ねて燃え尽きる」悪循環を指摘する。自身の実体験を踏まえ、あえて一段階レベルを落として良いチームメイトであろうとすることこそが、信頼と長期的な成功への近道だと説いている。</p>
+          <p><a class="more" href="https://sunilpai.dev/posts/the-senior-engineer-death-spiral/">詳細を読む</a></p>
+        </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
+        <article class="story">
+          <p class="meta"><span class="cat">LIFE</span><a href="https://ta-nishi.hatenablog.com/entry/2026/09/18/061851">9/18</a></p>
+          <h3 class="hd"><a href="https://ta-nishi.hatenablog.com/entry/2026/09/18/061851">人間が本当に求めているものは「意味」ではなく「居場所」だ</a></h3>
+          <p>宗教も仕事も趣味も、人が本当に求める「居場所」を得るための手段に過ぎないと説くエッセイ。居場所さえあれば人は後から意味を見出せるとし、本気で打ち込める趣味を軸にしたコミュニティこそが理想的な居場所になり得ると論じている。</p>
+          <p><a class="more" href="https://ta-nishi.hatenablog.com/entry/2026/09/18/061851">詳細を読む</a></p>
+        </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>もし私が人より遠くを見渡せたのだとしたら、それは巨人の肩の上に立っていたからだ。</blockquote>
+          <p class="who">アイザック・ニュートン</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>ニュートンは、万有引力の法則や微積分法の確立で知られる英国の物理学者・数学者。光学の研究で先行したロバート・フックへの謝意を示す文脈で、両者の間で交わされた書簡にこの言葉を記した。フックとは光の性質をめぐり激しく対立した間柄でもあり、皮肉を込めた一節だとする見方もある。</p>
+        <p class="src">物理学者・数学者、1642年〜1727年<br>出典:ロバート・フック宛書簡(1675年2月5日)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
