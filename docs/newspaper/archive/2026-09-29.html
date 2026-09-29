@@ -114,6 +114,7 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
 .side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
 .bottom .story { padding: 0; border: 0; }
 .bottom .quote { grid-column: 1 / -1; }
+.bottom .solo { grid-column: 1 / -1; width: 100%; max-width: 680px; justify-self: center; }
 .quote { padding-bottom: 14px; }
 .quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
 .quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
@@ -169,19 +170,19 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
   <main class="main">
 
       <section class="men">
-        <h2 class="men-head"><span class="no"></span><span class="ttl">AIニュース</span><span class="en">AI NEWS</span></h2>
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AI</span><span class="en">AI NEWS &amp; AI USE</span></h2>
         <div class="cols">
           <article class="story top">
-            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49881850">4h, 468p, 316 comments</a></p>
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49881850">6h, 525p, 353 comments</a></p>
             <h3 class="hd l"><a href="https://www.anthropic.com/claude-sonnet-5-5">Anthropic、「Claude Sonnet 5.5」を公開 料金据え置きで出力30%高速化</a></h3>
             <p><strong>Anthropic</strong>が<em>Claude Sonnet 5.5</em>を発表した。出力速度は前世代のSonnet 5より30%以上速く、必要なトークンが減るため同じ作業のコストは最大30%下がるという。価格は据え置きで、エージェント型コーディングの指標<em>Terminal-Bench</em>では旧版の10.3%から70.6%へ伸び、上位モデルのOpus 5.5を上回ったと伝えられている。Claudeアプリの全プラン、API、主要クラウド経由で利用できる。</p>
             <p><a class="more" href="https://www.anthropic.com/claude-sonnet-5-5">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=49879000">7h, 291p, 241 comments</a></p>
-            <h3 class="hd"><a href="https://www.reuters.com/technology/mongodb-ceo-desai-steps-down-lead-metas-enterprise-platform-2026-09-28/">MongoDBのCEO、Metaへ移籍 企業向けAI事業を率いる</a></h3>
-            <p><strong>MongoDB</strong>のCJ・デサイCEOが辞任し、<strong>Meta</strong>が新設する企業向けプラットフォーム部門の責任者に就く。就任から1年足らずでの交代で、MongoDBは暫定CEOを置き、同社の株価は大きく下落した。Metaは独自エージェントやコーディングツールを軸に、法人向けAI市場へ本格参入する構えだ。</p>
-            <p><a class="more" href="https://www.reuters.com/technology/mongodb-ceo-desai-steps-down-lead-metas-enterprise-platform-2026-09-28/">詳細を読む</a></p>
+            <p class="meta"><span class="cat">AI</span><a href="https://siliconangle.com/2026/09/28/meta-hires-mongodb-ceo-cj-desai-to-lead-new-enterprise-ai-business/">9/28</a></p>
+            <h3 class="hd"><a href="https://siliconangle.com/2026/09/28/meta-hires-mongodb-ceo-cj-desai-to-lead-new-enterprise-ai-business/">Meta、MongoDBのCEOを引き抜き 企業向けAI事業「Meta Enterprise Platform」を新設</a></h3>
+            <p><strong>Meta</strong>は、直前まで<strong>MongoDB</strong>のCEOだったCJ・デサイ氏を最高エンタープライズプラットフォーム責任者に迎え、企業向けAI事業を立ち上げる。柱は独自のAIエージェント<em>Muse</em>、複数エージェント対応のコーディングツール<em>Muse Code</em>、WhatsApp向けの<em>Meta Business Agent</em>。MongoDBの株価は18%超下落し、前任のデヴ・イティケリア氏が暫定CEOに戻った。</p>
+            <p><a class="more" href="https://siliconangle.com/2026/09/28/meta-hires-mongodb-ceo-cj-desai-to-lead-new-enterprise-ai-business/">詳細を読む</a></p>
           </article>
           <article class="story">
             <p class="meta"><span class="cat">AI</span><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/anthropic-turns-claude-into-an-ai-marketplace-with-2-000-plus-plugins-and-connectors/">9/27</a></p>
@@ -193,32 +194,20 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
           <article class="story">
             <p class="meta"><span class="cat">AI</span><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-preparing-o-an-always-on-chatgpt-assistant-that-could-handle-email/">9/27</a></p>
             <h3 class="hd"><a href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-preparing-o-an-always-on-chatgpt-assistant-that-could-handle-email/">OpenAI、常時稼働の個人アシスタント「o」を準備か メール処理も視野</a></h3>
-            <p><strong>OpenAI</strong>が、常時動作して<strong>メール</strong>の処理などもこなせるとみられる新機能「o」を試験中と報じられた。月100ドルの<em>ChatGPT Pro</em>プランの特典として名前が一時表示されたという。9/29開催の開発者イベント<em>DevDay 2026</em>で詳細が出る可能性がある。</p>
+            <p><strong>OpenAI</strong>が、常時動作して<strong>メール</strong>の処理などもこなせるとみられる新機能「o」を試験中と報じられた。月10ドルの<em>ChatGPT Pro</em>プランの特典として名前が一時表示されたという。9/29開催の開発者イベント<em>DevDay 2026</em>で詳細が出る可能性がある。</p>
             <p><a class="more" href="https://www.bleepingcomputer.com/news/artificial-intelligence/openai-is-preparing-o-an-always-on-chatgpt-assistant-that-could-handle-email/">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">AI</span><a href="https://www.bloomberg.com/news/articles/2026-09-28/anthropic-openai-executives-urge-oversight-of-self-improving-ai">9/28</a></p>
-            <h3 class="hd"><a href="https://www.bloomberg.com/news/articles/2026-09-28/anthropic-openai-executives-urge-oversight-of-self-improving-ai">AI大手幹部ら、自己改善するAIシステムへの監視を政策当局に要請</a></h3>
-            <p><strong>Anthropic</strong>、<strong>OpenAI</strong>、<strong>Meta</strong>、<strong>Microsoft</strong>の幹部らが、自らを改良していくAIシステムを政策当局が精査し、安全策を講じるよう求めたとBloombergが報じた。フロンティア各社が相次ぐ制御不能の事案を受けて、規制や自主基準づくりの議論を加速させている流れの一環とみられる。</p>
-            <p><a class="more" href="https://www.bloomberg.com/news/articles/2026-09-28/anthropic-openai-executives-urge-oversight-of-self-improving-ai">詳細を読む</a></p>
-          </article>
-        </div>
-      </section>
-
-      <section class="men">
-        <h2 class="men-head"><span class="no"></span><span class="ttl">AI活用法</span><span class="en">AI USE</span></h2>
-        <div class="cols">
-          <article class="story top">
-            <p class="meta"><span class="cat">AI USE</span><a href="https://news.ycombinator.com/item?id=49874728">14h, 193p, 218 comments</a></p>
-            <h3 class="hd l"><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5">公式ガイド「Prompting Claude Opus 5.5」、エフォート調整と無人エージェント運用の要点</a></h3>
+            <p class="meta"><span class="cat">AI USE</span><a href="https://news.ycombinator.com/item?id=49874728">16h, 194p, 218 comments</a></p>
+            <h3 class="hd"><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5">公式ガイド「Prompting Claude Opus 5.5」、エフォート調整と無人エージェント運用の要点</a></h3>
             <p><em>Opus 5.5</em>向けの公式プロンプトガイド。既定のエフォートは<code>medium</code>で、旧版の<code>high</code>相当の性能が出るため、まず明示的に設定して自前の評価で比較することを勧めている。無人のエージェントループでは、テキストだけで終わったターンを「完了」とみなさず、タスクのチェックリストを残して未完了なら続行を促す設計が有効とされる。複数アプリを横断する作業には「行動の前に関連しうる情報源を広く探索する」という一文を足す例も載る。</p>
             <p><a class="more" href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5-5">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">AI USE</span><a href="https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods">9/19</a></p>
-            <h3 class="hd"><a href="https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods">Claude Mods入門、TypeScript関数でClaude Codeを内部から拡張する</a></h3>
-            <p><em>Claude Mods</em>は、TypeScriptの関数でClaude Codeの表示やツールを拡張する仕組み。外部プロセスを起動する従来のフックと違い、エンジン内のメモリ上で動く。組織・ユーザーなど5層のチェーンでイベントを処理する設計で、組織のポリシーを守りつつ個人が自分の層をサンドボックス内で自由に調整できる。なお、記事は議論中の暫定仕様に基づく。</p>
-            <p><a class="more" href="https://zenn.dev/nogu66/articles/claude-code-function-hooks-claude-mods">詳細を読む</a></p>
+            <p class="meta"><span class="cat">AI USE</span><a href="https://www.publickey1.jp/blog/26/claude_codeagentsmdclaudemd.html">9/24</a></p>
+            <h3 class="hd"><a href="https://www.publickey1.jp/blog/26/claude_codeagentsmdclaudemd.html">Claude Codeが「AGENTS.md」に対応、CLAUDE.mdが無ければ自動で読み込み</a></h3>
+            <p><strong>Claude Code</strong>(v2.1.277、9/18更新)が、<code>CLAUDE.md</code>が存在しないときに<code>AGENTS.md</code>を読むようになった。<strong>OpenAI Codex</strong>、<strong>Gemini CLI</strong>、<strong>Devin</strong>、<strong>Cursor</strong>、<strong>GitHub Copilot</strong>はすでに対応済みで、複数のAIコーディングツールで指示ファイルを共有しやすくなる。</p>
+            <p><a class="more" href="https://www.publickey1.jp/blog/26/claude_codeagentsmdclaudemd.html">詳細を読む</a></p>
           </article>
         </div>
       </section>
@@ -233,52 +222,10 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
             <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/28/2000001820/">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49881951">4h, 181p, 74 comments</a></p>
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=49881951">5h, 201p, 80 comments</a></p>
             <h3 class="hd"><a href="https://lecaro.me/20260921-google-less.html">「Google Playが無関係なヌード画像付きでアプリを却下」開発者がストア依存をやめた記録</a></h3>
             <p>個人開発者がテキストエディタ<em>Tabby</em>をGoogle Playに出したところ、アプリと無関係な露骨なスクリーンショットが添えられて却下された。異議申し立てにも納得できる説明はなく、以後はF-Droidやitch.ioなど別経路で配布すると決めた。単一プラットフォームへの依存リスクを考えさせる話だ。</p>
             <p><a class="more" href="https://lecaro.me/20260921-google-less.html">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001821/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001821/">価格.com、KDDIとの資本提携を解消 業務提携は継続</a></h3>
-            <p><strong>カカクコム</strong>は<strong>KDDI</strong>との資本提携を解消した。2018年8月からの提携だが、進行中のTOBによる資本構成の変化と経営戦略の違いを理由とする。KDDIは約17.67%の株を持つ大株主として残り、データを活用した新サービスの共同開発など業務提携は続く。</p>
-            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/28/2000001821/">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001818/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001818/">次期学習指導要領の方向性まとまる、「情報」学習を強化 英語ではAI活用を明記</a></h3>
-            <p>中央教育審議会が9/25、次期学習指導要領の枠組みを了承した。小学校は2030年度、中学校は2031年度からの実施を想定する。情報学習の強化を柱に、英語でのAI活用が指導要領に明記されるのは初めてで、誤情報やディープフェイクなど、デジタル社会の課題に各教科で向き合う方針も示された。</p>
-            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/28/2000001818/">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">IT</span><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001791/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001791/">クリスタの素材が相次ぎ非公開に、セルシスが「誤判定も多い」と説明</a></h3>
-            <p><strong>セルシス</strong>の素材配布サービス「CLIP STUDIO ASSETS」で、9/22ごろから利用者の投稿素材が突然非公開になる事態が続いた。同社は誤判定による非公開が多く発生したと認め、AIによる判定や英国政府の関与は否定した。誤って非公開になった素材の再承認を進め、年齢・地域に応じた表示の仕組みも導入するという。</p>
-            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/28/2000001791/">詳細を読む</a></p>
-          </article>
-        </div>
-      </section>
-
-      <section class="men">
-        <h2 class="men-head"><span class="no"></span><span class="ttl">設計論</span><span class="en">DESIGN &amp; ENGINEERING</span></h2>
-        <div class="cols">
-          <article class="story top">
-            <p class="meta"><span class="cat">DESIGN</span><a href="https://news.ycombinator.com/item?id=49875913">11h, 279p, 145 comments</a></p>
-            <h3 class="hd l"><a href="https://git.mills.io/prologic/parley">Parley、素のIRCクライアントで使える連合型のサーバーレスチャット</a></h3>
-            <p><em>Parley</em>は、各インスタンスが署名付きのJSONを相手の<code>/inbox</code>にHTTPSで送り合う分散チャット。イベントには<em>ed25519</em>の署名を付け、鍵はDNSのSRVレコードと公開の識別文書から独立に検証する。未知のドメインにメッセージを送るだけで双方が自動で接続し、知っているピアを交換して設定なしにメッシュができる設計が特徴。</p>
-            <p><a class="more" href="https://git.mills.io/prologic/parley">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">DESIGN</span><a href="https://bookofrevenue.com/blog/6ab81e9a97a13f0001f7e4e1/postgres-at-time-zone-u-does-not-do-what-you-think-it-does">9/28</a></p>
-            <h3 class="hd"><a href="https://bookofrevenue.com/blog/6ab81e9a97a13f0001f7e4e1/postgres-at-time-zone-u-does-not-do-what-you-think-it-does">Postgresの<code>AT TIME ZONE 'UTC'</code>は、思っている動きをしない</a></h3>
-            <p><strong>PostgreSQL</strong>で<code>timestamptz</code>に<code>AT TIME ZONE 'UTC'</code>を使うと、タイムゾーン付きの値が時刻のみの<code>timestamp</code>へ変わり、意味が変わってしまう。これに月単位の加算を組み合わせると、セッションのゾーンによって結果がずれる。対策は基本的に<code>timestamptz</code>で統一し、Postgresは時刻をUTCに正規化して持つだけで、ゾーン自体は保存しないと理解しておくことだ。</p>
-            <p><a class="more" href="https://bookofrevenue.com/blog/6ab81e9a97a13f0001f7e4e1/postgres-at-time-zone-u-does-not-do-what-you-think-it-does">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">DESIGN</span><a href="https://news.ycombinator.com/item?id=49882208">3h, 69p, 36 comments</a></p>
-            <h3 class="hd"><a href="https://blog.wirelessmoves.com/2026/09/grapheneos-when-an-app-is-slow.html">GrapheneOSで地図アプリが遅い理由、原因は堅牢化されたメモリアロケータ</a></h3>
-            <p><strong>GrapheneOS</strong>上で<em>OsmAnd</em>が極端に遅くなる原因は、セキュリティ強化のために入る「堅牢化メモリアロケータ」だった。地図のスクロールではデータの読み込みと破棄が頻繁に起こるため、この機構のオーバーヘッドが効いてしまう。アプリごとに設定の「Exploit protection」を切れば速度は戻るが、安全性とのトレードオフになる。</p>
-            <p><a class="more" href="https://blog.wirelessmoves.com/2026/09/grapheneos-when-an-app-is-slow.html">詳細を読む</a></p>
           </article>
         </div>
       </section>
@@ -294,28 +241,17 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
             <p><a class="more" href="https://thehackernews.com/2026/09/apple-patches-coregraphics-flaw.html">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.bleepingcomputer.com/news/security/misconfigured-supabase-apps-expose-data-in-over-16-000-databases/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.bleepingcomputer.com/news/security/misconfigured-supabase-apps-expose-data-in-over-16-000-databases/">設定不備の<em>Supabase</em>アプリ、1万6,000超のDBで個人情報やパスワード、認証トークンが露出</a></h3>
-            <p>研究者が調べたところ、<strong>Supabase</strong>を使うアプリのうち1万6,000を超えるデータベースが、設定不備のために個人情報やパスワード、認証トークンを外部から読める状態だった。モバイルアプリのバックエンドに使う開発者も多く、公開範囲の設定を見直す必要がある。</p>
-            <p><a class="more" href="https://www.bleepingcomputer.com/news/security/misconfigured-supabase-apps-expose-data-in-over-16-000-databases/">詳細を読む</a></p>
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/09/rathat-android-malware-console-uses.html">9/28</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/09/rathat-android-malware-console-uses.html">Androidの銀行トロイ「RatHat」、Geminiで被害者の資産を見積もり狙いを絞る</a></h3>
+            <figure><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvGUhf2JsmovUtvjDk66AKULOtbtRwTqgcT_6lr5l8AEuwc-12IQTTWfvjKCYEn6-wwc4ZLDWAWh6Edv3-XcPDL1HHPFwRkwY1Nc_BUItyEO8iCXBDKEitrgYapLi__gpKnYqtFNm1M2c4tGiY3qrS_CgRG5ZF5qnqVUv4Gx9Pqk_cPz4N05KVwUNgTcw/s1700-nu-rw-lo-l85-e365/gemini-malware.jpg" alt=""><figcaption>画像:The Hacker News</figcaption></figure>
+            <p>サービス型で提供される<strong>RatHat</strong>は、銀行アプリの上に偽のログイン画面を重ねて認証情報やSMSを盗む。運営側のコンソールでは<strong>Gemini</strong>が盗んだメッセージから被害者の預金残高を推定して高額の標的を優先し、感染端末上でも、想定外の画面でタップ位置を判断させるのに使う。SMSや広告から第三者のダウンロードサイトへ誘導し、正規アプリを装って<em>ユーザー補助</em>の権限を求める手口だ。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/09/rathat-android-malware-console-uses.html">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.bleepingcomputer.com/news/security/times-car-confirms-data-breach-affecting-66-million-user-accounts/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.bleepingcomputer.com/news/security/times-car-confirms-data-breach-affecting-66-million-user-accounts/">カーシェア「タイムズカー」、約660万件の会員情報が流出 免許証画像も</a></h3>
-            <p><strong>タイムズカー</strong>は、不正アクセスにより約660万件の会員情報が流出したと公表した。運転免許証の画像なども含まれると報じられている。会員は不審な連絡やなりすましに注意し、公式の案内を確認したい。</p>
-            <p><a class="more" href="https://www.bleepingcomputer.com/news/security/times-car-confirms-data-breach-affecting-66-million-user-accounts/">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.bleepingcomputer.com/news/security/japans-keio-confirms-ransomware-attack-disrupted-business-systems/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.bleepingcomputer.com/news/security/japans-keio-confirms-ransomware-attack-disrupted-business-systems/">京王電鉄、週末のランサムウェア攻撃で業務システムに障害</a></h3>
-            <p>鉄道大手の<strong>京王電鉄</strong>は、週末に受けたランサムウェア攻撃で業務システムが止まったことを認めた。詳しい被害範囲は今後の発表を待つ必要がある。</p>
-            <p><a class="more" href="https://www.bleepingcomputer.com/news/security/japans-keio-confirms-ransomware-attack-disrupted-business-systems/">詳細を読む</a></p>
-          </article>
-          <article class="story">
-            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.bleepingcomputer.com/news/security/jadepuffer-agentic-ai-attacks-target-azure-destroy-cloud-resources/">9/28</a></p>
-            <h3 class="hd"><a href="https://www.bleepingcomputer.com/news/security/jadepuffer-agentic-ai-attacks-target-azure-destroy-cloud-resources/">「JadePuffer」、AIエージェント型の攻撃でAzureのクラウド資源を破壊</a></h3>
-            <p>ランサムウェア運用者とされる<strong>JadePuffer</strong>が、AI駆動の手法で<strong>Azure</strong>環境を偵察し、資源を破壊していると報じられた。関連報道によれば、侵害されたサービスプリンシパルを悪用してストレージやデータベースを削除している。サービスプリンシパルの権限の絞り込みと監視が対策になる。</p>
-            <p><a class="more" href="https://www.bleepingcomputer.com/news/security/jadepuffer-agentic-ai-attacks-target-azure-destroy-cloud-resources/">詳細を読む</a></p>
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001808/">9/28</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/news/article/2609/28/2000001808/">タイムズカー、約660万件の会員情報が流出 免許証画像や本人確認書類も</a></h3>
+            <p><strong>タイムズモビリティ</strong>のカーシェアで、約660万件の会員情報が第三者に取得された。氏名や住所、生年月日、連絡先に加え、運転免許証の画像などの本人確認書類やパスワードが含まれる一方、クレジットカード情報は対象外という。9/25に検知して9/26朝に侵入経路を遮断し、9/28に公表した。パスワードは復元できない形式で保存されていたとされるが、パスワードの変更と、なりすましやフィッシングへの警戒が呼びかけられている。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2609/28/2000001808/">詳細を読む</a></p>
           </article>
         </div>
       </section>
@@ -323,8 +259,8 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
   </main>
 
   <div class="bottom">
-      <section class="side-box">
-        <h2 class="side-head">キャリア欄<small>CAREER</small></h2>
+      <section class="side-box solo">
+        <h2 class="side-head">暮らし欄<small>CAREER / LIFE</small></h2>
         <article class="story">
           <p class="meta"><span class="cat">CAREER</span><a href="https://text.sanographix.net/entry/2026/09/15/191000">9/15</a></p>
           <h3 class="hd"><a href="https://text.sanographix.net/entry/2026/09/15/191000">13年続けた個人プロダクトで、作ること以外で学んだ10のこと</a></h3>
@@ -333,24 +269,14 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         </article>
       </section>
 
-      <section class="side-box">
-        <h2 class="side-head">人生観欄<small>LIFE</small></h2>
-        <article class="story">
-          <p class="meta"><span class="cat">LIFE</span><a href="https://delete-all.hatenablog.com/entry/2026/09/16/070000">9/16</a></p>
-          <h3 class="hd"><a href="https://delete-all.hatenablog.com/entry/2026/09/16/070000">家族内の地獄は、正義と優しさでできている。</a></h3>
-          <p>筆者は、高齢の義父母が自転車事故を隠していたことに、妻が原則に沿って厳しく反応した場面を綴る。「自分は間違っていない」という確信が、他の見方や思いやりを入れる余地を消してしまい、現代の地獄は正義と優しさの交点に生まれると論じる。両方に理があるとき、どちらに立つかを選ぶ難しさが読みどころだ。</p>
-          <p><a class="more" href="https://delete-all.hatenablog.com/entry/2026/09/16/070000">詳細を読む</a></p>
-        </article>
-      </section>
-
       <section class="side-box quote">
         <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
         <div class="quote-body">
-          <blockquote>我々は短い人生を授かっているのではない。多くを浪費しているのだ。</blockquote>
-          <p class="who">セネカ</p>
+          <blockquote>第一の原則は、自分を欺かないことだ。そして、自分ほど欺きやすい相手はいない。</blockquote>
+          <p class="who">リチャード・ファインマン</p>
         </div>
-        <p class="bio"><span class="cat">人物</span>セネカ(ルキウス・アンナエウス・セネカ)は、古代ローマのストア派の哲学者で、皇帝ネロの家庭教師や顧問も務めた人物。この言葉は、時間の使い方を論じた著作『人生の短さについて』の冒頭にあり、人生は十分に長いのに、無駄な営みや先延ばしで使い果たしてしまうと説く文脈で語られている。</p>
-        <p class="src">古代ローマの哲学者・政治家、紀元前4年頃〜紀元65年<br>出典:『人生の短さについて』(De Brevitate Vitae)第1章</p>
+        <p class="bio"><span class="cat">人物</span>ファインマンは、20世紀のアメリカを代表する理論物理学者で、量子電磁力学の研究により、智永振一郎、シュウィンガーとともに1965年にノーベル物理学賞を受けた。この言葉は、カリフォルニア工科大学の卒業式で行った講演「Cargo Cult Science」の中にあり、科学者が結果を自分に都合よく解釈しないための誠実さを説く文脈で語られた。</p>
+        <p class="src">アメリカの理論物理学者、1918〜1988<br>出典:カリフォルニア工科大学卒業式講演「Cargo Cult Science」(1974年)</p>
       </section>
   </div>
 
