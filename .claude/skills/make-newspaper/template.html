@@ -173,7 +173,7 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
     <div class="body">
       <h2>緊急のお知らせ</h2>
       <ul>
-        <li>{内容}<a class="more" href="{URL}">詳細を読む</a></li>
+        <li>{内容}<a class="more" href="{URL}" target="_blank" rel="noopener noreferrer">詳細を読む</a></li>
       </ul>
     </div>
   </section>
@@ -186,18 +186,18 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         <div class="cols">
           <!-- [記事ブロック] 各セクションで最重要の1件は class="story top" と h3 class="l"。他は class="story"。小さな話題は h3 に class="s"。情報行が「経過時間, スコア」でなく日付だけのときは、リンクの文字を「9/19」のようにして、リンク先は元記事にする -->
           <article class="story top">
-            <p class="meta"><span class="cat">AI</span><a href="{議論ページURL}">{経過時間}, {スコア}p, {コメント数} comments</a></p>
-            <h3 class="hd l"><a href="{元記事URL}">{見出し}</a></h3>
+            <p class="meta"><span class="cat">AI</span><a href="{議論ページURL}" target="_blank" rel="noopener noreferrer">{経過時間}, {スコア}p, {コメント数} comments</a></p>
+            <h3 class="hd l"><a href="{元記事URL}" target="_blank" rel="noopener noreferrer">{見出し}</a></h3>
             <!-- 画像がある記事だけ。なければ figure ごと省く -->
             <figure><img src="{og:image URL}" alt=""><figcaption>画像:{サイト名}</figcaption></figure>
             <p>{要約。固有名詞は<strong>で太字、書名・機能名は<em>}</p>
-            <p><a class="more" href="{元記事URL}">詳細を読む</a></p>
+            <p><a class="more" href="{元記事URL}" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
           </article>
           <article class="story">
-            <p class="meta"><span class="cat">AI</span><a href="{議論ページURL}">{経過時間}, {スコア}p, {コメント数} comments</a></p>
-            <h3 class="hd"><a href="{元記事URL}">{見出し}</a></h3>
+            <p class="meta"><span class="cat">AI</span><a href="{議論ページURL}" target="_blank" rel="noopener noreferrer">{経過時間}, {スコア}p, {コメント数} comments</a></p>
+            <h3 class="hd"><a href="{元記事URL}" target="_blank" rel="noopener noreferrer">{見出し}</a></h3>
             <p>{要約}</p>
-            <p><a class="more" href="{元記事URL}">詳細を読む</a></p>
+            <p><a class="more" href="{元記事URL}" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
           </article>
         </div>
       </section>
@@ -215,8 +215,8 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         <h2 class="men-head"><span class="no"></span><span class="ttl">経済・マーケット</span><span class="en">MARKETS</span></h2>
         <div class="cols">
           <article class="story">
-            <p class="meta"><span class="cat">MARKET</span><a href="{出典URL}">{日付}終値</a></p>
-            <h3 class="hd"><a href="{出典URL}">{その日の動きを一言で}</a></h3>
+            <p class="meta"><span class="cat">MARKET</span><a href="{出典URL}" target="_blank" rel="noopener noreferrer">{日付}終値</a></p>
+            <h3 class="hd"><a href="{出典URL}" target="_blank" rel="noopener noreferrer">{その日の動きを一言で}</a></h3>
             <p>日経平均 {終値}({前日比})<br>ドル円 {終値}({前日比})<br>{他の指標}</p>
             <p>{動きの理由を1〜2文。用語の一言解説を添える}</p>
           </article>
