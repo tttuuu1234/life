@@ -8,7 +8,7 @@ user_invocable: true
 
 ## 手順
 
-1. macOSが自動生成するドットファイル（`.DS_Store`、`._*`、`.AppleDouble` など）がリポジトリ内に存在するか確認し、あれば削除する。
+1. macOSが自動生成するドットファイル（`.DS_Store`、`._*`、`.AppleDouble` など）をプロジェクトディレクトリ全体（`.git/` 内を含む）から検索し、あれば削除する。`find . -name '.DS_Store' -o -name '._*' -o -name '.AppleDouble'` で探し、`-delete` で消す。
 2. `git status` と `git diff`（ステージ済み・未ステージ両方）を実行し、変更内容を把握する。
 3. 変更がなければ「コミットする変更がありません」と伝えて終了する。
 4. 変更内容を分析し、日本語でコミットメッセージを作成する。
