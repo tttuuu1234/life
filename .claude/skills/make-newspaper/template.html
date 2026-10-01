@@ -210,19 +210,6 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         </div>
       </section>
 
-      <!-- [経済・マーケット] 平日のみ(土日は省略)。記事ブロック1つに数字・理由・用語解説をまとめる(カテゴリは MARKET)。情報行のリンクは、数字の出典ページ。本文の数字は<br>で改行する。ここは「トップ記事」にしない -->
-      <section class="men">
-        <h2 class="men-head"><span class="no"></span><span class="ttl">経済・マーケット</span><span class="en">MARKETS</span></h2>
-        <div class="cols">
-          <article class="story">
-            <p class="meta"><span class="cat">MARKET</span><a href="{出典URL}" target="_blank" rel="noopener noreferrer">{日付}終値</a></p>
-            <h3 class="hd"><a href="{出典URL}" target="_blank" rel="noopener noreferrer">{その日の動きを一言で}</a></h3>
-            <p>日経平均 {終値}({前日比})<br>ドル円 {終値}({前日比})<br>{他の指標}</p>
-            <p>{動きの理由を1〜2文。用語の一言解説を添える}</p>
-          </article>
-        </div>
-      </section>
-
       <!-- [Flutter] 土曜のみ。10件。土曜以外は、このセクション全体を出力しない。記事ブロックは同じ形式(カテゴリはFLUTTER) -->
       <section class="men">
         <h2 class="men-head"><span class="no"></span><span class="ttl">Flutter</span><span class="en">FLUTTER &amp; DART</span></h2>
@@ -256,7 +243,7 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
           <p class="who">{人物名(日本語表記)}</p>
         </div>
         <p class="bio"><span class="cat">人物</span>{人物の概要。2〜3文で、何をした人か、その言葉がどんな文脈にあるかを書く}</p>
-        <p class="src">{肩書き}、{生年}〜{没年}<br>出典:{著作名、章など}</p>
+        <p class="src">{肉書き}、{生年}〜{没年}<br>出典:{著作名、章など}</p>
       </section>
   </div>
 
