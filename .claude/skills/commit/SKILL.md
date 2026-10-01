@@ -8,16 +8,17 @@ user_invocable: true
 
 ## 手順
 
-1. `git status` と `git diff`（ステージ済み・未ステージ両方）を実行し、変更内容を把握する。
-2. 変更がなければ「コミットする変更がありません」と伝えて終了する。
-3. 変更内容を分析し、日本語でコミットメッセージを作成する。
+1. macOSが自動生成するドットファイル（`.DS_Store`、`._*`、`.AppleDouble` など）がリポジトリ内に存在するか確認し、あれば削除する。
+2. `git status` と `git diff`（ステージ済み・未ステージ両方）を実行し、変更内容を把握する。
+3. 変更がなければ「コミットする変更がありません」と伝えて終了する。
+4. 変更内容を分析し、日本語でコミットメッセージを作成する。
    - 1行目: 変更の要約（例: 「新聞スキルの要約形式を変更」）
    - 必要なら2行目以降に補足
-4. コミットメッセージの案をユーザーに提示し、確認を取る。
-5. 確認が取れたら、`mcp__github__push_files` ツールで `tttuuu1234/life` リポジトリの main ブランチにpushする（owner: `tttuuu1234`, repo: `life`, branch: `main`）。
+5. コミットメッセージの案をユーザーに提示し、確認を取る。
+6. 確認が取れたら、`mcp__github__push_files` ツールで `tttuuu1234/life` リポジトリの main ブランチにpushする（owner: `tttuuu1234`, repo: `life`, branch: `main`）。
    - 変更したファイルをすべて1回の呼び出しでまとめて渡す。
    - `git push` ではなく `mcp__github__push_files` を使う理由: contributionsの草に反映させるため。
-6. push後、`git fetch origin main && git reset --hard origin/main` でローカルをリモートに合わせる。
+7. push後、`git fetch origin main && git reset --hard origin/main` でローカルをリモートに合わせる。
 
 ## ルール
 
