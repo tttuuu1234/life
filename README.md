@@ -8,16 +8,23 @@
 .
 ├─ .claude/
 │  └─ skills/
-│     └─ make-newspaper/          新聞作成スキル(入力)
-│        ├─ SKILL.md              毎日の編集方針。スキルの本体
-│        ├─ template.html         見た目のテンプレート
-│        ├─ scripts/build_index.py  バックナンバー一覧を作る
-│        └─ routine-prompt.txt    ルーティンの指示欄に貼る文
-└─ docs/                          閲覧用の出力(GitHub Pagesの公開元)
-   ├─ index.html                  入口(プロジェクトの一覧)
-   └─ newspaper/                  新聞の出力
-      ├─ index.html               バックナンバー一覧(自動生成)
-      └─ issues/YYYY-MM-DD.html   各号
+│     ├─ make-newspaper/            新聞作成スキル(入力)
+│     │  ├─ SKILL.md                毎日の編集方針。スキルの本体
+│     │  ├─ template.html           見た目のテンプレート
+│     │  ├─ scripts/build_index.py  バックナンバー一覧を作る
+│     │  └─ routine-prompt.txt      ルーティンの指示欄に貼る文
+│     └─ write-wiki/                百科事典スキル(入力)
+│        ├─ SKILL.md                編集方針・追加手順。スキルの本体
+│        ├─ template.html           カテゴリページのテンプレート
+│        └─ scripts/build_index.py  目次ページを作る
+└─ docs/                            閲覧用の出力(GitHub Pagesの公開元)
+   ├─ index.html                    入口(プロジェクトの一覧)
+   ├─ newspaper/                    新聞の出力
+   │  ├─ index.html                 バックナンバー一覧(自動生成)
+   │  └─ archive/YYYY-MM-DD.html    各号
+   └─ wiki/                         百科事典の出力
+      ├─ index.html                 カテゴリ一覧＋全エントリ索引(自動生成)
+      └─ entries/{カテゴリ}.html     カテゴリ別ページ
 ```
 
 ## ルール
@@ -54,3 +61,13 @@
 7. 最初に「Run now」で試し、実行の記録を開いて結果を確認する。
 
 編集方針を変えたいときは、`.claude/skills/make-newspaper/SKILL.md` を編集してpushする。
+
+## 百科事典(write-wiki)
+
+AIとの会話で学んだことを、カテゴリ別の辞典風HTMLにまとめる個人用百科事典「Personal Wiki」です。手元では `/write-wiki` でも呼び出せます。
+
+- エントリはカテゴリごとに1つのHTMLファイルにまとめ、アルファベット・あいうえお順に並べる。
+- カテゴリは内容から自動判定し、既存カテゴリがあればそこに追加、なければ新規作成する。
+- 目次ページ（`docs/wiki/index.html`）は `build_index.py` で自動生成する。
+
+編集方針を変えたいときは、`.claude/skills/write-wiki/SKILL.md` を編集してpushする。
