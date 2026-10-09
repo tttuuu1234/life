@@ -50,6 +50,8 @@ def parse(path):
 def main():
     pages = []
     for p in sorted(ENTRIES.glob("*.html")):
+        if p.name.startswith("."):
+            continue
         pages.append(parse(p))
 
     pages.sort(key=lambda x: sort_key(x["category"]))
