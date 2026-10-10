@@ -8,6 +8,8 @@
 .
 ├─ .claude/
 │  └─ skills/
+│     ├─ commit/SKILL.md            変更をmainに直接pushする
+│     ├─ create-pr/SKILL.md         作業ブランチにpushしてPRを作る
 │     ├─ make-newspaper/            新聞作成スキル(入力)
 │     │  ├─ SKILL.md                毎日の編集方針。スキルの本体
 │     │  ├─ template.html           見た目のテンプレート
