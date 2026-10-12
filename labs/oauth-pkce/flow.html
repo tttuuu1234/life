@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OAuth認可コードフロー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* レイアウト: 上に「3つの段階」、中央に4本の縦線のシーケンス図、下にいま選んだステップの説明カード */
+:root {
+  --bg: #f4f5f7;
+  --surface: #ffffff;
+  --fg: #1c1f26;
+  --muted: #5d6472;
+  --line: #d6d9e0;
+  --app: #1565c0;      /* クライアント（写真印刷アプリ） */
+  --as: #6a1b9a;       /* 認可サーバー */
+  --rs: #2e7d32;       /* リソースサーバー */
+  --user: #5d6472;     /* あなた（ブラウザ） */
+  --front: #b45309;    /* ブラウザ経由の通り道 */
+  --back: #0f766e;     /* 直接通信の通り道 */
+  --code-bg: #eef0f4;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161b; --surface: #1d2027; --fg: #e8eaef; --muted: #a0a7b4; --line: #343844;
+    --app: #64a8ff; --as: #c98af0; --rs: #6fcf7a; --user: #a0a7b4;
+    --front: #f0a64a; --back: #4fd1c0; --code-bg: #262a33; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161b; --surface: #1d2027; --fg: #e8eaef; --muted: #a0a7b4; --line: #343844;
+  --app: #64a8ff; --as: #c98af0; --rs: #6fcf7a; --user: #a0a7b4;
+  --front: #f0a64a; --back: #4fd1c0; --code-bg: #262a33; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.75;
+  padding-inline: 16px; padding-block: 24px 48px;
+}
+.wrap { max-width: 860px; margin: 0 auto; display: grid; gap: 24px; }
+.wrap > * { min-width: 0; }
+h1 { margin: 0; font-size: clamp(22px, 4vw, 28px); font-weight: 700; text-wrap: balance; }
+.lead { margin: 4px 0 0; color: var(--muted); max-width: 62ch; }
+h2 { margin: 0 0 8px; font-size: 16px; font-weight: 700; }
+code, .mono { font-family: var(--font-mono); font-size: 0.86em; }
+
+/* 3つの段階 */
+.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.phase { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; min-width: 0; }
+.phase b { display: block; font-size: 14px; }
+.phase span { color: var(--muted); font-size: 13px; line-height: 1.6; display: block; }
+.phase .tag { font-size: 11px; letter-spacing: .08em; color: var(--muted); }
+@media (max-width: 620px) { .phases { grid-template-columns: 1fr; } }
+
+/* 図 */
+.diagram { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px 4px; }
+.scroll { overflow-x: auto; }
+figure { margin: 0; }
+figure svg { display: block; width: 100%; min-width: 640px; height: auto; color: var(--fg); }
+figcaption { color: var(--muted); font-size: 13px; padding: 4px 12px 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 4px 12px; font-size: 12.5px; color: var(--muted); }
+.legend i { display: inline-block; width: 22px; height: 0; border-top: 2px solid; vertical-align: middle; margin-right: 6px; }
+
+.arrow { transition: opacity .25s; cursor: pointer; }
+.arrow.future { opacity: .15; }
+.arrow.past { opacity: .45; }
+.arrow.current { opacity: 1; }
+.arrow.current .lbl { font-weight: 700; }
+.badge circle { transition: fill .2s; }
+@media (prefers-reduced-motion: reduce) { .arrow, .badge circle { transition: none; } }
+
+/* 操作 */
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+button {
+  font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+}
+button.primary { background: var(--app); border-color: var(--app); color: var(--surface); }
+button:disabled { opacity: .4; cursor: default; }
+button:focus-visible { outline: 2px solid var(--front); outline-offset: 2px; }
+.counter { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; margin-left: auto; }
+
+/* 説明カード */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 18px; display: grid; gap: 10px; min-width: 0; }
+.card h3 { margin: 0; font-size: 18px; text-wrap: balance; }
+.route { font-size: 13px; color: var(--muted); }
+.chip { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid currentColor; margin-right: 6px; }
+.chip.front { color: var(--front); } .chip.back { color: var(--back); } .chip.inside { color: var(--app); } .chip.user { color: var(--as); }
+.card p { margin: 0; max-width: 66ch; }
+.card pre { margin: 0; background: var(--code-bg); border-radius: 6px; padding: 10px 12px; overflow-x: auto; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.6; }
+.holds { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: 13px; }
+.holds .label { color: var(--muted); margin-right: 4px; }
+.hold { font-family: var(--font-mono); font-size: 12px; padding: 2px 8px; border-radius: 4px; background: var(--code-bg); }
+.hold.secret { box-shadow: inset 0 0 0 1px var(--app); }
+.lab { color: var(--muted); font-size: 13px; }
+.lab a { color: var(--app); }
+.live { margin: 10px 0 0; font-size: 13.5px; padding: 8px 12px; border-radius: 6px; background: var(--code-bg); max-width: 66ch; }
+.payload-label { font-size: 12.5px; color: var(--muted); }
+.payload-label b { color: var(--back); }
+.hidden-step { font-size: 13.5px; padding: 8px 12px; border-left: 3px solid var(--as); background: var(--code-bg); border-radius: 0 6px 6px 0; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>OAuth認可コードフロー（PKCE付き）</h1>
+    <p class="lead">「写真印刷アプリ」が、あなたのパスワードを知らないまま「写真を見る権限」だけをもらうまでの流れです。図の矢印をクリックするか、下のボタンで1ステップずつ進めてください。</p>
+    <p class="live" id="live">実際のログインの記録を読み込んでいます…</p>
+  </header>
+
+  <section aria-label="3つの段階">
+    <div class="phases">
+      <div class="phase"><span class="tag">段階A ステップ1〜5</span><b>許可をもらう</b><span>ブラウザで認可サーバーへ行き、本人確認と同意をして、<b style="display:inline">認可コード（引換券）</b>を持って戻る</span></div>
+      <div class="phase"><span class="tag">段階B ステップ6〜7</span><b>引換券を鍵に替える</b><span>アプリが認可サーバーと直接話し、引換券と合言葉を見せて<b style="display:inline">アクセストークン（鍵）</b>をもらう</span></div>
+      <div class="phase"><span class="tag">段階C ステップ8〜9</span><b>鍵でデータを使う</b><span>鍵を写真APIに見せて、許された範囲（スコープ）のデータだけを受け取る</span></div>
+    </div>
+  </section>
+
+  <section class="diagram">
+    <div class="scroll">
+      <figure>
+        <svg id="seq" viewBox="0 0 760 640" role="img" aria-label="あなた（ブラウザ）、写真印刷アプリ、認可サーバー、写真APIの4者の間で、9ステップのやり取りが上から順に行われるシーケンス図"></svg>
+        <figcaption>オレンジの矢印はブラウザを経由するやり取り、緑の矢印はアプリとサーバーの直接通信です。トークンは緑の矢印でしか運ばれません。</figcaption>
+      </figure>
+    </div>
+    <div class="legend">
+      <span><i style="border-color: var(--front)"></i>ブラウザ経由（リダイレクト）</span>
+      <span><i style="border-color: var(--back)"></i>直接通信</span>
+      <span><i style="border-color: var(--as)"></i>あなたと認可サーバーの画面操作</span>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button id="prev" type="button">前へ</button>
+    <button id="next" type="button" class="primary">次へ</button>
+    <button id="all" type="button">全体を見る</button>
+    <span class="counter" id="counter" aria-live="polite"></span>
+  </div>
+
+  <article class="card" id="card" aria-live="polite"></article>
+
+  <p class="lab"><a href="/">写真印刷アプリに戻る</a></p>
+</div>
+
+<script>
+const LANES = {
+  user: { x: 100, name: 'あなた', sub: 'ブラウザ', color: '--user' },
+  app:  { x: 290, name: '写真印刷アプリ', sub: 'クライアント', color: '--app' },
+  as:   { x: 480, name: '認可サーバー', sub: 'ログイン・同意画面', color: '--as' },
+  rs:   { x: 670, name: '写真API', sub: 'リソースサーバー', color: '--rs' },
+};
+
+// kind: front = ブラウザ経由 / back = 直接通信 / user = 画面操作 / self = アプリの中
+const STEPS = [
+  {
+    title: 'アプリが合言葉（code_verifier）を作る',
+    route: 'アプリの中', kind: 'inside',
+    arrows: [{ from: 'app', to: 'app', label: 'code_verifier を生成', kind: 'self' }],
+    text: '「PhotoAuthでログイン」を押すと、アプリはまずランダムな合言葉 code_verifier を作ります。これはアプリのメモリにだけ置き、ステップ6まで誰にも見せません。代わりに、そのハッシュ値 code_challenge（合言葉の指紋）を作ります。指紋からは元の合言葉を逆算できないので、先に渡しても安全です。',
+    payload: 'code_verifier  = 96yzRwbnFWX-VjFCgQ…   （秘密。アプリだけが持つ）\ncode_challenge = SHA256(code_verifier)  （指紋。先に渡してよい）\nstate          = o6Fs6i9p0GBEE5m…       （戻ってきたときの照合用）',
+    holds: [['code_verifier', true], ['state', false]],
+  },
+  {
+    title: 'ブラウザを認可サーバーへ送り出す（認可リクエスト）',
+    route: 'アプリ → ブラウザ → 認可サーバー', kind: 'front',
+    arrows: [
+      { from: 'app', to: 'user', label: 'リダイレクト', kind: 'front' },
+      { from: 'user', to: 'as', label: 'GET /authorize', kind: 'front' },
+    ],
+    text: 'アプリは自分でログイン画面を出さず、ブラウザを認可サーバーへ送り出します。URLに「誰が（client_id）」「何の権限を（scope）」「どこに戻すか（redirect_uri）」と、合言葉の指紋 code_challenge を載せます。ここはブラウザを通るので、URLは誰かに見られる前提です。だから載せるのは指紋だけで、合言葉そのものは載せません。',
+    payload: 'GET /authorize?\n  response_type=code\n  client_id=photo-print-app\n  redirect_uri=http://localhost:4002/callback\n  scope=photos.read\n  state=o6Fs6i9p0GBEE5m…\n  code_challenge=6Ve2P-wVwGXHl2qc…\n  code_challenge_method=S256',
+    holds: [['code_verifier', true], ['state', false]],
+  },
+  {
+    title: '認可サーバーが本人確認をする（認証）',
+    route: '認可サーバー ⇄ あなた', kind: 'user',
+    arrows: [
+      { from: 'as', to: 'user', label: 'ログイン画面', kind: 'user' },
+      { from: 'user', to: 'as', label: 'ID・パスワード', kind: 'user' },
+    ],
+    text: 'まず「許可を出そうとしているのは誰か」を確かめます。パスワードを入力するのは認可サーバーの画面なので、アプリはパスワードを一度も見ません。本物の認可サーバー（Googleなど）は自分のドメインにセッションを持っているので、2回目以降はこの画面が省略されます。',
+    payload: 'POST /authorize\n  username=alice\n  password=********   （認可サーバーにだけ届く）',
+    holds: [['code_verifier', true], ['state', false]],
+  },
+  {
+    title: '本人に同意をもらう（認可）',
+    route: '認可サーバー ⇄ あなた', kind: 'user',
+    arrows: [
+      { from: 'as', to: 'user', label: '同意画面', kind: 'user' },
+      { from: 'user', to: 'as', label: '許可する', kind: 'user' },
+    ],
+    text: '「写真印刷アプリが、写真を見る権限を求めています。許可しますか？」と、本人に確かめます。ここで許可された範囲がスコープになり、後で発行されるトークンに刻まれます。拒否すると、error=access_denied を付けてアプリに戻されます。',
+    payload: '許可を求められている権限\n  ・写真を見る（photos.read）',
+    holds: [['code_verifier', true], ['state', false]],
+  },
+  {
+    title: '認可コード（引換券）を持ってアプリに戻る',
+    route: '認可サーバー → ブラウザ → アプリ', kind: 'front',
+    arrows: [
+      { from: 'as', to: 'user', label: 'リダイレクト', kind: 'front' },
+      { from: 'user', to: 'app', label: 'GET /callback?code&state', kind: 'front' },
+    ],
+    text: '認可サーバーは、トークンではなく認可コードを渡します。短命（このデモでは60秒）で1回限りの引換券です。これもブラウザのURLに載るので、横取りされる可能性があります。アプリは戻ってきた state が自分の送ったものと同じかを確かめ、自分が始めたログインの続きだと確認します。',
+    payload: 'GET /callback?\n  code=XyVvY9sQGi57prS1QJ7SRw   （引換券）\n  state=o6Fs6i9p0GBEE5m…         （ステップ1と同じか確認）',
+    holds: [['code_verifier', true], ['認可コード', false]],
+  },
+  {
+    title: '引換券と合言葉を見せて、鍵に替える',
+    route: 'アプリ → 認可サーバー（直接）', kind: 'back',
+    arrows: [{ from: 'app', to: 'as', label: 'POST /token（code + code_verifier）', kind: 'back' }],
+    text: 'ここで初めて、ブラウザを通さずにアプリが認可サーバーと直接話します。認可コードと一緒に、ずっと隠していた合言葉 code_verifier を見せます。認可サーバーは SHA256(code_verifier) を計算し、ステップ2で預かった code_challenge と一致するかを確かめます。認可コードを横取りした攻撃者は合言葉を知らないので、ここで弾かれます。これがPKCEです。',
+    payload: 'POST /token\n  grant_type=authorization_code\n  code=XyVvY9sQGi57prS1QJ7SRw\n  redirect_uri=http://localhost:4002/callback\n  client_id=photo-print-app\n  code_verifier=96yzRwbnFWX-VjFCgQ…\n\n認可サーバー: SHA256(code_verifier) == 預かった code_challenge ?',
+    holds: [['code_verifier', true], ['認可コード', false]],
+  },
+  {
+    title: 'アクセストークン（鍵）を受け取る',
+    route: '認可サーバー → アプリ（直接）', kind: 'back',
+    arrows: [{ from: 'as', to: 'app', label: 'access_token / refresh_token', kind: 'back' }],
+    text: '照合が通ると、認可サーバーはアクセストークンとリフレッシュトークンを返します。認可コードは使用済みとして捨てられ、アプリも合言葉はもう使わないので捨てます。トークンは直接通信でしか運ばれないので、ブラウザのURLや履歴には一度も残りません。モバイルアプリならKeychain / Keystoreに保存します。',
+    payload: '200 OK\n{\n  "access_token": "eyJhbGciOiJIUzI1NiIs…",   ← JWT。scope: "photos.read"\n  "token_type": "Bearer",\n  "expires_in": 300,\n  "refresh_token": "AgkvgJrT862X1ERbdt…"\n}',
+    holds: [['access_token', false], ['refresh_token', false]],
+  },
+  {
+    title: '鍵を見せて写真APIを呼ぶ',
+    route: 'アプリ → 写真API（直接）', kind: 'back',
+    arrows: [{ from: 'app', to: 'rs', label: 'GET /photos（Bearer トークン）', kind: 'back' }],
+    text: 'アプリは Authorization: Bearer でアクセストークンを送ります。写真APIはパスワードもログイン画面も知りません。トークンの署名・期限・宛先（aud）を確かめたうえで、スコープに photos.read があるかを見ます。',
+    payload: 'GET /photos\nAuthorization: Bearer eyJhbGciOiJIUzI1NiIs…',
+    holds: [['access_token', false], ['refresh_token', false]],
+  },
+  {
+    title: '許された範囲のデータだけが返ってくる',
+    route: '写真API → アプリ（直接）', kind: 'back',
+    arrows: [{ from: 'rs', to: 'app', label: '写真一覧（200）', kind: 'back' }],
+    text: 'スコープが足りていれば写真が返ってきます。同じトークンで削除（photos.write が必要）を頼むと、403 insufficient_scope で断られます。アクセストークンの期限が切れたら、リフレッシュトークンで認可サーバーから新しい鍵をもらいます（ステップ6〜7と同じ直接通信で、画面は出ません）。',
+    payload: '200 OK\n{ "photos": [ { "title": "富士山" }, { "title": "海辺の夕日" }, { "title": "紅葉" } ] }\n\nDELETE /photos/1 → 403 insufficient_scope（photos.write がない）',
+    holds: [['access_token', false], ['refresh_token', false]],
+  },
+];
+
+const NS = 'http://www.w3.org/2000/svg';
+const svg = document.getElementById('seq');
+const el = (name, attrs = {}, text) => {
+  const n = document.createElementNS(NS, name);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (text != null) n.textContent = text;
+  return n;
+};
+const kindColor = { front: 'var(--front)', back: 'var(--back)', user: 'var(--as)', self: 'var(--app)' };
+
+// 矢じり（種類ごとに色を分ける）
+const defs = el('defs');
+for (const [k, c] of Object.entries(kindColor)) {
+  const m = el('marker', { id: `ah-${k}`, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' });
+  m.appendChild(el('path', { d: 'M0 0 L10 5 L0 10 z', fill: c }));
+  defs.appendChild(m);
+}
+svg.appendChild(defs);
+
+// ライフライン
+const TOP = 74, ROW = 30, STEP_GAP = 12;
+let totalRows = STEPS.reduce((n, s) => n + s.arrows.length, 0);
+const BOTTOM = TOP + 20 + totalRows * ROW + STEPS.length * STEP_GAP + 34;
+svg.setAttribute('viewBox', `0 0 760 ${BOTTOM + 10}`);
+for (const lane of Object.values(LANES)) {
+  svg.appendChild(el('rect', { x: lane.x - 70, y: 10, width: 140, height: 46, rx: 6, fill: 'var(--surface)', stroke: `var(${lane.color})`, 'stroke-width': 1.5 }));
+  svg.appendChild(el('text', { x: lane.x, y: 30, 'text-anchor': 'middle', 'font-size': 13.5, 'font-weight': 700, fill: `var(${lane.color})` }, lane.name));
+  svg.appendChild(el('text', { x: lane.x, y: 47, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--muted)' }, lane.sub));
+  svg.appendChild(el('line', { x1: lane.x, y1: 56, x2: lane.x, y2: BOTTOM, stroke: 'var(--line)', 'stroke-width': 1.5, 'stroke-dasharray': '4 4' }));
+}
+
+// 段階の区切り（A/B/C）
+const groups = [];
+let y = TOP + 16;
+STEPS.forEach((s, i) => {
+  const g = el('g', { class: 'arrow', 'data-step': i, tabindex: 0, role: 'button', 'aria-label': `ステップ${i + 1}: ${s.title}` });
+  const yStart = y;
+  s.arrows.forEach((a) => {
+    const color = kindColor[a.kind];
+    if (a.kind === 'self') {
+      const x = LANES[a.from].x;
+      g.appendChild(el('path', { d: `M${x} ${y - 6} h46 v16 h-42`, fill: 'none', stroke: color, 'stroke-width': 2, 'marker-end': `url(#ah-${a.kind})` }));
+      g.appendChild(el('text', { class: 'lbl', x: x + 54, y: y + 6, 'font-size': 12, fill: 'currentColor' }, a.label));
+    } else {
+      const x1 = LANES[a.from].x, x2 = LANES[a.to].x;
+      const dir = Math.sign(x2 - x1);
+      g.appendChild(el('line', { x1, y1: y, x2: x2 - dir * 4, y2: y, stroke: color, 'stroke-width': 2, 'marker-end': `url(#ah-${a.kind})` }));
+      g.appendChild(el('text', { class: 'lbl', x: (x1 + x2) / 2, y: y - 7, 'text-anchor': 'middle', 'font-size': 12, fill: 'currentColor' }, a.label));
+    }
+    y += ROW;
+  });
+  // ステップ番号
+  const badge = el('g', { class: 'badge' });
+  const cy = (yStart + y - ROW) / 2;
+  badge.appendChild(el('circle', { cx: 22, cy, r: 11, fill: 'var(--muted)' }));
+  badge.appendChild(el('text', { x: 22, y: cy + 4, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: 'var(--surface)' }, String(i + 1)));
+  g.appendChild(badge);
+  // クリック範囲
+  g.insertBefore(el('rect', { x: 4, y: yStart - 22, width: 752, height: y - yStart + 8, fill: 'transparent' }), g.firstChild);
+  svg.appendChild(g);
+  groups.push(g);
+  y += STEP_GAP;
+  if (i === 4 || i === 6) {
+    // 段階A/B/Cの区切り。前のステップの矢印と、次のステップのラベルの間に引く
+    const lineY = y - STEP_GAP - ROW + 14;
+    svg.appendChild(el('line', { x1: 40, y1: lineY, x2: 740, y2: lineY, stroke: 'var(--line)', 'stroke-width': 1 }));
+    y += 12;
+  }
+});
+
+// 状態とカード
+let current = 0, showAll = false;
+let live = {};
+const card = document.getElementById('card');
+const chipClass = { front: 'front', back: 'back', inside: 'inside', user: 'user' };
+const chipText = { front: 'ブラウザ経由', back: '直接通信', inside: 'アプリの中', user: '画面操作' };
+const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
+
+function render() {
+  groups.forEach((g, i) => {
+    g.classList.remove('past', 'current', 'future');
+    g.classList.add(showAll ? 'current' : i < current ? 'past' : i === current ? 'current' : 'future');
+    g.querySelector('.badge circle').setAttribute('fill', !showAll && i === current ? 'var(--front)' : live[i] ? 'var(--back)' : 'var(--muted)');
+  });
+  const s = STEPS[current];
+  card.innerHTML = `
+    <div class="route"><span class="chip ${chipClass[s.kind]}">${chipText[s.kind]}</span>${esc(s.route)}</div>
+    <h3>${current + 1}. ${esc(s.title)}</h3>
+    <p>${esc(s.text)}</p>
+    ${hiddenNote(current)}
+    <div class="payload-label">${live[current] ? '<b>実際の値</b>（さっきのログインでアプリが送受信したもの）' : '例'}</div>
+    <pre>${esc(live[current] || s.payload)}</pre>
+    <div class="holds"><span class="label">このときアプリが持っているもの</span>${s.holds.map(([n, secret]) => `<span class="hold${secret ? ' secret' : ''}">${esc(n)}${secret ? '（秘密）' : ''}</span>`).join('')}</div>`;
+  document.getElementById('counter').textContent = `${current + 1} / ${STEPS.length}`;
+  document.getElementById('prev').disabled = current === 0;
+  document.getElementById('next').disabled = current === STEPS.length - 1;
+  document.getElementById('all').textContent = showAll ? '1ステップずつ見る' : '全体を見る';
+}
+
+// ステップ3〜4は認可サーバーの中で起きるので、アプリには記録が残らない
+function hiddenNote(i) {
+  if (!Object.keys(live).length || live[i] || (i !== 2 && i !== 3)) return '';
+  return '<div class="hidden-step">このステップは認可サーバーとあなたの間で起きるので、アプリには記録が残りません。アプリはパスワードも同意の操作も見ていない、ということです。ターミナルの [認可サーバー] のログで確かめられます。</div>';
+}
+
+fetch('/flow.json').then((r) => r.json()).then((data) => {
+  live = data;
+  const n = Object.keys(live).length;
+  document.getElementById('live').textContent = n
+    ? `さっきのログインの記録を読み込みました。緑の番号のステップは実際に通ったもので、カードに実際の値が出ます（${n}ステップ分）。`
+    : 'まだ記録がありません。写真印刷アプリでログインすると、ここに実際の値が入ります。';
+  render();
+}).catch(() => {
+  document.getElementById('live').textContent = '記録を読み込めませんでした。node start.js で起動したアプリから開いてください。';
+});
+
+const go = (i) => { current = Math.max(0, Math.min(STEPS.length - 1, i)); showAll = false; render(); };
+document.getElementById('prev').onclick = () => go(current - 1);
+document.getElementById('next').onclick = () => go(current + 1);
+document.getElementById('all').onclick = () => { showAll = !showAll; render(); };
+groups.forEach((g, i) => {
+  g.addEventListener('click', () => go(i));
+  g.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(i); } });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.target.closest && e.target.closest('g.arrow')) return;
+  if (e.key === 'ArrowRight') go(current + 1);
+  if (e.key === 'ArrowLeft') go(current - 1);
+});
+render();
+</script>
+</body>
+</html>
