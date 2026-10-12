@@ -7,6 +7,8 @@
 // モバイルなら、code_verifier はメモリ、トークンは Keychain / Keystore に置くところ。
 
 const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
 const {
   randomString, pkceChallenge, decodeJwt, readBody, sendHtml, redirect, escapeHtml, page,
 } = require('./common');
@@ -23,11 +25,13 @@ const app = {
   tokens: null, // { access_token, refresh_token, ... }
   photos: null,
   steps: [], // 画面に出す「いま何が起きたか」の記録
+  flow: {}, // 図解ページ（/flow）に出す実際の値。キーは図のステップ番号（0始まり）
 };
 
 const log = (msg) => console.log(`[クライアント] ${msg}`);
 const step = (title, detail, ok = true) => app.steps.push({ title, detail, ok });
 const json = (obj) => JSON.stringify(obj, null, 2);
+const FLOW_HTML = path.join(__dirname, 'flow.html');
 
 async function callToken(params) {
   const res = await fetch(`${AUTH}/token`, {
@@ -74,6 +78,7 @@ function renderHome() {
 
   return page('写真印刷アプリ', `クライアント（写真印刷アプリ） http://localhost:${PORT}`, '#1565c0', `
     <h1>写真印刷アプリ</h1>
+    <p><a href="/flow">この流れを図で見る</a>（ログインしたあとに開くと、実際の値が図に入ります）</p>
     ${t ? loggedIn : loggedOut}
     <h2>何が起きたか</h2>
     ${steps || '<p class="note">まだ何も起きていません。</p>'}
@@ -85,6 +90,13 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === 'GET' && url.pathname === '/') return sendHtml(res, 200, renderHome());
 
+  // 図解ページと、そこに流し込む実際の値
+  if (req.method === 'GET' && url.pathname === '/flow') return sendHtml(res, 200, fs.readFileSync(FLOW_HTML, 'utf8'));
+  if (req.method === 'GET' && url.pathname === '/flow.json') {
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+    return res.end(JSON.stringify(app.flow));
+  }
+
   // 「PhotoAuth でログイン」: PKCE の値を作って、ブラウザを認可サーバーへ送り出す
   if (req.method === 'POST' && url.pathname === '/login') {
     const f = await readBody(req);
@@ -95,6 +107,7 @@ const server = http.createServer(async (req, res) => {
     app.pending = { state, codeVerifier };
     app.steps = [];
     app.photos = null;
+    app.flow = {};
 
     const authorizeUrl = new URL(`${AUTH}/authorize`);
     Object.entries({
@@ -106,6 +119,8 @@ const server = http.createServer(async (req, res) => {
       `code_verifier  = ${codeVerifier}   ← アプリのメモリにだけ置く\ncode_challenge = SHA256(code_verifier) = ${codeChallenge}\nstate          = ${state}`);
     step('ブラウザを認可サーバーへリダイレクト（認可リクエスト）',
       `GET ${AUTH}/authorize\n${[...authorizeUrl.searchParams].map(([k, v]) => `  ${k}=${v}`).join('\n')}`);
+    app.flow[0] = `code_verifier  = ${codeVerifier}   （秘密。アプリだけが持つ）\ncode_challenge = ${codeChallenge}   （SHA256した指紋）\nstate          = ${state}`;
+    app.flow[1] = `GET ${AUTH}/authorize?\n${[...authorizeUrl.searchParams].map(([k, v]) => `  ${k}=${v}`).join('\n')}`;
     log(`認可サーバーへリダイレクト（scope="${scope}"）`);
     return redirect(res, authorizeUrl.toString());
   }
@@ -114,6 +129,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'GET' && url.pathname === '/callback') {
     const q = Object.fromEntries(url.searchParams);
     step('認可サーバーからアプリに戻ってきた（リダイレクト）', `GET ${REDIRECT_URI}?${url.searchParams}`);
+    app.flow[4] = `GET ${REDIRECT_URI}?\n${[...url.searchParams].map(([k, v]) => `  ${k}=${v}`).join('\n')}\n\nstate の照合: ${q.state === app.pending?.state ? '一致（自分が始めたログインの続き）' : '不一致'}`;
 
     if (q.error) {
       step(`認可されなかった: ${q.error}`, q.error_description || '', false);
@@ -135,6 +151,8 @@ const server = http.createServer(async (req, res) => {
     const { status, body } = await callToken(params);
     step('認可コードとcode_verifierを送って、トークンに引き換える',
       `POST ${AUTH}/token\n${Object.entries(params).map(([k, v]) => `  ${k}=${v}`).join('\n')}\n\n→ ${status}\n${json(body)}`, status === 200);
+    app.flow[5] = `POST ${AUTH}/token\n${Object.entries(params).map(([k, v]) => `  ${k}=${v}`).join('\n')}`;
+    app.flow[6] = `${status}\n${json(body)}`;
     app.pending = null; // code_verifier はもう使わないので捨てる
     if (status === 200) {
       app.tokens = body;
@@ -146,12 +164,16 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'POST' && url.pathname === '/photos') {
     const r = await callApi('GET', '/photos');
     if (r.status === 200) app.photos = r.body.photos;
+    app.flow[7] = `GET ${API}/photos\nAuthorization: Bearer ${app.tokens?.access_token}`;
+    app.flow[8] = `${r.status}\n${json(r.body)}`;
     step('アクセストークンで写真APIを呼ぶ', `GET ${API}/photos\nAuthorization: Bearer ${app.tokens?.access_token.slice(0, 24)}…\n\n→ ${r.status}\n${json(r.body)}`, r.status === 200);
     return redirect(res, '/');
   }
 
   if (req.method === 'POST' && url.pathname === '/delete') {
     const r = await callApi('DELETE', '/photos/1');
+    app.flow[7] = `DELETE ${API}/photos/1\nAuthorization: Bearer ${app.tokens?.access_token}`;
+    app.flow[8] = `${r.status}\n${json(r.body)}`;
     step(r.status === 403 ? '削除は許可されていない → 403（スコープ不足）' : '写真1を削除する',
       `DELETE ${API}/photos/1\n\n→ ${r.status}\n${json(r.body)}${r.wwwAuth ? `\nWWW-Authenticate: ${decodeURIComponent(r.wwwAuth)}` : ''}`, r.status === 200);
     return redirect(res, '/');
