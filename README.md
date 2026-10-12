@@ -29,7 +29,8 @@
       └─ entries/{カテゴリ}.html     カテゴリ別ページ
 └─ labs/                            学習用の実験コード(スキルを持たない)
    ├─ session-auth/                 セッション方式の認証を体感するサーバー
-   └─ token-auth/                   トークン方式(JWT)の認証を体感するサーバー
+   ├─ token-auth/                   トークン方式(JWT)の認証を体感するサーバー
+   └─ oauth-pkce/                   OAuth 2.0(Authorization Code Flow + PKCE)を体感するサーバー群
 ```
 
 ## ルール
@@ -83,3 +84,4 @@
 
 - `labs/session-auth/`: セッション方式の認証(Cookie + サーバー側セッション表)を体感する。`node server.js` で起動。
 - `labs/token-auth/`: トークン方式の認証(JWT + リフレッシュトークン)を体感する。`node server.js` で起動。
+- `labs/oauth-pkce/`: OAuth 2.0 の認可サーバー・リソースサーバー・クライアントを別々に動かし、Authorization Code Flow + PKCE を体感する。`node start.js` で起動。
