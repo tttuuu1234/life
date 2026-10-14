@@ -2,8 +2,9 @@
 // 役割: ユーザーを認証し、同意をもらい、クライアントにトークンを発行する。
 
 const http = require('node:http');
+const crypto = require('node:crypto');
 const {
-  signJwt, randomString, pkceChallenge, readBody, sendJson, sendHtml, redirect, escapeHtml, page,
+  signJwt, verifyJwt, randomString, pkceChallenge, readBody, sendJson, sendHtml, redirect, escapeHtml, page,
 } = require('./common');
 
 const PORT = Number(process.env.AUTH_PORT || 4000);
@@ -19,22 +20,42 @@ const clients = new Map([
     name: '写真印刷アプリ',
     redirectUris: [`http://localhost:${process.env.CLIENT_PORT || 4002}/callback`],
   }],
+  // OIDC のデモ用に、もう1つ別のアプリを登録しておく（攻撃者が公開した「占いアプリ」という設定）。
+  // 起動はしない。demo.sh がこのアプリになりすまして、alice のトークンを手に入れるのに使う。
+  ['fortune-app', {
+    name: '占いアプリ',
+    redirectUris: ['http://localhost:4003/callback'],
+  }],
 ]);
 
 // このサーバーにアカウントを持つユーザー（Googleアカウントにあたる）
-const users = new Map([['alice', { id: '1', name: 'alice', password: 'password' }]]);
+const users = new Map([['alice', { id: '1', name: 'alice', email: 'alice@example.com', password: 'password' }]]);
 
 const SCOPES = {
+  openid: 'あなたが誰かをアプリに伝える（ログイン）',
+  email: 'メールアドレスを見る',
   'photos.read': '写真を見る',
   'photos.write': '写真を削除する',
 };
 
-const authCodes = new Map(); // code -> { clientId, redirectUri, scope, userId, codeChallenge, expiresAt }
+const authCodes = new Map(); // code -> { clientId, redirectUri, scope, userId, codeChallenge, nonce, expiresAt }
 const refreshTokens = new Map(); // refreshToken -> { clientId, scope, userId }
 
 const log = (msg) => console.log(`[認可サーバー] ${msg}`);
 
-function issueTokens({ clientId, scope, userId }) {
+// IDトークンの署名用の鍵ペア（RS256）。秘密鍵で署名し、公開鍵は /jwks で誰にでも公開する。
+// アプリは公開鍵で署名を検証するので、署名用の秘密をアプリに渡さずに済む（HS256との違い）。
+const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
+const KID = 'lab-key-1';
+const JWKS = { keys: [{ ...publicKey.export({ format: 'jwk' }), kid: KID, alg: 'RS256', use: 'sig' }] };
+
+function signIdToken(payload) {
+  const b64 = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+  const data = `${b64({ alg: 'RS256', typ: 'JWT', kid: KID })}.${b64(payload)}`;
+  return `${data}.${crypto.sign('sha256', Buffer.from(data), privateKey).toString('base64url')}`;
+}
+
+function issueTokens({ clientId, scope, userId, nonce }) {
   const now = Math.floor(Date.now() / 1000);
   const accessToken = signJwt({
     iss: ISSUER, // 発行者
@@ -47,7 +68,23 @@ function issueTokens({ clientId, scope, userId }) {
   });
   const refreshToken = randomString();
   refreshTokens.set(refreshToken, { clientId, scope, userId });
-  return { access_token: accessToken, token_type: 'Bearer', expires_in: ACCESS_TTL_SEC, refresh_token: refreshToken, scope };
+  const tokens = { access_token: accessToken, token_type: 'Bearer', expires_in: ACCESS_TTL_SEC, refresh_token: refreshToken, scope };
+
+  // scope に openid があれば、IDトークン（このアプリ宛ての身分証）も発行する。これが OpenID Connect
+  if (scope.split(' ').includes('openid')) {
+    const user = [...users.values()].find((u) => u.id === userId);
+    tokens.id_token = signIdToken({
+      iss: ISSUER, // 誰が発行したか
+      sub: userId, // 誰がログインしたか（この発行者の中で一意・不変）
+      aud: clientId, // ★ どのアプリ宛てか。アクセストークンの aud（photo-api）とは違う
+      iat: now,
+      exp: now + ACCESS_TTL_SEC,
+      ...(nonce ? { nonce } : {}), // ★ ログイン開始時にアプリが作った値をそのまま入れて返す
+      name: user.name,
+      ...(scope.split(' ').includes('email') ? { email: user.email } : {}),
+    });
+  }
+  return tokens;
 }
 
 const tokenError = (res, error, description) => sendJson(res, 400, { error, error_description: description });
@@ -120,6 +157,7 @@ const server = http.createServer(async (req, res) => {
       scope: f.scope,
       userId: user.id,
       codeChallenge: f.code_challenge, // あとで code_verifier と照合するために覚えておく
+      nonce: f.nonce, // OIDC: IDトークンに入れて返すために覚えておく
       expiresAt: Date.now() + CODE_TTL_SEC * 1000,
     });
     log(`${user.name} が許可 → 認可コード ${code.slice(0, 8)}… を発行し、アプリへリダイレクト`);
@@ -157,6 +195,39 @@ const server = http.createServer(async (req, res) => {
     }
 
     return tokenError(res, 'unsupported_grant_type', 'authorization_code か refresh_token を指定してください');
+  }
+
+  // OIDC: 認可サーバーの設定を公開する（アプリやライブラリはここを読んで各URLや公開鍵の場所を知る）
+  if (req.method === 'GET' && url.pathname === '/.well-known/openid-configuration') {
+    return sendJson(res, 200, {
+      issuer: ISSUER,
+      authorization_endpoint: `${ISSUER}/authorize`,
+      token_endpoint: `${ISSUER}/token`,
+      userinfo_endpoint: `${ISSUER}/userinfo`,
+      jwks_uri: `${ISSUER}/jwks`,
+      scopes_supported: Object.keys(SCOPES),
+      response_types_supported: ['code'],
+      id_token_signing_alg_values_supported: ['RS256'],
+      code_challenge_methods_supported: ['S256'],
+    });
+  }
+
+  // OIDC: IDトークンを検証するための公開鍵
+  if (req.method === 'GET' && url.pathname === '/jwks') return sendJson(res, 200, JWKS);
+
+  // OIDC: アクセストークンで呼ぶと、そのトークンの持ち主のプロフィールを返す
+  if (req.method === 'GET' && url.pathname === '/userinfo') {
+    const [scheme, token] = (req.headers.authorization || '').split(' ');
+    try {
+      if (scheme !== 'Bearer') throw new Error('Bearer トークンがありません');
+      const claims = verifyJwt(token);
+      if (!claims.scope.split(' ').includes('openid')) throw new Error('openid スコープがありません');
+      const user = [...users.values()].find((u) => u.id === claims.sub);
+      log(`/userinfo: アクセストークン（${claims.client_id} 宛てに発行したもの）の持ち主 ${user.name} を返す`);
+      return sendJson(res, 200, { sub: user.id, name: user.name, email: user.email });
+    } catch (e) {
+      return sendJson(res, 401, { error: 'invalid_token', error_description: e.message });
+    }
   }
 
   // アプリ連携の解除（Googleの「サードパーティアクセス」画面で解除するのにあたる）
