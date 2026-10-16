@@ -7,7 +7,7 @@ iPhone の Flutter アプリから **Face ID でパスキーログイン**する
 [Flutter アプリ（iPhone）] ──HTTPS──> [ngrok] ──> [このサーバー（Mac の localhost:4200）]
    ・Associated Domains                          ・チャレンジを発行
    ・passkeys パッケージ                         ・署名を検証（SimpleWebAuthn）
-                                                 ・apple-app-site-association を配る
+                                                 ・public/.well-known/ に置いたファイルを配る
 ```
 
 ## はんこにたとえると
@@ -29,21 +29,52 @@ iPhone の Flutter アプリから **Face ID でパスキーログイン**する
 2. `brew install ngrok` でインストールし、管理画面に出ているコマンドで authtoken を設定する
 3. 管理画面の **Domains** で、無料の固定ドメイン（`xxxx.ngrok-free.app` のような形）を取得する
 
-### 2. サーバーを起動する
+### 2. apple-app-site-association を自分で置く
+
+ドメイン側の「このアプリは仲間です」という宣言です。本番の Web サーバー（nginx、Firebase Hosting など）と同じく、**決まった場所にファイルを置く**と、サーバーがそのまま配ります。
+
+置く場所:
+
+```
+labs/passkey-server/public/.well-known/apple-app-site-association
+```
+
+- **拡張子は付けません**（`.json` を付けない）。中身は JSON です。
+- `public/.well-known/` フォルダも自分で作ります。
+
+中身の形:
+
+```json
+{
+  "webcredentials": {
+    "apps": ["<チームID>.<バンドルID>"]
+  }
+}
+```
+
+| 入れるもの | 中身 | どこで分かるか |
+|---|---|---|
+| チームID | Apple のチームID（英数字10文字） | Apple Developer の Membership details、または Xcode の Signing & Capabilities |
+| バンドルID | Flutter アプリのバンドルID | Xcode の Signing & Capabilities |
+
+`webcredentials` はパスキー用の項目です。ユニバーサルリンクも使うときは、同じファイルに `applinks` の項目を足します。
+
+本番で配置するときに気をつけること（このサーバーでは満たしてあります）:
+
+- `https://<ドメイン>/.well-known/apple-app-site-association` で取れること（HTTPS 必須、リダイレクトしない）
+- `Content-Type: application/json` で返すこと
+
+### 3. サーバーを起動する
 
 ```bash
 cd labs/passkey-server
 npm install
-RP_ID=xxxx.ngrok-free.app TEAM_ID=ABCDE12345 BUNDLE_ID=com.example.passkeyLab node server.js
+RP_ID=xxxx.ngrok-free.app node server.js
 ```
 
-| 環境変数 | 中身 | どこで分かるか |
-|---|---|---|
-| `RP_ID` | ngrok の固定ドメイン（`https://` は付けない） | ngrok の管理画面 |
-| `TEAM_ID` | Apple のチームID（10文字） | Apple Developer の Membership details |
-| `BUNDLE_ID` | Flutter アプリのバンドルID | Xcode の Signing & Capabilities |
+`RP_ID` は ngrok の固定ドメインです（`https://` は付けない）。起動ログの「配るファイル」に `apple-app-site-association（あり）` と出ていれば、ファイルを読めています。
 
-### 3. ngrok で公開する
+### 4. ngrok で公開する
 
 別のターミナルで:
 
@@ -51,19 +82,19 @@ RP_ID=xxxx.ngrok-free.app TEAM_ID=ABCDE12345 BUNDLE_ID=com.example.passkeyLab no
 ngrok http --url=xxxx.ngrok-free.app 4200
 ```
 
-### 4. apple-app-site-association が見えるか確かめる
+### 5. apple-app-site-association が見えるか確かめる
 
 ```bash
 curl -i https://xxxx.ngrok-free.app/.well-known/apple-app-site-association
 ```
 
-`{"webcredentials":{"apps":["ABCDE12345.com.example.passkeyLab"]}}` が `Content-Type: application/json` で返ってくればOKです。
+置いたファイルの中身が `Content-Type: application/json` で返ってくればOKです。404 なら、置き場所かファイル名（拡張子なし）を見直してください。
 ngrok の警告ページ（HTML）が返ってくる場合は、下の「うまくいかないとき」を見てください。
 
 ## 準備（Xcode と iPhone）
 
 1. Flutter プロジェクトの `ios/Runner.xcworkspace` を Xcode で開く
-2. **Signing & Capabilities** で、Team に有料の開発者アカウントを選び、Bundle Identifier を `BUNDLE_ID` と同じにする
+2. **Signing & Capabilities** で、Team に有料の開発者アカウントを選び、Bundle Identifier を apple-app-site-association に書いたバンドルIDと同じにする
 3. **+ Capability** から **Associated Domains** を追加し、次の1行を入れる
 
    ```
@@ -142,12 +173,12 @@ ngrok の警告ページ（HTML）が返ってくる場合は、下の「うま�
 | リクエスト | 中身 |
 |---|---|
 | `GET /debug/state` | サーバーに保存されているもの（ユーザーと印影の一覧）。パスワードも秘密鍵もないことが分かる |
-| `GET /.well-known/apple-app-site-association` | iOS が「このドメインはどのアプリを仲間と認めているか」を確かめに来るファイル |
+| `GET /.well-known/apple-app-site-association` | `public/.well-known/` に置いたファイルをそのまま返す。iOS が「このドメインはどのアプリを仲間と認めているか」を確かめに来る |
 
 ## やってみる実験
 
 1. **登録 → ログイン → `/me`**：Face ID が出て、ログインできる。`/debug/state` に印影だけが保存されている
-2. **アプリを仲間から外す**：`TEAM_ID` か `BUNDLE_ID` をわざと違う値にしてサーバーを再起動し、アプリを入れ直す → パスキーが使えなくなる
+2. **アプリを仲間から外す**：apple-app-site-association のアプリIDをわざと違う値に書き換え、アプリを入れ直す → パスキーが使えなくなる（ファイルは毎回読み直すので、サーバーの再起動は不要）
 3. **アプリ側の設定を外す**：Associated Domains の行を消してビルドし直す → 同じく使えなくなる
 4. **RP ID を変える**：アプリから送る RP ID を別のドメインにする → iOS が拒否する
 
@@ -159,6 +190,7 @@ ngrok の警告ページ（HTML）が返ってくる場合は、下の「うま�
 |---|---|
 | curl で ngrok の警告ページ（HTML）が返る | 無料プランでは、ブラウザからのアクセスに警告ページが挟まることがある。アプリからのAPI呼び出しには、ヘッダー `ngrok-skip-browser-warning: 1` を付けると確実 |
 | サーバーに apple-app-site-association を取りに来ない | iPhone の Associated Domains Development がオンか、Xcode の行に `?mode=developer` が付いているか、アプリを入れ直したか |
-| iOS で「アプリはこのドメインに関連付けられていません」系のエラー | ファイルの `TEAM_ID.BUNDLE_ID` と、Xcode のチーム・バンドルIDが一致しているか |
+| iOS で「アプリはこのドメインに関連付けられていません」系のエラー | ファイルに書いた `チームID.バンドルID` と、Xcode のチーム・バンドルIDが一致しているか |
+| `/.well-known/apple-app-site-association` が 404 | `public/.well-known/` に置いたか、ファイル名に拡張子が付いていないか |
 | `/login/verify` が「登録されていないパスキー」 | サーバーを再起動すると登録が消える（メモリ保存のため）。iPhone 側のパスキーは残るので、もう一度登録する |
 | 「オリジンが違います」 | iOS アプリのオリジンは `https://<RP_ID>` になる。`RP_ID` が ngrok のドメインと一致しているか |

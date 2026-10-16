@@ -3,7 +3,8 @@
 //
 // 起動:
 //   npm install
-//   RP_ID=xxxx.ngrok-free.app TEAM_ID=ABCDE12345 BUNDLE_ID=com.example.passkeyLab node server.js
+//   RP_ID=xxxx.ngrok-free.app node server.js
+//   apple-app-site-association は public/.well-known/ に自分で置く（README 参照）
 //
 // はんこにたとえると:
 //   秘密鍵 = はんこ本体（iPhone の中。サーバーには来ない）
@@ -14,6 +15,8 @@
 // 学習用なので、本番では使わないこと（データはメモリに置いているので再起動で消える）。
 
 const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
 const crypto = require('node:crypto');
 const {
   generateRegistrationOptions,
@@ -26,9 +29,9 @@ const PORT = Number(process.env.PORT || 4200);
 // RP ID = 「このパスキーはどのサイトのものか」。ngrok の固定ドメインを入れる（https:// は付けない）
 const RP_ID = process.env.RP_ID || 'localhost';
 const RP_NAME = 'パスキー実験室';
-// apple-app-site-association に書くアプリID（チームID.バンドルID）
-const TEAM_ID = process.env.TEAM_ID || 'TEAMID1234';
-const BUNDLE_ID = process.env.BUNDLE_ID || 'com.example.passkeyLab';
+// /.well-known/ で配るファイルの置き場所。本番の Web サーバーと同じく、置いたファイルをそのまま返す
+const WELL_KNOWN_DIR = path.join(__dirname, 'public', '.well-known');
+const WELL_KNOWN_FILES = ['apple-app-site-association', 'assetlinks.json'];
 // iOS アプリから来るパスキーのオリジンは https://<RP_ID> になる。動作確認用に追加のオリジンも渡せる
 const EXPECTED_ORIGINS = [`https://${RP_ID}`, ...(process.env.EXTRA_ORIGINS || '').split(',').filter(Boolean)];
 
@@ -75,11 +78,19 @@ const server = http.createServer(async (req, res) => {
   console.log(`${req.method} ${url.pathname}`);
 
   try {
-    // iOS が「このドメインはどのアプリを仲間と認めているか」を確かめに来るファイル
-    if (req.method === 'GET' && url.pathname === '/.well-known/apple-app-site-association') {
-      const appId = `${TEAM_ID}.${BUNDLE_ID}`;
-      log('apple-app-site-association を返した', [`webcredentials に ${appId} を載せている（取りに来たのは: ${req.headers['user-agent'] || '不明'}）`]);
-      return sendJson(res, 200, { webcredentials: { apps: [appId] } });
+    // iOS（や Android）が「このドメインはどのアプリを仲間と認めているか」を確かめに来るファイル。
+    // public/.well-known/ に置いたファイルを、そのまま application/json で返す
+    const wellKnown = url.pathname.match(/^\/\.well-known\/(.+)$/)?.[1];
+    if (req.method === 'GET' && wellKnown) {
+      const file = path.join(WELL_KNOWN_DIR, wellKnown);
+      if (!WELL_KNOWN_FILES.includes(wellKnown) || !fs.existsSync(file)) {
+        log(`${wellKnown} を取りに来たが、ファイルがない`, [`public/.well-known/${wellKnown} を置いてください`]);
+        return sendJson(res, 404, { error: `public/.well-known/${wellKnown} がありません` });
+      }
+      const content = fs.readFileSync(file, 'utf8');
+      log(`${wellKnown} を返した`, [`取りに来たのは: ${req.headers['user-agent'] || '不明'}`, ...content.trim().split('\n')]);
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(content);
     }
 
     // ① 登録の準備: 「はんこを作って」とお願いするための材料を返す
@@ -188,7 +199,6 @@ const server = http.createServer(async (req, res) => {
       return sendJson(res, 200, {
         rpId: RP_ID,
         expectedOrigins: EXPECTED_ORIGINS,
-        appId: `${TEAM_ID}.${BUNDLE_ID}`,
         users: [...users.values()],
         credentials: [...credentials].map(([id, c]) => ({
           id, username: c.username, publicKey: Buffer.from(c.publicKey).toString('base64url'), counter: c.counter, createdAt: c.createdAt,
@@ -213,6 +223,6 @@ server.listen(PORT, () => {
   log(`起動: http://localhost:${PORT}`, [
     `RP ID            = ${RP_ID}`,
     `期待するオリジン = ${EXPECTED_ORIGINS.join(', ')}`,
-    `アプリID         = ${TEAM_ID}.${BUNDLE_ID}（apple-app-site-association に載せる）`,
+    `配るファイル     = ${WELL_KNOWN_FILES.map((f) => `${f}${fs.existsSync(path.join(WELL_KNOWN_DIR, f)) ? '（あり）' : '（まだない）'}`).join(', ')}`,
   ]);
 });
