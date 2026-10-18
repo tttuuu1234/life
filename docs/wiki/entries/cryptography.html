@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="wiki-category" content="暗号技術">
+<title>暗号技術 - Personal Wiki</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a; --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b; }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ink); font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 780px; margin: 0 auto; padding: 16px 18px 40px; }
+.crumb { margin: 0 0 8px; font-size: 12px; }
+.crumb a { color: var(--sub); text-decoration: none; }
+.crumb a:hover { text-decoration: underline; }
+.crumb .sep { margin: 0 .4em; color: var(--sub); }
+
+/* ===== ヘッダー ===== */
+.head { padding: 12px 14px 14px; text-align: center; border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2); }
+.head .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.head h1 { margin: 4px 0 0; font-family: var(--display); font-weight: 400; line-height: 1.2; font-size: clamp(28px, 7vw, 48px); text-shadow: 3px 3px 0 var(--spot-soft); }
+.head .count { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+
+/* ===== 目次 ===== */
+.toc { margin: 20px 0; padding: 12px 16px; border: 1px solid var(--sub); background: var(--paper2); }
+.toc-title { margin: 0 0 6px; font-family: var(--display); font-size: 14px; letter-spacing: .2em; color: var(--spot); }
+.toc ol { margin: 0; padding-left: 1.6em; }
+.toc li { margin-bottom: 2px; font-size: 14px; }
+.toc a { text-decoration: none; color: var(--ink); }
+.toc a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+
+/* ===== エントリ ===== */
+.entries { margin-top: 24px; }
+.entry { padding: 18px 0; border-bottom: 1px dotted var(--sub); }
+.entry:first-child { padding-top: 0; }
+.entry-head { margin: 0 0 2px; font-family: var(--display); font-weight: 400; font-size: clamp(20px, 5vw, 28px); line-height: 1.3; text-shadow: 1.5px 1.5px 0 var(--spot-soft); }
+.entry-date { margin: 0 0 8px; font-size: 12px; color: var(--sub); }
+.entry-body { font-size: 14.5px; line-height: 1.85; text-align: justify; }
+.entry-body p { margin: 0 0 8px; }
+.entry-body p:last-child { margin-bottom: 0; }
+.entry-body strong { font-weight: 900; }
+.entry-body em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.entry-body code { font-family: "SF Mono", "Consolas", "Liberation Mono", "Menlo", monospace; font-size: 13px; padding: 1px 5px; background: var(--spot-soft); border-radius: 3px; }
+.entry-body pre { margin: 8px 0; padding: 12px 14px; background: var(--paper2); border: 1px solid var(--sub); border-radius: 4px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+.entry-body pre code { padding: 0; background: none; border-radius: 0; }
+.entry-body ul, .entry-body ol { margin: 6px 0; padding-left: 1.4em; }
+.entry-body li { margin-bottom: 4px; }
+.entry-body h4 { margin: 12px 0 4px; font-family: var(--display); font-weight: 400; font-size: 16px; }
+
+/* ===== 図解 ===== */
+.entry-figure { margin: 12px 0; text-align: center; overflow-x: auto; }
+.entry-figure svg { max-width: 100%; height: auto; }
+.entry-table { width: 100%; margin: 10px 0; border-collapse: collapse; font-size: 14px; }
+.entry-table th { padding: 6px 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; letter-spacing: .1em; text-align: left; }
+.entry-table td { padding: 6px 10px; border-bottom: 1px dotted var(--sub); }
+.entry-table tr:last-child td { border-bottom: none; }
+
+/* ===== フッター ===== */
+.foot { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .entry-body { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+  <p class="crumb"><a href="../../index.html">life 入口</a><span class="sep">/</span><a href="../index.html">Wiki</a></p>
+
+  <header class="head">
+    <p class="kicker">PERSONAL WIKI</p>
+    <h1>暗号技術</h1>
+    <p class="count">1件のエントリ</p>
+  </header>
+
+  <div class="entries">
+    <article class="entry" id="nonce">
+      <h2 class="entry-head">ノンス</h2>
+      <p class="entry-date">2026年10月18日</p>
+      <div class="entry-body">
+        <p><strong>ノンス</strong>（nonce、<em>number used once</em>）は、暗号化のたびに新しく用意する「1回だけ使う値」である。AES-GCM や ChaCha20-Poly1305 のように、同じ共通鍵で何度も暗号化する方式で必ず使う。<strong>秘密にする必要はなく</strong>、暗号文と一緒に保存・送信する。条件はただ1つ、<strong>同じ鍵で同じノンスを二度と使わないこと</strong>である。</p>
+
+        <h4>目隠しシートとしての仕組み</h4>
+        <p>AES-GCM は、共通鍵とノンスから、ランダムに見える数列（<strong>キーストリーム</strong>）を作り、メッセージに重ねて（XORして）暗号文にする。この数列は、メッセージに重ねる<strong>目隠しシート</strong>と考えると分かりやすい。ノンスが変わればシートもまったく別物になるため、同じ文を送っても毎回違う暗号文になる。</p>
+        <div class="entry-figure">
+          <svg viewBox="0 0 640 210" role="img" aria-label="共通鍵とノンスから目隠しシートを作り、メッセージに重ねて暗号文にする流れ" font-family="inherit">
+            <defs>
+              <marker id="nc-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker>
+            </defs>
+            <rect x="10" y="20" width="120" height="44" rx="6" fill="var(--paper2)" stroke="var(--ink)"/>
+            <text x="70" y="47" text-anchor="middle" font-size="14" fill="var(--ink)">共通鍵</text>
+            <rect x="10" y="80" width="120" height="44" rx="6" fill="var(--paper2)" stroke="var(--spot)" stroke-width="2"/>
+            <text x="70" y="107" text-anchor="middle" font-size="14" fill="var(--spot)">ノンス</text>
+            <text x="70" y="142" text-anchor="middle" font-size="12" fill="var(--sub)">毎回新しく作る</text>
+            <path d="M130 42 L190 68" stroke="var(--ink)" fill="none" marker-end="url(#nc-arr)"/>
+            <path d="M130 102 L190 78" stroke="var(--ink)" fill="none" marker-end="url(#nc-arr)"/>
+            <rect x="196" y="50" width="150" height="44" rx="6" fill="var(--spot-soft)" stroke="var(--spot)" stroke-dasharray="5 3"/>
+            <text x="271" y="77" text-anchor="middle" font-size="14" fill="var(--ink)">目隠しシート</text>
+            <rect x="196" y="150" width="150" height="44" rx="6" fill="var(--paper2)" stroke="var(--ink)"/>
+            <text x="271" y="177" text-anchor="middle" font-size="14" fill="var(--ink)">メッセージ</text>
+            <text x="404" y="128" text-anchor="middle" font-size="22" fill="var(--ink)">⊕</text>
+            <path d="M346 72 L392 112" stroke="var(--ink)" fill="none" marker-end="url(#nc-arr)"/>
+            <path d="M346 172 L392 136" stroke="var(--ink)" fill="none" marker-end="url(#nc-arr)"/>
+            <path d="M420 122 L472 122" stroke="var(--ink)" fill="none" marker-end="url(#nc-arr)"/>
+            <rect x="478" y="100" width="150" height="44" rx="6" fill="var(--ink)"/>
+            <text x="553" y="127" text-anchor="middle" font-size="14" fill="var(--paper)">暗号文 ＋ ノンス</text>
+            <text x="553" y="166" text-anchor="middle" font-size="12" fill="var(--sub)">この2つを保存・送信する</text>
+          </svg>
+        </div>
+
+        <h4>使い回すと起きること</h4>
+        <p>同じ鍵で同じノンスを使うと、<strong>同じ目隠しシート S</strong> が2回使われる。すると2つの暗号文を重ね合わせるだけでシートが打ち消し合って消え、メッセージ同士の関係がそのまま出てくる。</p>
+<pre><code>C1 = M1 ⊕ S        （1通目）
+C2 = M2 ⊕ S        （2通目、同じノンス → 同じ S）
+C1 ⊕ C2 = M1 ⊕ M2  （S が消える）</code></pre>
+        <p>さらに片方の本文が推測できると（「おはよう」のような決まり文句）、<code>C2 ⊕ M2</code> でシート S そのものが割り出され、もう片方の暗号文も読めてしまう。<strong>共通鍵は盗まれていない</strong>のに中身が漏れる点が重要である。</p>
+        <p>被害は読まれることにとどまらない。AES-GCM は改ざん検知用の<strong>タグ</strong>を、鍵から作った秘密の値 H を使って計算する。同じノンスの暗号文が2つそろうと、H を含む式が2本手に入り、H を逆算できてしまう。H が分かれば、書き換えた暗号文にも正しいタグを付けられ、受信側は偽物に気づけない。</p>
+
+        <h4>正しい使い方</h4>
+        <ul>
+          <li>暗号化のたびに、96ビット（12バイト）の乱数をノンスとして作る。多くのライブラリは指定しなければ自動で作る。</li>
+          <li>決して重複しない<strong>カウンター</strong>（1, 2, 3…）でもよいが、再インストールや複数端末で値が巻き戻らないよう管理が必要になる。</li>
+          <li>乱数のノンスでも偶然の一致はありうるため、1つの鍵で暗号化する回数には上限がある（NIST の目安は約40億回）。それを超える前に鍵を替える。</li>
+        </ul>
+
+        <h4>ほかの「1回だけの値」との違い</h4>
+        <table class="entry-table">
+          <thead><tr><th>名前</th><th>使う場所</th><th>目的</th></tr></thead>
+          <tbody>
+            <tr><td>暗号化のノンス</td><td>AES-GCM など</td><td>暗号文を毎回バラバラにし、シートの重複を防ぐ</td></tr>
+            <tr><td>OIDC の <code>nonce</code></td><td>IDトークン</td><td>古いIDトークンの使い回し（リプレイ）を防ぐ</td></tr>
+            <tr><td>チャレンジ</td><td>パスキーのログイン</td><td>古い署名の使い回し（リプレイ）を防ぐ</td></tr>
+          </tbody>
+        </table>
+        <p>どれも「毎回新しい値にして、前回のものと区別する」発想は共通だが、暗号化のノンスは重複すると暗号そのものが壊れる点で、扱いが最も厳しい。</p>
+      </div>
+    </article>
+  </div>
+
+  <footer class="foot">Personal Wiki は学んだことを蓄積する個人用百科事典です。</footer>
+</div>
+</body>
+</html>
