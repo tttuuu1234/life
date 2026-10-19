@@ -93,7 +93,7 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
   <header class="head">
     <p class="kicker">PERSONAL WIKI</p>
     <h1>認証・認可</h1>
-    <p class="count">10件のエントリ</p>
+    <p class="count">12件のエントリ</p>
   </header>
 
   <nav class="toc">
@@ -107,7 +107,9 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
       <li><a href="#session-authentication">セッション認証</a></li>
       <li><a href="#authorization-code">認可コード</a></li>
       <li><a href="#authentication-and-authorization">認証と認可</a></li>
+      <li><a href="#passkey">パスキー</a></li>
       <li><a href="#password-hashing">パスワードハッシュ</a></li>
+      <li><a href="#password-manager">パスワードマネージャー</a></li>
       <li><a href="#refresh-token">リフレッシュトークン</a></li>
     </ol>
   </nav>
@@ -607,6 +609,69 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
         <p>異なる要素を組み合わせる方式を<strong>多要素認証</strong>（MFA）という。</p>
       </div>
     </article>
+    <article class="entry" id="passkey">
+      <h2 class="entry-head">パスキー</h2>
+      <p class="entry-date">2026年10月19日</p>
+      <div class="entry-body">
+        <p><strong>パスキー</strong>は、パスワードの代わりに<strong>公開鍵暗号の鍵ペア</strong>で本人確認をするログイン方式である。W3C の <em>WebAuthn</em> と FIDO Alliance の仕様に基づく。秘密鍵は利用者の端末側に、公開鍵だけがサーバーに保存され、ログインのたびに端末が秘密鍵で署名し、サーバーが公開鍵で検証する。</p>
+
+        <h4>はんこと印影</h4>
+        <table class="entry-table">
+          <thead><tr><th>パスキー</th><th>たとえ</th><th>ある場所</th></tr></thead>
+          <tbody>
+            <tr><td>秘密鍵</td><td>はんこ本体</td><td>端末（iCloud キーチェーンなど）。外に出ない</td></tr>
+            <tr><td>公開鍵</td><td>登録した印影</td><td>サーバー</td></tr>
+            <tr><td>チャレンジ</td><td>日付入りの書類</td><td>サーバーが毎回作る</td></tr>
+            <tr><td>署名 / 検証</td><td>押印 / 印影との見比べ</td><td>端末が押し、サーバーが見比べる</td></tr>
+          </tbody>
+        </table>
+
+        <h4>ログインの流れ</h4>
+        <div class="entry-figure">
+          <svg viewBox="0 0 520 250" width="520" height="250" xmlns="http://www.w3.org/2000/svg" style="font-family: sans-serif;">
+            <defs>
+              <marker id="pk2-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)"/></marker>
+            </defs>
+            <rect x="20" y="16" width="140" height="40" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="90" y="34" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">端末</text>
+            <text x="90" y="49" text-anchor="middle" font-size="10" fill="var(--sub)">秘密鍵（はんこ）</text>
+            <line x1="90" y1="56" x2="90" y2="236" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <rect x="360" y="16" width="140" height="40" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="430" y="34" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">サーバー</text>
+            <text x="430" y="49" text-anchor="middle" font-size="10" fill="var(--sub)">公開鍵（印影）</text>
+            <line x1="430" y1="56" x2="430" y2="236" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <line x1="425" y1="84" x2="96" y2="84" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pk2-arr)"/>
+            <text x="260" y="78" text-anchor="middle" font-size="10.5" fill="var(--ink)">① チャレンジ（毎回新しい値）と RP ID</text>
+            <rect x="100" y="100" width="210" height="42" rx="5" fill="var(--spot-soft)" stroke="var(--spot)" stroke-width="1.2"/>
+            <text x="205" y="117" text-anchor="middle" font-size="10.5" fill="var(--ink)">② Face ID などで本人確認し、</text>
+            <text x="205" y="132" text-anchor="middle" font-size="10.5" fill="var(--ink)">チャレンジ＋オリジンに秘密鍵で署名</text>
+            <line x1="96" y1="164" x2="425" y2="164" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pk2-arr)"/>
+            <text x="260" y="158" text-anchor="middle" font-size="10.5" fill="var(--ink)">③ 署名を送る</text>
+            <rect x="250" y="176" width="172" height="42" rx="5" fill="var(--spot-soft)" stroke="var(--spot)" stroke-width="1.2"/>
+            <text x="336" y="193" text-anchor="middle" font-size="10.5" fill="var(--ink)">④ 公開鍵で検証</text>
+            <text x="336" y="208" text-anchor="middle" font-size="10.5" fill="var(--ink)">→ セッションを発行</text>
+          </svg>
+        </div>
+        <p>登録時は、端末がそのサイト専用の鍵ペアを作り、公開鍵だけをサーバーへ送る。パスキーが担当するのは<strong>ログインの瞬間の本人確認</strong>までで、ログイン後の状態はセッションやトークンで保持する。パスキーはパスワードの代わりであり、セッションやトークンの代わりではない。</p>
+
+        <h4>利点</h4>
+        <ul>
+          <li><strong>サーバーから漏れても使えない</strong>：サーバーにあるのは公開鍵だけで、パスワードのような秘密がない。</li>
+          <li><strong>使い回しが起きない</strong>：サイトごとに別の鍵ペアを作る。</li>
+          <li><strong>フィッシングに強い</strong>：パスキーは <strong>RP ID</strong>（ドメイン）に紐づいて保存され、ドメインが一致しないページでは、ブラウザや OS がそもそも使わせない。署名にはオリジンも含まれ、サーバー側でも確認する。</li>
+        </ul>
+
+        <h4>生体認証との関係</h4>
+        <p>Face ID や指紋は、端末の中の秘密鍵を使うための<strong>鍵</strong>にすぎず、生体情報はサーバーに送られない。「生体認証でログイン」をうたう多くのアプリは、生体認証で Keychain からパスワードやトークンを取り出して送っているだけで、送っているのは結局パスワードである。パスキーは、秘密鍵を外に出さずに署名だけを送る点が異なる。</p>
+
+        <h4>保存先とネイティブアプリ</h4>
+        <ul>
+          <li>主流は<strong>同期されるパスキー</strong>で、iCloud キーチェーン（「パスワード」アプリ）や Google パスワードマネージャーにエンドツーエンド暗号化で保存され、同じアカウントの端末で使える。秘密鍵そのものを表示する手段はない。</li>
+          <li>iOS アプリで使うには、サーバーの <code>/.well-known/apple-app-site-association</code> に <code>webcredentials</code> としてアプリID（<code>チームID.バンドルID</code>）を書き、アプリ側の <em>Associated Domains</em> に <code>webcredentials:ドメイン</code> を設定する。Android では <code>assetlinks.json</code> を使う。アプリとドメインが<strong>互いを指名している</strong>ときだけ使え、偽アプリは本物のパスキーを使えない。</li>
+        </ul>
+      </div>
+    </article>
+
     <article class="entry" id="password-hashing">
       <h2 class="entry-head">パスワードハッシュ</h2>
       <p class="entry-date">2026年10月10日</p>
@@ -653,6 +718,69 @@ const ok = await bcrypt.compare(password, stored); // ログイン時</code></pr
         </ul>
       </div>
     </article>
+    <article class="entry" id="password-manager">
+      <h2 class="entry-head">パスワードマネージャー</h2>
+      <p class="entry-date">2026年10月19日</p>
+      <div class="entry-body">
+        <p><strong>パスワードマネージャー</strong>は、サイトごとのIDとパスワード（最近はパスキーも）を保存し、自動入力するアプリである。長くランダムなパスワードの生成、端末間の同期、使い回しや流出したパスワードの警告も行う。iPhone・Mac の「パスワード」アプリ（iCloud キーチェーン）、Google パスワードマネージャー、1Password、Bitwarden などがある。</p>
+
+        <h4>なぜ必要か</h4>
+        <p>人が覚えられるパスワードには限界があり、短いものや使い回しになりやすい。使い回していると、1つのサイトから漏れただけで、ほかのサイトにも次々にログインされる（<strong>パスワードリスト攻撃</strong>）。パスワードマネージャーを使えば、覚えるのは<strong>マスターパスワード</strong>1つで済み、サイトごとに異なる強いパスワードを使える。</p>
+
+        <h4>マスターパスワード</h4>
+        <p>パスワードを保存している金庫を開けるための、ただ1つのパスワードである。1Password や Bitwarden では専用のものを決める。iPhone の「パスワード」アプリには専用のものがなく、<strong>端末のパスコード</strong>がその役割を兼ねる。Face ID はパスコードを毎回入力しないための近道で、失敗時や再起動直後はパスコードを求められるため、パスコードの強さが守りの土台になる。</p>
+
+        <h4>仕組み</h4>
+        <div class="entry-figure">
+          <svg viewBox="0 0 520 230" width="520" height="230" xmlns="http://www.w3.org/2000/svg" style="font-family: sans-serif;">
+            <defs>
+              <marker id="pm-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)"/></marker>
+            </defs>
+            <rect x="10" y="20" width="150" height="40" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="85" y="44" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">マスターパスワード</text>
+            <line x1="160" y1="40" x2="232" y2="40" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pm-arr)"/>
+            <text x="196" y="32" text-anchor="middle" font-size="9.5" fill="var(--sub)">遅いハッシュ</text>
+            <rect x="236" y="20" width="110" height="40" rx="5" fill="var(--spot-soft)" stroke="var(--spot)" stroke-width="1.2"/>
+            <text x="291" y="44" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">金庫の鍵</text>
+            <line x1="346" y1="40" x2="380" y2="40" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pm-arr)"/>
+            <rect x="384" y="12" width="126" height="56" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="447" y="34" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">金庫を暗号化</text>
+            <text x="447" y="52" text-anchor="middle" font-size="9.5" fill="var(--sub)">AES-GCM ＋ ノンス</text>
+            <rect x="10" y="88" width="500" height="22" rx="3" fill="none" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <text x="260" y="103" text-anchor="middle" font-size="10" fill="var(--sub)">ここまですべて端末の中。金庫の鍵はサーバーに送らない</text>
+            <line x1="447" y1="68" x2="447" y2="146" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pm-arr)"/>
+            <rect x="330" y="150" width="180" height="56" rx="5" fill="var(--ink)"/>
+            <text x="420" y="173" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--paper)">サーバー</text>
+            <text x="420" y="191" text-anchor="middle" font-size="9.5" fill="var(--paper)">暗号化された金庫だけを預かる</text>
+            <line x1="330" y1="178" x2="186" y2="178" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#pm-arr)"/>
+            <rect x="10" y="150" width="172" height="56" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="96" y="173" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">ほかの端末</text>
+            <text x="96" y="191" text-anchor="middle" font-size="9.5" fill="var(--sub)">自分で鍵を作って復号する</text>
+          </svg>
+        </div>
+        <ul>
+          <li>マスターパスワードを Argon2 や PBKDF2 のような<strong>わざと遅いハッシュ</strong>にかけて金庫の鍵を作る。暗号化された金庫が盗まれても、総当たりに時間がかかる。</li>
+          <li>金庫は端末の中で暗号化してから預ける<strong>エンドツーエンド暗号化</strong>で、運営会社にも中身は読めない（ゼロ知識）。</li>
+          <li>サービスへのログインには、金庫の鍵をさらにハッシュした値を使い、金庫の鍵そのものは送らない。1Password は端末に保存した<strong>シークレットキー</strong>も混ぜ、マスターパスワードが弱くても総当たりを難しくしている。</li>
+          <li>Face ID で開けられるのは、金庫の鍵を端末の Keychain に保存し、生体認証で守っているためである。</li>
+        </ul>
+
+        <h4>自動入力とフィッシング</h4>
+        <p>保存したパスワードは、<strong>登録したドメインと同じサイトでしか自動入力されない</strong>。いつもは自動入力されるサイトで候補が出ない場合は、偽サイトを疑う手がかりになる。ただし、手で入力すれば偽サイトにも渡せてしまうため、ドメインが合わないと使えないパスキーのほうが守りは強い。</p>
+
+        <h4>弱点</h4>
+        <table class="entry-table">
+          <thead><tr><th>弱点</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td>マスターパスワードを忘れる</td><td>運営会社も中身を読めないため、復旧できないことが多い</td></tr>
+            <tr><td>端末の感染</td><td>金庫を開けている間の中身を盗まれうる</td></tr>
+            <tr><td>暗号化された金庫の流出</td><td>2022年に LastPass で実際に起きた。弱いマスターパスワードや、ハッシュの回数が少ない古い設定の金庫は、時間をかければ解読されうる</td></tr>
+          </tbody>
+        </table>
+        <p>マスターパスワードは、長く、ほかで使っておらず、忘れないものにする。単語をつなげたパスフレーズが向いている。</p>
+      </div>
+    </article>
+
     <article class="entry" id="refresh-token">
       <h2 class="entry-head">リフレッシュトークン</h2>
       <p class="entry-date">2026年10月11日</p>

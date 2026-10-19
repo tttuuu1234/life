@@ -93,10 +93,76 @@ a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
   <header class="head">
     <p class="kicker">PERSONAL WIKI</p>
     <h1>暗号技術</h1>
-    <p class="count">1件のエントリ</p>
+    <p class="count">2件のエントリ</p>
   </header>
 
   <div class="entries">
+    <article class="entry" id="end-to-end-encryption">
+      <h2 class="entry-head">エンドツーエンド暗号化</h2>
+      <p class="entry-date">2026年10月19日</p>
+      <div class="entry-body">
+        <p><strong>エンドツーエンド暗号化</strong>（End-to-End Encryption、<strong>E2EE</strong>）は、通信の両端（送り手と受け手の端末）だけが中身を読めるようにする暗号化である。途中でデータを中継・保管するサーバーには暗号文しか渡らず、運営会社でも中身を読めない。LINE のトーク（<em>Letter Sealing</em>）、Signal、iCloud キーチェーンによるパスキーの同期、パスワードマネージャーの金庫などで使われている。</p>
+
+        <h4>HTTPS との違い</h4>
+        <table class="entry-table">
+          <thead><tr><th></th><th>HTTPS（TLS）</th><th>エンドツーエンド暗号化</th></tr></thead>
+          <tbody>
+            <tr><td>途中の盗聴者</td><td>読めない</td><td>読めない</td></tr>
+            <tr><td>サーバー</td><td><strong>読める</strong></td><td><strong>読めない</strong></td></tr>
+            <tr><td>鍵を持つのは</td><td>端末とサーバー</td><td>両端の端末だけ</td></tr>
+            <tr><td>向いている場面</td><td>サーバー自身が話し相手（ログイン、API）</td><td>サーバーが運び屋・倉庫（チャット、同期）</td></tr>
+          </tbody>
+        </table>
+        <p>API のサーバーはリクエストを読んで処理する必要があるため、HTTPS で途中の第三者からだけ守る。チャットのようにサーバーが運ぶだけの場面では、サーバーが読める必要がないので、サーバーにも読めないようにする。</p>
+
+        <h4>仕組み（LINE の Letter Sealing の例）</h4>
+        <div class="entry-figure">
+          <svg viewBox="0 0 520 270" width="520" height="270" xmlns="http://www.w3.org/2000/svg" style="font-family: sans-serif;">
+            <defs>
+              <marker id="e2e-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)"/></marker>
+            </defs>
+            <rect x="10" y="14" width="140" height="40" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="80" y="32" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">Aさんの端末</text>
+            <text x="80" y="47" text-anchor="middle" font-size="10" fill="var(--sub)">Aの秘密鍵</text>
+            <rect x="190" y="14" width="140" height="40" rx="5" fill="var(--paper2)" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <text x="260" y="32" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">サーバー</text>
+            <text x="260" y="47" text-anchor="middle" font-size="10" fill="var(--sub)">公開鍵の掲示板</text>
+            <rect x="370" y="14" width="140" height="40" rx="5" fill="var(--paper2)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="440" y="32" text-anchor="middle" font-size="12" font-weight="bold" fill="var(--ink)">Bさんの端末</text>
+            <text x="440" y="47" text-anchor="middle" font-size="10" fill="var(--sub)">Bの秘密鍵</text>
+            <line x1="80" y1="54" x2="80" y2="256" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <line x1="260" y1="54" x2="260" y2="256" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <line x1="440" y1="54" x2="440" y2="256" stroke="var(--sub)" stroke-dasharray="4 3"/>
+            <line x1="255" y1="80" x2="86" y2="80" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#e2e-arr)"/>
+            <text x="170" y="74" text-anchor="middle" font-size="10" fill="var(--ink)">① Bの公開鍵</text>
+            <rect x="12" y="92" width="136" height="44" rx="5" fill="var(--spot-soft)" stroke="var(--spot)" stroke-width="1.2"/>
+            <text x="80" y="110" text-anchor="middle" font-size="10" fill="var(--ink)">② Aの秘密鍵＋Bの公開鍵</text>
+            <text x="80" y="125" text-anchor="middle" font-size="10" fill="var(--ink)">→ 共通鍵で暗号化</text>
+            <line x1="86" y1="156" x2="255" y2="156" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#e2e-arr)"/>
+            <text x="170" y="150" text-anchor="middle" font-size="10" fill="var(--ink)">③ 暗号文</text>
+            <text x="268" y="176" text-anchor="start" font-size="10" fill="var(--sub)">誰が・いつ・誰に は分かる</text>
+            <text x="268" y="190" text-anchor="start" font-size="10" fill="var(--sub)">本文は読めない</text>
+            <line x1="265" y1="206" x2="434" y2="206" stroke="var(--ink)" stroke-width="1.2" marker-end="url(#e2e-arr)"/>
+            <text x="350" y="200" text-anchor="middle" font-size="10" fill="var(--ink)">④ そのまま届ける</text>
+            <rect x="372" y="214" width="136" height="44" rx="5" fill="var(--spot-soft)" stroke="var(--spot)" stroke-width="1.2"/>
+            <text x="440" y="232" text-anchor="middle" font-size="10" fill="var(--ink)">⑤ Bの秘密鍵＋Aの公開鍵</text>
+            <text x="440" y="247" text-anchor="middle" font-size="10" fill="var(--ink)">→ 同じ共通鍵で復号</text>
+          </svg>
+        </div>
+        <p>各端末は鍵ペアを作り、公開鍵だけをサーバーに登録する。送り手は「自分の秘密鍵＋相手の公開鍵」から共通鍵を計算し（Diffie-Hellman 鍵共有）、AES-GCM などでメッセージを暗号化する。受け手も「自分の秘密鍵＋送り手の公開鍵」から<strong>同じ共通鍵</strong>を計算できる。秘密鍵も共通鍵も、通信路を一度も流れない。</p>
+
+        <h4>守れないもの</h4>
+        <ul>
+          <li><strong>メタデータ</strong>：誰が、いつ、誰に送ったかは、運ぶために必要なのでサーバーに分かる。</li>
+          <li><strong>端末そのもの</strong>：両端の端末を覗かれたり乗っ取られたりすれば読める。守っているのは運ぶ途中と預かっている間である。</li>
+          <li><strong>公開鍵のすり替え</strong>：サーバーが偽の公開鍵を配ると中間者攻撃が成り立つ。そのため、相手の鍵を確認する仕組み（安全番号など）を持つアプリが多い。</li>
+        </ul>
+
+        <h4>自分で実装する場合</h4>
+        <p>Firestore のようなデータベースも、立場はサーバー（運び屋・倉庫）であり、そのまま保存すれば運営側から読める。端末で暗号化してから暗号文とノンスを保存すれば同じ構成にできるが、秘密鍵の保管（Keychain / Keystore）、再インストール時に過去のメッセージが読めなくなる問題、複数端末での鍵共有、通知への本文表示、検索ができないことなど、課題が多い。実運用では自作せず、Signal Protocol のような実績のある方式を使うのが原則である。</p>
+      </div>
+    </article>
+
     <article class="entry" id="nonce">
       <h2 class="entry-head">ノンス</h2>
       <p class="entry-date">2026年10月18日</p>
