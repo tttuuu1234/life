@@ -15,18 +15,26 @@
 │     │  ├─ template.html           見た目のテンプレート
 │     │  ├─ scripts/build_index.py  バックナンバー一覧を作る
 │     │  └─ routine-prompt.txt      ルーティンの指示欄に貼る文
-│     └─ write-wiki/                百科事典スキル(入力)
-│        ├─ SKILL.md                編集方針・追加手順。スキルの本体
-│        ├─ template.html           カテゴリページのテンプレート
-│        └─ scripts/build_index.py  目次ページを作る
+│     ├─ write-wiki/                百科事典スキル(入力)
+│     │  ├─ SKILL.md                編集方針・追加手順。スキルの本体
+│     │  ├─ template.html           カテゴリページのテンプレート
+│     │  └─ scripts/build_index.py  目次ページを作る
+│     └─ review-week/               週次の振り返りスキル(入力)
+│        ├─ SKILL.md                質問と、まとめ方・push手順。スキルの本体
+│        ├─ template.html           振り返りページのテンプレート
+│        ├─ scripts/build_index.py  一覧ページを作る
+│        └─ routine-prompt.txt      ルーティンの指示欄に貼る文
 └─ docs/                            閲覧用の出力(GitHub Pagesの公開元)
    ├─ index.html                    入口(プロジェクトの一覧)
    ├─ newspaper/                    新聞の出力
    │  ├─ index.html                 バックナンバー一覧(自動生成)
    │  └─ archive/YYYY-MM-DD.html    各号
-   └─ wiki/                         百科事典の出力
-      ├─ index.html                 カテゴリ一覧＋全エントリ索引(自動生成)
-      └─ entries/{カテゴリ}.html     カテゴリ別ページ
+   ├─ wiki/                         百科事典の出力
+   │  ├─ index.html                 カテゴリ一覧＋全エントリ索引(自動生成)
+   │  └─ entries/{カテゴリ}.html     カテゴリ別ページ
+   └─ weekly-review/                週次の振り返りの出力
+      ├─ index.html                 振り返りの一覧(自動生成)
+      └─ archive/YYYY-MM-DD.html    各週の振り返り
 └─ labs/                            学習用の実験コード(スキルを持たない)
    ├─ session-auth/                 セッション方式の認証を体感するサーバー
    ├─ token-auth/                   トークン方式(JWT)の認証を体感するサーバー
@@ -77,6 +85,30 @@
 - 目次ページ（`docs/wiki/index.html`）は `build_index.py` で自動生成する。
 
 編集方針を変えたいときは、`.claude/skills/write-wiki/SKILL.md` を編集してpushする。
+
+## 週次の振り返り(review-week)
+
+毎週土曜に、決まった5つの質問に答えて1週間を振り返る「Weekly Review」です。手元では `/review-week` でも呼び出せます。
+
+1. ルーティン（またはスキル）が、先週の「来週やりたいこと」と一緒に、5つの質問をまとめて投げかける。
+2. 番号ごとに回答する。
+3. 回答を1ページのHTMLにまとめ、一覧を更新して、mainにpushする。
+
+| # | 質問 |
+|---|---|
+| ① | 今週やったこと（仕事・学習・暮らし） |
+| ② | うまくいったこと・楽しかったこと |
+| ③ | うまくいかなかったこと・モヤっとしたこと |
+| ④ | 学んだこと・気づき |
+| ⑤ | 来週やりたいこと（1〜3個） |
+
+### ルーティンの設定
+
+- トリガーは毎週土曜 9:52（日本時間）。実行のたびに新しいセッションを作り、質問を投げかけたところでスマホに通知が届く。
+- 指示欄は `.claude/skills/review-week/routine-prompt.txt` の内容。
+- 通知を開いて、そのセッションで回答する。
+
+質問やまとめ方を変えたいときは、`.claude/skills/review-week/SKILL.md` を編集してpushする。
 
 ## 実験コード(labs)
 
