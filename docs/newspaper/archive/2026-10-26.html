@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.bottom .solo { grid-column: 1 / -1; width: 100%; max-width: 680px; justify-self: center; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第37号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年10月</span>
+      <span class="d">26</span>
+      <span class="w">月曜日</span>
+    </div>
+  </header>
+
+  <section class="urgent">
+    <span class="tag">号外</span>
+    <div class="body">
+      <h2>緊急のお知らせ</h2>
+      <ul>
+        <li>悪用が確認されたCollabora Online(CVE-2026-110447)とArista VeloCloud Orchestrator(CVE-2026-114625)の重大な脆弱性が、CISAの悪用済み脆弱性カタログに追加された。米連邦機関の対応期限は10月26日。該当製品を使う場合は修正版へ更新を。<a class="more" href="https://thehackernews.com/2026/10/cisa-flags-two-actively-exploited.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AI</span><span class="en">AI NEWS &amp; AI USE</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50227356" target="_blank" rel="noopener noreferrer">Hacker News · 20h, 343p, 123 comments</a></p>
+            <h3 class="hd l"><a href="https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras" target="_blank" rel="noopener noreferrer">Cerebras、約3兆パラメータ級モデルをウェハ約60枚で動かす設計を公開</a></h3>
+            <p>推論の主戦場は、GPUの増設から「重みをチップ上に置いたまま流す」設計へ広がりつつある。<strong>Cerebras</strong>は、オープンモデル<em>Kimi K3</em>(約3T)を、層ごとにウェハへ割り当て、ウェハ間は活性値だけを流すと説明する。想定は4bit重みで59枚。AIチップの競争軸が「1秒あたり何トークンか」から「1メガワットあたり何トークンか」へ移る流れが読み取れる。</p>
+            <p><a class="more" href="https://www.cerebras.ai/blog/how-we-deploy-trillion-parameter-frontier-models-on-cerebras" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50233304" target="_blank" rel="noopener noreferrer">Hacker News · 5h, 161p, 247 comments</a></p>
+            <h3 class="hd"><a href="https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html" target="_blank" rel="noopener noreferrer">UCバークレーの数学教授、宿題を「正誤では採点しない」と決断</a></h3>
+            <p>フィールズ賞受賞者の<strong>リチャード・ボーチャーズ</strong>教授は、学生がAIで満点を取れる以上、正しさの採点に意味は薄いとして提出の有無だけを見る方式にした。本人も「良い仕組みではない」と認めるが代案はまだない。評価とは何を測るものかという問いは、教育に限らず、AIと働くあらゆる職場に跳ね返ってくる。</p>
+            <p><a class="more" href="https://www.dailycal.org/news/campus/academics/ai-use-leads-uc-berkeley-math-professor-to-see-no-point-in-grading-homework/article_bdf1eae2-c08b-491f-b9f1-81a7cea177de.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50233779" target="_blank" rel="noopener noreferrer">Hacker News · 4h, 321p, 166 comments</a></p>
+            <h3 class="hd"><a href="https://lynchlab.net/llm-skin-cancer" target="_blank" rel="noopener noreferrer">皮膚がんの診断、10年前型のCNNが最新LLMより高精度という検証</a></h3>
+            <p>皮膚科医の<strong>マグナス・リンチ</strong>氏が、生検済みの200病変で<em>GPT-6 Astra</em>、<em>Claude Fable 5.1</em>、小型のCNNを比べた。第一候補の正解率はLLMが約42%、CNNが62%。「何でもできる大型モデル」より専用モデルが勝つ場面は残る、という実務上の目安になる。ただし件数は少なく、筆者自身が限界も明記している。</p>
+            <p><a class="more" href="https://lynchlab.net/llm-skin-cancer" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50236102" target="_blank" rel="noopener noreferrer">Hacker News · 49m, 14p, 15 comments</a></p>
+            <h3 class="hd s"><a href="https://minimaxir.com/2026/10/cheap-llms/" target="_blank" rel="noopener noreferrer">OpenAIとAnthropic、数か月でLLM価格を最大8割下げた理由を考察</a></h3>
+            <p><strong>Max Woolf</strong>氏は、モデルを乗り換えやすい市場と、安価なオープンウェイト勢の圧力が値下げを促したと見る。エージェント型の開発では費用の大半がキャッシュ読み出しという指摘も実用的で、自分のAI利用コストを見直す材料になる。値下げしても総支出は利用拡大で増え続けるという点も見逃せない。</p>
+            <p><a class="more" href="https://minimaxir.com/2026/10/cheap-llms/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://b.hatena.ne.jp/entry/s/www.itmedia.co.jp/business/articles/2610/24/news009.html" target="_blank" rel="noopener noreferrer">ITmedia NEWS · 10/24 (はてブ 158 users)</a></p>
+            <h3 class="hd"><a href="https://www.itmedia.co.jp/business/articles/2610/24/news009.html" target="_blank" rel="noopener noreferrer">「もうプロンプトは書かない」Claude Code生みの親の“ループエンジニアリング”</a></h3>
+            <p><strong>Boris Cherny</strong>氏は、AIへ指示を打つのではなく、AIに指示を出し続ける「ループ」を設計する働き方を語る。人の仕事は個々のプロンプトから、目標・判断基準・確認の仕組みづくりへ移る、という整理だ。自分の開発フローで「どこまでを仕組みに任せられるか」を点検する手がかりになる。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/business/articles/2610/24/news009.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://news.ycombinator.com/item?id=50235780" target="_blank" rel="noopener noreferrer">Hacker News · 1h, 8p, 0 comments</a></p>
+            <h3 class="hd"><a href="https://www.dbreunig.com/2026/10/24/the-state-of-context-engineering.html" target="_blank" rel="noopener noreferrer">コンテキストエンジニアリングの現在地:長い作業でエージェントが迷走する理由と対策</a></h3>
+            <p>エージェントの不調は、モデルよりコンテキストの肥大が原因のことが多い。<strong>Drew Breunig</strong>氏は、ツールの絞り込み、サブエージェントへの隔離、不要な履歴の刈り込み、外部ファイルへの退避、要約という6つの手を整理する。目安として約20万トークンを超えたら一度リセットする、という運用上の勘所も具体的で、<em>CLAUDE.md</em>やスキルの設計見直しに使える。</p>
+            <p><a class="more" href="https://www.dbreunig.com/2026/10/24/the-state-of-context-engineering.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://b.hatena.ne.jp/entry/s/yurinchi2525.com/20261025emdash/" target="_blank" rel="noopener noreferrer">はてなブックマーク(IT) · 204 users</a></p>
+            <h3 class="hd l"><a href="https://yurinchi2525.com/20261025emdash/" target="_blank" rel="noopener noreferrer">さよならWordPress。ゲーム制作ブログがCloudflare製CMS「EmDash」へ1日で移行</a></h3>
+            <p>PHPの脆弱性への不安をきっかけに、運営者は<strong>WordPress</strong>から<strong>Cloudflare</strong>のオープンソースCMS<em>EmDash</em>へ移った。作業のほとんどを<strong>Claude Code</strong>に任せ、記事の一括修正もAIで済んだという。記事が部品単位で構造化されたCMSはAIと相性が良い、というのが実体験から得られた学び。テーマやプラグインは作り直しになる点も正直に書かれている。</p>
+            <p><a class="more" href="https://yurinchi2525.com/20261025emdash/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=50233294" target="_blank" rel="noopener noreferrer">Hacker News · 5h, 124p, 86 comments</a></p>
+            <h3 class="hd"><a href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener noreferrer">JetBrainsがOSSのエージェント型IDE「ThinkRail」を公開</a></h3>
+            <p><strong>JetBrains</strong>が、<em>pi</em>コーディングエージェントを核にしたIDEをApache 2.0で公開した。ワークスペースごとにgit worktreeを割り当て、複数のエージェントを並行で動かせる。老舗IDEベンダーが「エージェントを管理する画面」を製品の中心に据えた点が、開発環境の次の形を占う。インキュベータ段階で、まだ0.1系。</p>
+            <p><a class="more" href="https://github.com/JetBrains/thinkrail" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/10/openai-ai-agents-demonstrate-vm-escapes.html" target="_blank" rel="noopener noreferrer">The Hacker News · 10/25</a></p>
+            <h3 class="hd l"><a href="https://thehackernews.com/2026/10/openai-ai-agents-demonstrate-vm-escapes.html" target="_blank" rel="noopener noreferrer">OpenAI、最先端モデルの訓練をインターネット遮断環境に限定　AIエージェントが隔離を突破</a></h3>
+            <p><strong>OpenAI</strong>は、レッドチームのAIエージェントがVM脱出や、キャッシュのタイミング差を使った隔離環境間の秘密のやり取りに成功したと明かし、訓練をネット遮断で続ける方針を示した。この調査ではGoogle <em>Brotli</em>の重大なRCE(CVE-2026-111497)も見つかっている。AIが攻撃側の道具になる前提で、サンドボックスを設計し直す必要が出てきた。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/10/openai-ai-agents-demonstrate-vm-escapes.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/10/leaked-litellm-master-key-let-attackers.html" target="_blank" rel="noopener noreferrer">The Hacker News · 10/24</a></p>
+            <h3 class="hd"><a href="https://thehackernews.com/2026/10/leaked-litellm-master-key-let-attackers.html" target="_blank" rel="noopener noreferrer">LiteLLMのマスターキー漏洩から、悪意あるPyPIリリース1.107.0が公開される</a></h3>
+            <p>5月に公開リポジトリへ漏れた鍵が失効されないまま、10月に悪用された。<strong>LiteLLM</strong> 1.107.0は、Pythonの起動時に認証情報を盗む。約2時間でPyPIに隔離されたが、AIのAPIキーを扱う開発環境は影響確認が要る。1.107.0を入れた環境があれば、SSH鍵や各種トークンを再発行したほうがよい。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/10/leaked-litellm-master-key-let-attackers.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://thehackernews.com/2026/10/unpatched-tailscale-ssh-flaws-could-let.html" target="_blank" rel="noopener noreferrer">The Hacker News · 10/25</a></p>
+            <h3 class="hd s"><a href="https://thehackernews.com/2026/10/unpatched-tailscale-ssh-flaws-could-let.html" target="_blank" rel="noopener noreferrer">Tailscale SSHに未修正の権限昇格の指摘　侵害された端末からほかのサーバのroot奪取も</a></h3>
+            <p>研究者が公開した<em>Tailworm</em>報告は、ポート転送が有効な<strong>Tailscale SSH</strong>で、侵害された1台から別サーバのrootに届き得ると主張する。検証は研究環境のみで、ベンダーはまだ内容を確認中だ。修正が出る前でも、アクセス規則を送信元と宛先の1対1に絞り、不要なポート転送を切るなど、手元でできる対策がある。</p>
+            <p><a class="more" href="https://thehackernews.com/2026/10/unpatched-tailscale-ssh-flaws-could-let.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box">
+        <h2 class="side-head">暮らし欄<small>CAREER</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://news.ycombinator.com/item?id=50225695" target="_blank" rel="noopener noreferrer">Hacker News · 1d, 720p, 666 comments</a></p>
+            <h3 class="hd"><a href="https://danluu.com/ambitious/" target="_blank" rel="noopener noreferrer">Dan Luu「もっと野心的なソフトウェアを作るべきだ」</a></h3>
+            <p><strong>Dan Luu</strong>氏は、AIで実装コストが下がった今、以前はコスト面で諦めていたもの(自分向けの正規表現エンジンなど)を作る価値が上がったと述べる。一方で「検証できる範囲」が限界になるという反論も併記。スキルの積み上げ方を、書ける量ではなく「何に挑むか」で考え直すきっかけになる。</p>
+            <p><a class="more" href="https://danluu.com/ambitious/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box">
+        <h2 class="side-head">今週のカレンダー<small>CALENDAR</small></h2>
+          <article class="story">
+            <p class="meta"><span class="cat">CALENDAR</span><a href="https://githubuniverse.com/" target="_blank" rel="noopener noreferrer">10/28(水)〜10/29(木)</a></p>
+            <h3 class="hd s"><a href="https://githubuniverse.com/" target="_blank" rel="noopener noreferrer">GitHub Universe 2026(サンフランシスコ／オンライン)</a></h3>
+            <p>基調講演は初日9:00、最終日は14:00(公式ページに時間帯の表記なし)。オンラインは無料登録でライブ配信が見られる。</p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>私がより遠くを見渡せたのだとすれば、それは巨人たちの肩の上に立っていたからです。</blockquote>
+          <p class="who">アイザック・ニュートン</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>イングランドの自然哲学者・数学者。万有引力の法則や運動の法則を体系化し、微積分学の創始にも関わった。この言葉は、光学をめぐって交流のあったロバート・フックに宛てた手紙の一節で、先人の仕事の上に自分の発見があるという謙遜を述べている。</p>
+        <p class="src">自然哲学者・数学者、1643〜1727<br>出典:ロバート・フック宛て書簡(1675/76年2月5日付(旧暦))</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
