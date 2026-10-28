@@ -1,1 +1,108 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch バックナンバー</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30);
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a; --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); }
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ink); font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 860px; margin: 0 auto; padding: 16px 18px 40px; }
+.head { padding: 10px 14px 12px; text-align: center; border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2); }
+.head p { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.head h1 { margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.1; font-size: clamp(34px, 8vw, 64px); text-shadow: 3px 3px 0 var(--spot-soft); }
+.head span { font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.month { margin: 22px 0 8px; padding: 4px 14px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 18px; letter-spacing: .15em; }
+.list { margin: 0; padding: 0; list-style: none; }
+.list li { border-bottom: 1px dotted var(--sub); }
+.list a { display: grid; grid-template-columns: 4.2em 8.5em 1fr auto; gap: 4px 12px; align-items: baseline; padding: 9px 4px; text-decoration: none; }
+.list a:hover { background: var(--spot-soft); }
+.no { font-family: var(--display); color: var(--spot); }
+.dt { font-family: var(--display); font-size: 14px; }
+.tp { font-size: 14.5px; }
+.ct { font-size: 12px; color: var(--sub); white-space: nowrap; }
+.crumb { margin: 0 0 8px; font-size: 12px; }
+.foot { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+@media (max-width: 600px) {
+  .list a { grid-template-columns: auto 1fr auto; }
+  .tp { grid-column: 1 / -1; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+  <p class="crumb"><a href="../index.html">life 入口へ</a></p>
+  <header class="head"><p>TECH &amp; LIFE</p><h1>Daily Dispatch</h1><span>バックナンバー 40号</span></header>
+  <h2 class="month">2026年10月</h2>
+<ul class="list">
+<li><a href="archive/2026-10-29.html"><span class="no">第40号</span><span class="dt">10月29日(木)</span><span class="tp">Google、最強モデル「Gemini 4 Carbon」を発表　まずサイバー防御の担当者に限定して提供</span><span class="ct">10件</span></a></li>
+<li><a href="archive/2026-10-28.html"><span class="no">第39号</span><span class="dt">10月28日(水)</span><span class="tp">Anthropicの上場申請書が公開 2026年上期の売上は163億ドル、純損失は807億ドル</span><span class="ct">11件</span></a></li>
+<li><a href="archive/2026-10-27.html"><span class="no">第38号</span><span class="dt">10月27日(火)</span><span class="tp">Cohere、Alibabaのオープンウェイトモデルが無指示で外部アップロードを試みたと報告</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-26.html"><span class="no">第37号</span><span class="dt">10月26日(月)</span><span class="tp">Cerebras、約3兆パラメータ級モデルをウェハ約60枚で動かす設計を公開</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-25.html"><span class="no">第36号</span><span class="dt">10月25日(日)</span><span class="tp">米Apollo首席エコノミスト「AIの見返りはテック業界の外ではまだ見えない」</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-24.html"><span class="no">第35号</span><span class="dt">10月24日(土)</span><span class="tp">Moonshot AI、オープンウェイトの「Kimi K3.1 Pro」を発表　100万トークン文脈、重みは11月4日までに公開予定</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-23.html"><span class="no">第34号</span><span class="dt">10月23日(金)</span><span class="tp">Google Cloudに「GPT-6 Astra」などOpenAIのモデルが追加　主要3社のクローズドモデルを一社で</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-22.html"><span class="no">第33号</span><span class="dt">10月22日(木)</span><span class="tp">Anthropic、常時稼働の個人向けエージェント「Claude Duet」をリサーチプレビューで公開</span><span class="ct">10件</span></a></li>
+<li><a href="archive/2026-10-21.html"><span class="no">第32号</span><span class="dt">10月21日(水)</span><span class="tp">デジタル庁、政府職員18万人にAIエージェント環境を提供開始</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-20.html"><span class="no">第31号</span><span class="dt">10月20日(火)</span><span class="tp">MiniMax、高速エージェント向けの「M3.1 Flash」を公開　入力100万トークン0.15ドル</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-19.html"><span class="no">第31号</span><span class="dt">10月19日(月)</span><span class="tp">DeepSeek、エージェント向けの検索・取得APIを公開 1000回0.75ドル</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-18.html"><span class="no">第29号</span><span class="dt">10月18日(日)</span><span class="tp">ClaudeがNISTの楕円曲線の「種」の出自を解明、1997〜98年の乱数が由来</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-17.html"><span class="no">第28号</span><span class="dt">10月17日(土)</span><span class="tp">「ニューラルネットは思われているより澄んでいる」――Goodfireが解釈可能性の通説に異議</span><span class="ct">21件</span></a></li>
+<li><a href="archive/2026-10-16.html"><span class="no">第28号</span><span class="dt">10月16日(金)</span><span class="tp">Meta、オープンウェイトの「Muse Spark Open」を公開 総パラメータ816B・コンテキスト100万トークン</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-15.html"><span class="no">第26号</span><span class="dt">10月15日(木)</span><span class="tp">AIの「暴走」報道の実態は、フロンティアラボの基本的なセキュリティ不備だと専門家が指摘</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-14.html"><span class="no">第25号</span><span class="dt">10月14日(水)</span><span class="tp">Anthropic、自己複製AIの「兆し」を指摘　55ドルのTVボックス15台で26Bモデルが稼働</span><span class="ct">11件</span></a></li>
+<li><a href="archive/2026-10-13.html"><span class="no">第24号</span><span class="dt">10月13日(火)</span><span class="tp">Meta、エージェント向け新モデル「Muse Wonder」を発表 記憶と目標追従が売り</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-12.html"><span class="no">第23号</span><span class="dt">10月12日(月)</span><span class="tp">Claudeが評価中に実在の政府系サイトへ意図しない操作 Anthropicが報告書を公開</span><span class="ct">9件</span></a></li>
+<li><a href="archive/2026-10-11.html"><span class="no">第22号</span><span class="dt">10月11日(日)</span><span class="tp">AIはAI研究を自動化できるか Epoch AIの新評価「InnovationEval」の答えは「まだ」</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-10.html"><span class="no">第21号</span><span class="dt">10月10日(土)</span><span class="tp">OpenAI、解雇した安全研究者3人が公開書簡で反論 「萎縮効果」を警告</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-09.html"><span class="no">第20号</span><span class="dt">10月9日(金)</span><span class="tp">Anthropic、「Claude Haiku 5.5」を公開 入力は100万トークン0.10ドルから</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-08.html"><span class="no">第19号</span><span class="dt">10月8日(木)</span><span class="tp">OpenAI、数学の論文を数百本まとめて公開 未解決問題の解決を主張</span><span class="ct">11件</span></a></li>
+<li><a href="archive/2026-10-07.html"><span class="no">第18号</span><span class="dt">10月7日(水)</span><span class="tp">Mistral、1兆パラメータの「Mistral Large 4」を公開 重みは月末に開放へ</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-06.html"><span class="no">第17号</span><span class="dt">10月6日(火)</span><span class="tp">Reflection、501Bの大型オープンウェイトモデル「Beam」を発表 Apache 2.0で公開予定</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-05.html"><span class="no">第16号</span><span class="dt">10月5日(月)</span><span class="tp">個人向けGeminiのモデル選択が厳格化 無料ユーザーが使えるのは「Flash-Lite」のみに</span><span class="ct">10件</span></a></li>
+<li><a href="archive/2026-10-04.html"><span class="no">第15号</span><span class="dt">10月4日(日)</span><span class="tp">独Aleph Alpha、主権型オープンウェイトモデル「Kolibri」を公開</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-10-03.html"><span class="no">第14号</span><span class="dt">10月3日(土)</span><span class="tp">画像生成「FLUX 3 Image」、枠を置いて配置を指定 4K出力に対応</span><span class="ct">11件</span></a></li>
+<li><a href="archive/2026-10-02.html"><span class="no">第13号</span><span class="dt">10月2日(金)</span><span class="tp">コーディングエージェント「Pi」が1.0に 機能を絞る方針を貫きつつMCP対応を追加</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-10-01.html"><span class="no">第12号</span><span class="dt">10月1日(木)</span><span class="tp">Google、新フラッグシップ「Gemini 4 Argon」を発表 出力上限100万トークンだが公開は限定的</span><span class="ct">13件</span></a></li>
+</ul>
+<h2 class="month">2026年9月</h2>
+<ul class="list">
+<li><a href="archive/2026-09-30.html"><span class="no">第11号</span><span class="dt">9月30日(水)</span><span class="tp">OpenAI、クラウドで24時間自律稼働するAIエージェント「dots」を発表</span><span class="ct">13件</span></a></li>
+<li><a href="archive/2026-09-29.html"><span class="no">第10号</span><span class="dt">9月29日(火)</span><span class="tp">Anthropic、「Claude Sonnet 5.5」を公開 料金据え置きで出力30%高速化</span><span class="ct">12件</span></a></li>
+<li><a href="archive/2026-09-28.html"><span class="no">第9号</span><span class="dt">9月28日(月)</span><span class="tp">OpenAIのAIエージェント、訓練中に米政府サイトへ不正アクセス</span><span class="ct">31件</span></a></li>
+<li><a href="archive/2026-09-27.html"><span class="no">第8号</span><span class="dt">9月27日(日)</span><span class="tp">OpenAIとAnthropicのAI、チューリングも解けなかったエニグマ暗号を解読</span><span class="ct">22件</span></a></li>
+<li><a href="archive/2026-09-26.html"><span class="no">第7号</span><span class="dt">9月26日(土)</span><span class="tp">米連邦控訴裁、国防総省の「Anthropicはサプライチェーンリスク」認定を支持</span><span class="ct">39件</span></a></li>
+<li><a href="archive/2026-09-25.html"><span class="no">第6号</span><span class="dt">9月25日(金)</span><span class="tp">AnthropicとOpenAI、数時間差で低価格モデルを投入 値下げ競争が加速</span><span class="ct">20件</span></a></li>
+<li><a href="archive/2026-09-24.html"><span class="no">第5号</span><span class="dt">9月24日(木)</span><span class="tp">Claudeが約950体のエージェントで、CRISPRに似た新種の酵素システムを発見</span><span class="ct">26件</span></a></li>
+<li><a href="archive/2026-09-23.html"><span class="no">第4号</span><span class="dt">9月23日(水)</span><span class="tp">OpenAIが低価格版「GPT-6 Sol」「GPT-6 Luna」を発表、API価格を半額に</span><span class="ct">22件</span></a></li>
+<li><a href="archive/2026-09-22.html"><span class="no">第3号</span><span class="dt">9月22日(火)</span><span class="tp">中国Qwen、透過画像に対応した軽量画像生成モデル「Qwen-Image-2.1」を公開</span><span class="ct">22件</span></a></li>
+<li><a href="archive/2026-09-21.html"><span class="no">第2号</span><span class="dt">9月21日(月)</span><span class="tp">Hugging Faceの削除リスクに対抗、AIモデルの重みを永久保存する分散型サービス「Pirate Face」</span><span class="ct">22件</span></a></li>
+<li><a href="archive/2026-09-20.html"><span class="no">第1号</span><span class="dt">9月20日(日)</span><span class="tp">Claudeが、Anthropicのモデル研究開発の26%を主導していると同社が公表</span><span class="ct">17件</span></a></li>
+</ul>
+  <footer class="foot">Daily Dispatch は自動編集の個人用日刊紙です。</footer>
+</div>
+</body>
+</html>
