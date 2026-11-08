@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.bottom .solo { grid-column: 1 / -1; width: 100%; max-width: 680px; justify-self: center; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第51号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年11月</span>
+      <span class="d">9</span>
+      <span class="w">月曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AI</span><span class="en">AI NEWS &amp; AI USE</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50415628" target="_blank" rel="noopener noreferrer">Hacker News · 3h, 452p, 277 comments</a></p>
+            <h3 class="hd l"><a href="https://www.thestateofai.com/news/goldman-sachs-claude-code-traders-bankers" target="_blank" rel="noopener noreferrer">ゴールドマン・サックス、トレーダーと銀行員から<em>Claude Code</em>を取り上げる</a></h3>
+            <p>AIコーディングツールの全社展開が進むなか、<strong>Goldman Sachs</strong>が非エンジニア職への提供を絞り、利用はエンジニアとストラットに限る方針に傾いた。生産性とリスクの両面が理由とされる。現場が自作ツールで回していた業務を、IT部門の管理下へ戻す動きとして、企業のAI導入の「野放し期」が終わりつつあることを示す。</p>
+            <p><a class="more" href="https://www.thestateofai.com/news/goldman-sachs-claude-code-traders-bankers" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50416801" target="_blank" rel="noopener noreferrer">Hacker News · 1h, 212p, 162 comments</a></p>
+            <h3 class="hd s"><a href="https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors" target="_blank" rel="noopener noreferrer">NVIDIA取締役会、<strong>ジェンセン・フアン</strong>CEOを狙った外国情報機関の動きで独立調査</a></h3>
+            <p>AIチップ最大手のトップが外国の諜報活動の標的になったと報じられ、独立取締役の委員会が調査に入る。取締役会は国家安全保障や機密の侵害を疑う理由はないとするが、AI半導体が地政学の最前線にあることを改めて示す出来事だ。</p>
+            <p><a class="more" href="https://nvidianews.nvidia.com/news/statement-from-nvidia-board-of-directors" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50411961" target="_blank" rel="noopener noreferrer">Hacker News · 11h, 316p, 119 comments</a></p>
+            <h3 class="hd"><a href="https://github.com/synchopate/llama-modchip" target="_blank" rel="noopener noreferrer">GPUなし・RAM 64GBで2840億パラメータの<strong>DeepSeek</strong>を動かす<em>llama-modchip</em></a></h3>
+            <p>MoE型の巨大モデルをCPUだけで動かすための<em>llama.cpp</em>改造ツール群で、生成速度は毎秒10トークン前後と作者は主張する。数値は作者側の報告で第三者検証は未了だが、手元のPCでも大型モデルを試せる可能性を広げる。専用の量子化形式が必要で、通常のOllamaやLM Studioでは動かない点には注意。</p>
+            <p><a class="more" href="https://github.com/synchopate/llama-modchip" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50410107" target="_blank" rel="noopener noreferrer">Hacker News · 18h, 647p, 411 comments</a></p>
+            <h3 class="hd"><a href="https://caleb.software/posts/claude-to-pi.html" target="_blank" rel="noopener noreferrer">「さよならClaude、こんにちはPi」ツール乗り換えの記録</a></h3>
+            <p>長年の<strong>Claude Code</strong>利用者が、設定ファイルの扱いやIDE連携の不満、頻繁なシステムプロンプト変更を理由に、軽量なOSSの<strong>Pi</strong>へ移った。年間244回のリリースの大半が挙動に影響したという指摘は、エージェント基盤を一社に依存する危険を考える材料になる。</p>
+            <p><a class="more" href="https://caleb.software/posts/claude-to-pi.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://news.ycombinator.com/item?id=50416363" target="_blank" rel="noopener noreferrer">Hacker News · 2h, 94p, 80 comments</a></p>
+            <h3 class="hd"><a href="https://sergeykuhne.com/blog/fighting-ai-brain-fry" target="_blank" rel="noopener noreferrer">AIエージェントを回し続けて疲れないための運用術</a></h3>
+            <p>チケットをgit内のMarkdownで管理し、人の判断が要る項目だけを「オーナー受信箱」に集める。危険な変更はブランチ止まりで本番反映は人が行うなど、判断の負荷を減らす具体的な仕組みが参考になる。エージェントを増やすほど増える確認作業をどう絞るかという、実務の悩みに直結する。</p>
+            <p><a class="more" href="https://sergeykuhne.com/blog/fighting-ai-brain-fry" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://b.hatena.ne.jp/entry/s/hiraoku.dev/blog/mcp-cli-cloud/" target="_blank" rel="noopener noreferrer">はてなブックマーク · 183 users</a></p>
+            <h3 class="hd"><a href="https://hiraoku.dev/blog/mcp-cli-cloud/" target="_blank" rel="noopener noreferrer">MCPはなぜ復権したのか:CLIが支持された理由と仕様変更</a></h3>
+            <p>ツール定義の読み込みで文脈を圧迫するという初期MCPの弱点が、7月の仕様改訂で<strong>状態を持たない設計</strong>へ変わり、<em>遅延読み込み</em>などの工夫と合わせて解消されつつある。ローカルはCLI、クラウドのエージェントはリモートMCPという使い分けの判断軸が得られる。</p>
+            <p><a class="more" href="https://hiraoku.dev/blog/mcp-cli-cloud/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=50416158" target="_blank" rel="noopener noreferrer">Hacker News · 2h, 125p, 102 comments</a></p>
+            <h3 class="hd l"><a href="https://mailroute.net/blog/outlook-rejecting-email-without-dmarc" target="_blank" rel="noopener noreferrer">Outlook.comが、DMARC未設定ドメインのメールを拒否し始めたとの報告</a></h3>
+            <p>11月5日ごろから、小規模送信者を含む一部のメールが550エラーで弾かれているという。<strong>Microsoft</strong>の公式発表は未確認で、情報は一社のブログに限られるが、自社ドメインのメールを使うアプリやサービスの運営者は、DMARCレコードの有無を今すぐ確認しておきたい。</p>
+            <p><a class="more" href="https://mailroute.net/blog/outlook-rejecting-email-without-dmarc" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://b.hatena.ne.jp/entry/s/ken-it.world/it/2026/11/sumicad-free-bim.html" target="_blank" rel="noopener noreferrer">はてなブックマーク · 156 users</a></p>
+            <h3 class="hd"><a href="https://ken-it.world/it/2026/11/sumicad-free-bim.html" target="_blank" rel="noopener noreferrer">Jw_cadを思わせる無料BIM「<strong>墨CAD</strong>」登場、作ったのは北海道の工務店の技術者2人</a></h3>
+            <p>開発者は<strong>Claude Code</strong>を主に使い、約半年で住宅向けBIMをRustで作り上げた。MCPとCLIに対応し、自然言語で一括変更もできる。専門業界の少人数チームがAIで本格的な製品を出せる時代になったことを示す事例だ。</p>
+            <p><a class="more" href="https://ken-it.world/it/2026/11/sumicad-free-bim.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://smartscope.blog/blog/jnsa-information-security-literacy-check-service-unauthorized-access-2026/" target="_blank" rel="noopener noreferrer">SmartScope · 11/6</a></p>
+            <h3 class="hd l"><a href="https://smartscope.blog/blog/jnsa-information-security-literacy-check-service-unauthorized-access-2026/" target="_blank" rel="noopener noreferrer">日本ネットワークセキュリティ協会の理解度チェックサービスに不正アクセス、最大15,128件の恐れ</a></h3>
+            <p>セキュリティ啓発を担う<strong>JNSA</strong>自身のサービスが、10月30日ごろから侵入された可能性がある。流出の恐れがあるのは管理者の氏名・メールと、利用者のIDおよびハッシュ化パスワード。侵入経路は未確認で、同じパスワードを使い回している人は変更しておきたい。</p>
+            <p><a class="more" href="https://smartscope.blog/blog/jnsa-information-security-literacy-check-service-unauthorized-access-2026/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://b.hatena.ne.jp/entry/s/www.watch.impress.co.jp/docs/news/2154548.html" target="_blank" rel="noopener noreferrer">はてなブックマーク · 10 users</a></p>
+            <h3 class="hd s"><a href="https://www.watch.impress.co.jp/docs/news/2154548.html" target="_blank" rel="noopener noreferrer">政府、「サイバーセキュリティ緊急対策パッケージ」を策定、予備費から100億円</a></h3>
+            <p>相次ぐ攻撃と情報流出を受け、<strong>AIによる脆弱性発見の拡充</strong>や被害企業への官民合同チーム派遣などを打ち出した。攻撃情報を数時間以内に国家サイバー統括室へ集める指示も出ており、企業側の報告・連携の負担が変わる可能性がある。</p>
+            <p><a class="more" href="https://www.watch.impress.co.jp/docs/news/2154548.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box solo">
+        <h2 class="side-head">暮らし欄<small>CAREER</small></h2>
+        <article class="story">
+            <p class="meta"><span class="cat">CAREER</span><a href="https://note.com/dora_e_m/n/n021d6063d284" target="_blank" rel="noopener noreferrer">note · 11/7</a></p>
+            <h3 class="hd"><a href="https://note.com/dora_e_m/n/n021d6063d284" target="_blank" rel="noopener noreferrer">スクラムマスターは、いつまでスクラムマスターでいられるのか</a></h3>
+            <p>AIが定例業務を肩代わりするなか、肩書きではなく<strong>チームの観察・対話の促進・制約の発見</strong>といった持ち運べる能力に軸足を置くべきだという論考。職種が変わっても通用するスキルを意識する視点は、開発者のキャリア設計にもそのまま使える。</p>
+            <p><a class="more" href="https://note.com/dora_e_m/n/n021d6063d284" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>心の優しさに勝る魅力はない</blockquote>
+          <p class="who">ジェーン・オースティン</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>19世紀初頭のイギリスの小説家。地方の中流階級の暮らしを細やかな観察と皮肉で描き、『高慢と偏見』『エマ』などで知られる。この言葉は、他人への思いやりこそが人の本当の魅力だという彼女の人間観を端的に表している。</p>
+        <p class="src">小説家、1775〜1817<br>出典:『エマ』(1815年)</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
