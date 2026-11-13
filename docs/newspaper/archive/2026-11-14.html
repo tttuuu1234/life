@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Dispatch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Antique&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #d8d8ce; --paper2: #cbcbc0; --ink: #1d1d1a; --sub: #56564f;
+  --spot: #22398b; --spot-soft: rgba(34,57,139,.30); --on-spot: #fff;
+  --display: "Zen Antique", "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --text: "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+    --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #15161b; --paper2: #1d1e26; --ink: #e7e4d8; --sub: #a9a79a;
+  --spot: #93a8ff; --spot-soft: rgba(147,168,255,.28); --on-spot: #15161b;
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; counter-reset: men; color: var(--ink);
+  font-family: var(--text); font-size: 15px; line-height: 1.8;
+  background-color: var(--paper);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 10%, transparent) .7px, transparent .9px);
+  background-size: 4px 4px;
+}
+a { color: inherit; }
+a:focus-visible { outline: 2px solid var(--spot); outline-offset: 2px; }
+.paper { max-width: 1180px; margin: 0 auto; padding: 16px 18px 40px; }
+
+/* ===== 題字 ===== */
+.masthead {
+  display: grid; grid-template-columns: 96px 1fr 132px;
+  border-top: 6px solid var(--ink); border-bottom: 2px solid var(--ink); background: var(--paper2);
+}
+.mh-side { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 6px; border-right: 1px solid var(--ink); }
+.mh-side .tate { writing-mode: vertical-rl; font-family: var(--display); font-size: 30px; letter-spacing: .3em; line-height: 1; }
+.mh-side .issue { width: 100%; padding-top: 6px; border-top: 1px solid var(--ink); text-align: center; font-family: var(--display); font-size: 14px; }
+.mh-title { min-width: 0; padding: 8px 12px 10px; text-align: center; }
+.mh-title .kicker { margin: 0; font-family: var(--display); font-size: 12px; letter-spacing: .5em; color: var(--spot); }
+.mh-title h1 {
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.05;
+  font-size: clamp(38px, 8.4vw, 96px); text-shadow: 3px 3px 0 var(--spot-soft);
+}
+.mh-title .sub { margin: 4px 0 0; font-size: 13px; letter-spacing: .3em; color: var(--sub); }
+.mh-date { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 6px; border-left: 1px solid var(--ink); font-family: var(--display); line-height: 1.2; }
+.mh-date .ym { font-size: 13px; letter-spacing: .1em; }
+.mh-date .d { font-size: 58px; line-height: 1; color: var(--spot); }
+.mh-date .w { margin-top: 4px; padding-top: 3px; border-top: 1px solid var(--ink); font-size: 14px; letter-spacing: .2em; }
+
+/* ===== 号外 ===== */
+.urgent { display: flex; margin: 14px 0 0; border: 3px solid var(--ink); background: repeating-linear-gradient(135deg, transparent 0 9px, var(--spot-soft) 9px 10px); }
+.urgent .tag { writing-mode: vertical-rl; padding: 8px 9px; background: var(--spot); color: var(--on-spot); font-family: var(--display); font-size: 24px; letter-spacing: .2em; }
+.urgent .body { flex: 1; padding: 8px 14px; background: color-mix(in srgb, var(--paper) 88%, transparent); }
+.urgent h2 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.urgent ul { margin: 0; padding-left: 1.2em; }
+.urgent li { margin-bottom: 4px; }
+
+/* ===== 紙面の骨格 ===== */
+.main { margin-top: 18px; }
+.men { margin: 0 0 26px; }
+.men-head { display: flex; align-items: stretch; margin: 0 0 10px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; }
+.men-head .no { display: grid; place-items: center; margin-right: -6px; padding: 4px 18px 4px 12px; background: var(--spot); color: var(--on-spot); font-size: 15px; clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+.men-head .no::before { counter-increment: men; content: "第" counter(men) "面"; }
+.men-head .ttl { padding: 4px 14px; font-size: 22px; letter-spacing: .12em; }
+.men-head .en { align-self: center; margin-left: auto; padding-right: 12px; font-family: var(--text); font-size: 11px; letter-spacing: .3em; opacity: .85; }
+.cols { column-count: 2; column-gap: 30px; column-rule: 1px dotted var(--sub); }
+
+/* ===== 記事 ===== */
+.story { break-inside: avoid; container-type: inline-size; padding: 10px 0 14px; border-bottom: 1px dotted var(--sub); }
+.story.top { column-span: all; padding: 8px 0 16px; border-bottom: 3px double var(--ink); }
+.story.top::before { content: "トップ記事"; display: inline-block; margin-bottom: 6px; padding: 0 9px; background: var(--ink); color: var(--paper); font-family: var(--display); font-size: 11px; letter-spacing: .25em; }
+.meta { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; margin: 0 0 3px; font-family: var(--display); font-size: 12px; }
+.cat { display: inline-block; padding: 0 7px; border: 1px solid var(--spot); color: var(--spot); font-size: 11px; letter-spacing: .14em; }
+.meta a { color: var(--sub); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.hd {
+  margin: 0 0 6px; font-family: var(--display); font-weight: 400; line-height: 1.3;
+  font-size: clamp(18px, 7.2cqi, 26px); text-shadow: 1.5px 1.5px 0 var(--spot-soft);
+  text-wrap: balance; word-break: auto-phrase;
+}
+.hd.l { font-size: clamp(26px, 5.2cqi, 44px); line-height: 1.22; text-shadow: 2px 2px 0 var(--spot-soft); }
+.hd.s { font-size: clamp(16px, 5.8cqi, 20px); }
+.hd a { text-decoration: none; }
+.hd a:hover { text-decoration: underline; text-decoration-color: var(--spot); }
+.story p { margin: 0 0 6px; text-align: justify; font-size: 14.5px; line-height: 1.85; }
+.story strong { font-weight: 900; }
+.story em { font-style: normal; border-bottom: 1px solid var(--spot); }
+.story code { font-family: inherit; padding: 0 3px; background: var(--spot-soft); }
+.story figure { margin: 0 0 8px; }
+.story figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ink); filter: grayscale(1) contrast(1.12); }
+.story figcaption { margin-top: 3px; font-size: 11.5px; color: var(--sub); }
+.more { display: inline-block; padding: 0 9px; border: 1px solid var(--spot); color: var(--spot); font-family: var(--display); font-size: 12px; text-decoration: none; }
+.more:hover { background: var(--spot); color: var(--on-spot); }
+.more::before { content: "\25B6\00a0"; font-size: 9px; }
+
+/* ===== 下の欄 ===== */
+.bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; align-items: start; margin-top: 8px; padding-top: 22px; border-top: 3px double var(--ink); }
+.side-box { padding: 0 12px 12px; border: 2px solid var(--ink); outline: 1px solid var(--ink); outline-offset: 3px; background: color-mix(in srgb, var(--paper2) 55%, transparent); }
+.side-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 -12px 10px; padding: 4px 12px; background: var(--ink); color: var(--paper); font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; }
+.side-head small { font-family: var(--text); font-size: 10px; letter-spacing: .3em; opacity: .85; }
+.bottom .story { padding: 0; border: 0; }
+.bottom .quote { grid-column: 1 / -1; }
+.bottom .solo { grid-column: 1 / -1; width: 100%; max-width: 680px; justify-self: center; }
+.quote { padding-bottom: 14px; }
+.quote .quote-body { max-width: 860px; margin: 12px auto 10px; text-align: center; }
+.quote blockquote { margin: 0; font-family: var(--display); font-size: clamp(22px, 3.4vw, 36px); line-height: 1.7; letter-spacing: .06em; text-shadow: 2px 2px 0 var(--spot-soft); text-wrap: balance; }
+.quote blockquote::before { content: "\300C"; }
+.quote blockquote::after { content: "\300D"; }
+.quote .who { margin: 10px 0 0; font-family: var(--display); font-size: clamp(20px, 2.4vw, 28px); letter-spacing: .3em; color: var(--spot); }
+.quote .who::before { content: "\2015\00a0"; }
+.quote .bio { max-width: 860px; margin: 6px auto 12px; font-size: 14px; line-height: 1.9; text-align: left; }
+.quote .bio .cat { margin-right: 8px; }
+.quote .src { margin: 0 auto; max-width: 860px; padding-top: 8px; border-top: 1px dotted var(--sub); text-align: center; font-size: 12px; line-height: 1.7; color: var(--sub); }
+
+.okuzuke { margin-top: 24px; padding-top: 10px; border-top: 6px solid var(--ink); text-align: center; font-size: 12px; color: var(--sub); }
+.okuzuke p { margin: 0 0 2px; }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 920px) {
+  .bottom { grid-template-columns: 1fr 1fr; }
+  .bottom .quote { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .paper { padding: 12px 12px 32px; }
+  .masthead { grid-template-columns: 64px 1fr; }
+  .mh-side .tate { font-size: 22px; }
+  .mh-date { grid-column: 1 / -1; flex-direction: row; gap: 10px; border-left: 0; border-top: 1px solid var(--ink); }
+  .mh-date .d { font-size: 34px; }
+  .mh-date .w { margin: 0; padding: 0 0 0 10px; border-top: 0; border-left: 1px solid var(--ink); }
+  .cols { column-count: 1; }
+  .bottom { grid-template-columns: 1fr; }
+  .story p { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="paper">
+
+  <header class="masthead">
+    <div class="mh-side">
+      <span class="tate">日刊</span>
+      <span class="issue">第56号</span>
+    </div>
+    <div class="mh-title">
+      <p class="kicker">TECH &amp; LIFE</p>
+      <h1>Daily Dispatch</h1>
+      <p class="sub">技術と暮らしのニュース</p>
+    </div>
+    <div class="mh-date">
+      <span class="ym">2026年11月</span>
+      <span class="d">14</span>
+      <span class="w">土曜日</span>
+    </div>
+  </header>
+
+  <main class="main">
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">AI</span><span class="en">AI NEWS &amp; AI USE</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50487184" target="_blank" rel="noopener noreferrer">Hacker News · 4h, 114p, 52 comments</a></p>
+            <h3 class="hd l"><a href="https://fortune.com/2026/11/13/openai-disbands-robotics-team-as-its-general-models-start-running-robots/" target="_blank" rel="noopener noreferrer">OpenAI、ロボティクス専任チームを解散　汎用モデルがそのままロボットを動かす時代へ</a></h3>
+            <figure><img src="https://fortune.com/img-assets/wp-content/uploads/2026/11/GettyImages-2304572308-e1794587995495.jpg?resize=1200,600" alt=""><figcaption>画像:Fortune</figcaption></figure>
+            <p>研究者は<strong>Mark Chen</strong>氏と<strong>Greg Brockman</strong>氏の配下に移り、ロボットは引き続き重要分野とされます。背景には、<em>GPT-6 Astra</em>のような汎用モデルが、専用のロボット用モデルを上回り始めたという見方があります(シミュレーションの操作課題で成功率74.8%対51.0%)。「専用モデルを作るより、汎用モデルに道具を持たせる」流れが、物理の世界にも広がってきたことを示す動きです。</p>
+            <p><a class="more" href="https://fortune.com/2026/11/13/openai-disbands-robotics-team-as-its-general-models-start-running-robots/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://news.ycombinator.com/item?id=50488464" target="_blank" rel="noopener noreferrer">Hacker News · 2h, 64p, 12 comments</a></p>
+            <h3 class="hd"><a href="https://www.perplexity.ai/hub/blog/perplexity-decider" target="_blank" rel="noopener noreferrer">Perplexity、判定専用モデル「Decider v1.3」を公開　重みはApacheライセンス</a></h3>
+            <p>はい/いいえや選択式の判定に確率を付けて返し、文中の固有名詞や個人情報の抽出もこなします。100万リクエストあたり約26ドル(Flash版は約13ドル)と、LLMに判定をさせるより安いとしています。分類や振り分けをLLMで回している処理を、軽いモデルに置き換える候補になります。</p>
+            <p><a class="more" href="https://www.perplexity.ai/hub/blog/perplexity-decider" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://b.hatena.ne.jp/entry/s/www.publickey1.jp/blog/26/google_antigravityaiai.html" target="_blank" rel="noopener noreferrer">はてなブックマーク · 21 users</a></p>
+            <h3 class="hd"><a href="https://www.publickey1.jp/blog/26/google_antigravityaiai.html" target="_blank" rel="noopener noreferrer">Google Antigravity、クラウドで動き続ける「リモートエージェント」を搭載</a></h3>
+            <p>手元のPCを閉じても、Googleが管理する隔離環境でエージェントが作業を続け、承認が必要な場面ではスマホから応答できます。<strong>Google AI Pro</strong>と<strong>Ultra</strong>の個人向けです。「寝ている間にエージェントを働かせる」使い方が、主要な開発ツールの標準機能になりつつあります。</p>
+            <p><a class="more" href="https://www.publickey1.jp/blog/26/google_antigravityaiai.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI</span><a href="https://b.hatena.ne.jp/entry/s/www.itmedia.co.jp/aiplus/article/2611/13/2000003141/" target="_blank" rel="noopener noreferrer">はてなブックマーク · 14 users</a></p>
+            <h3 class="hd s"><a href="https://www.itmedia.co.jp/aiplus/article/2611/13/2000003141/" target="_blank" rel="noopener noreferrer">Sakana AI、エージェント向けの自社モデル「Sawara」を事前学習から開発へ</a></h3>
+            <p>12月に小型版の事前学習を始め、順調なら2027年春に重みを公開する計画です。オープンモデルの底上げと学習手法の普及で、国内企業でも一から作る意味が出てきた、という判断の中身が語られています。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/aiplus/article/2611/13/2000003141/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://b.hatena.ne.jp/entry/s/ktlog.net/posts/claude-code-ai-ecosystem" target="_blank" rel="noopener noreferrer">はてなブックマーク · 311 users</a></p>
+            <h3 class="hd"><a href="https://ktlog.net/posts/claude-code-ai-ecosystem" target="_blank" rel="noopener noreferrer">Claude Codeのおすすめ環境を全体図で解説　ハーネス・スキル・MCPの組み立て方</a></h3>
+            <p>依頼の入口を<strong>Claude Code</strong>ひとつにまとめ、判定AI、フック、権限ルール、APIキー管理を通してから作業させる構成を、図で整理しています。危険なコマンドは確認に回す、キーは<strong>1Password</strong>の参照にしておくなど、自分の環境にそのまま持ち込める工夫が多い記事です。</p>
+            <p><a class="more" href="https://ktlog.net/posts/claude-code-ai-ecosystem" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">AI USE</span><a href="https://b.hatena.ne.jp/entry/s/speakerdeck.com/falken/boku-no-claude-code-no-tsukaikata" target="_blank" rel="noopener noreferrer">はてなブックマーク · 264 users</a></p>
+            <h3 class="hd"><a href="https://speakerdeck.com/falken/boku-no-claude-code-no-tsukaikata" target="_blank" rel="noopener noreferrer">ぼくのClaude Codeの使い方　自宅サーバーで24時間動かし、Discordから指示する</a></h3>
+            <p>専用の一般ユーザーで権限を絞り、mainへの直接pushを禁止したうえで、IssueからPR、別AIによるレビュー、マージまでを任せる運用の発表資料です。繰り返した指摘を約160件のルールに育てている点や、深夜にスマホから頼んだ画面が50分で仕上がった実例が参考になります。</p>
+            <p><a class="more" href="https://speakerdeck.com/falken/boku-no-claude-code-no-tsukaikata" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">ITニュース</span><span class="en">IT NEWS</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">IT</span><a href="https://news.ycombinator.com/item?id=50474959" target="_blank" rel="noopener noreferrer">Hacker News · 8h, 620p, 183 comments</a></p>
+            <h3 class="hd l"><a href="https://scottjg.com/posts/2026-11-11-reverse-engineering-my-coway-air-purifier-to-ditch-the-cloud/" target="_blank" rel="noopener noreferrer">空気清浄機をクラウドから切り離す　Cowayの通信を解析して、自宅だけで動かした記録</a></h3>
+            <figure><img src="https://scottjg.com/posts/2026-11-11-reverse-engineering-my-coway-air-purifier-to-ditch-the-cloud/coway-airmega-icons-cover.jpg" alt=""><figcaption>画像:scottjg.com</figcaption></figure>
+            <p>メーカーのクラウドが止まるたびに連携が壊れることに嫌気がさした筆者が、Wi-Fi設定の受け渡しやMQTTの命令を読み解き、<strong>Home Assistant</strong>から直接操作できるようにしました。暗号化されたBluetoothの初期設定の解読にはAIも使っています。「サービス終了で家電が動かなくなる」問題への、具体的な抜け道の記録です。</p>
+            <p><a class="more" href="https://scottjg.com/posts/2026-11-11-reverse-engineering-my-coway-air-purifier-to-ditch-the-cloud/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://b.hatena.ne.jp/entry/s/atmarkit.itmedia.co.jp/ait/articles/2611/13/news013.html" target="_blank" rel="noopener noreferrer">はてなブックマーク · 236 users</a></p>
+            <h3 class="hd"><a href="https://atmarkit.itmedia.co.jp/ait/articles/2611/13/news013.html" target="_blank" rel="noopener noreferrer">総務省統計局、無料のPython講座「統計分析プログラミング」を1月に開講</a></h3>
+            <p>回帰分析やクラスター分析から売上予測の演習まで、4週間で学べます。<strong>Google Colaboratory</strong>を使うので環境構築は不要です。アプリの利用データを自分で読めるようになりたい人には、手軽な入口になります。</p>
+            <p><a class="more" href="https://atmarkit.itmedia.co.jp/ait/articles/2611/13/news013.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">IT</span><a href="https://b.hatena.ne.jp/entry/s/gigazine.net/news/20261113-firefox-vpn/" target="_blank" rel="noopener noreferrer">はてなブックマーク · 6 users</a></p>
+            <h3 class="hd s"><a href="https://gigazine.net/news/20261113-firefox-vpn/" target="_blank" rel="noopener noreferrer">Firefoxの内蔵VPN、2027年1月末まで通信量無制限に</a></h3>
+            <p>通常は月50GBまでの無料VPNが、期間限定で上限なしになります。守られるのはFirefox内の通信だけなので、端末全体を保護したい場合は有料版が必要です。</p>
+            <p><a class="more" href="https://gigazine.net/news/20261113-firefox-vpn/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">Flutter</span><span class="en">FLUTTER &amp; DART</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://flutter.dev/blog/whats-new-in-flutter-3-50" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd l"><a href="https://flutter.dev/blog/whats-new-in-flutter-3-50" target="_blank" rel="noopener noreferrer">Flutter 3.50公開　ネイティブ直接呼び出しが安定版に、MaterialとCupertinoは別パッケージが標準へ</a></h3>
+            <figure><img src="https://flutter.dev/assets/hero_image_cover.9f883abcc1c4edfab466a15fe39fcdf3.webp" alt=""><figcaption>画像:Flutter公式</figcaption></figure>
+            <p><strong>Dart 3.14</strong>と同時のリリースです。iOSのタッチ遅延が1フレーム分短くなり、Androidの新規プロジェクトは<em>targetSdk 36</em>、<em>minSdk 24</em>が既定になりました。Webの<strong>CanvasKit</strong>は約3.75MBまで軽量化されています。importの書き換えやAndroidのIntentの扱いなど、アップグレード時に手を入れる点が多いので、下の関連記事と合わせて確認しておきたい号です。</p>
+            <p><a class="more" href="https://flutter.dev/blog/whats-new-in-flutter-3-50" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd"><a href="https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui" target="_blank" rel="noopener noreferrer">material.dartとcupertino.dartが正式に非推奨　移行は dart fix で自動化</a></h3>
+            <p><code>dart fix --apply --code=migrate_design_widgets</code>でimportを<strong>material_ui</strong>と<strong>cupertino_ui</strong>に書き換えられ、未移行の依存パッケージは<em>MaterialUiCompatibilityBridge</em>でつなげます。削除時期はまだ示されていませんが、パッケージ作者にとってはメジャーバージョンを上げる変更になる点に注意が必要です。</p>
+            <p><a class="more" href="https://docs.flutter.dev/release/breaking-changes/material-ui-and-cupertino-ui" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/release/breaking-changes/stricter-android-entrypoint-intent-verification" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd"><a href="https://docs.flutter.dev/release/breaking-changes/stricter-android-entrypoint-intent-verification" target="_blank" rel="noopener noreferrer">Androidのリリースビルド、外部アプリからのIntentで初期ルートを指定できなく</a></h3>
+            <p>外部から内部画面へ飛ばされたり、認証済みのエンジンを使い回されたりする攻撃への対策です。exportedなActivityに<code>route</code>などのextraを渡している場合だけ影響があり、ディープリンクやマニフェストでの指定に切り替える方法が案内されています。通知タップからの画面遷移を実装しているアプリは確認しておきたいところです。</p>
+            <p><a class="more" href="https://docs.flutter.dev/release/breaking-changes/stricter-android-entrypoint-intent-verification" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://flutter.dev/blog/stable-native-interop" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/12</a></p>
+            <h3 class="hd"><a href="https://flutter.dev/blog/stable-native-interop" target="_blank" rel="noopener noreferrer">FFIgenとJNIgenが安定版に　プラットフォームチャネルを経由せずネイティブAPIを呼べる</a></h3>
+            <p>Objective-CとJava/Kotlinを、Dartから同期的に、またバックグラウンドのisolateからも呼べるようになります。<strong>Pigeon</strong> v30以降は設定を数行足すだけでこの仕組みを使えます(プレビュー)。自作プラグインの往復の遅さや定型コードに悩んでいた人には朗報です。</p>
+            <p><a class="more" href="https://flutter.dev/blog/stable-native-interop" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://dart.dev/blog/announcing-dart-3-14" target="_blank" rel="noopener noreferrer">Dart公式 · 11/11</a></p>
+            <h3 class="hd"><a href="https://dart.dev/blog/announcing-dart-3-14" target="_blank" rel="noopener noreferrer">Dart 3.14公開　SDKの引き上げを1段ずつ自動で進める「dart migrate」が登場</a></h3>
+            <p>SDK制約を1マイナーずつ上げ、そのたびに必要な修正を当てていく新コマンドです。<code>--dry-run</code>で事前に確認できます。言語機能の追加はありませんが、<strong>pub</strong>のキャッシュ改善やSIMDの高速化など、日々の開発が少し速くなる改良がそろっています。</p>
+            <p><a class="more" href="https://dart.dev/blog/announcing-dart-3-14" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd"><a href="https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers" target="_blank" rel="noopener noreferrer">CocoaPodsは12月2日に読み取り専用へ　Swift Package Managerへの移行手順が拡充</a></h3>
+            <p>3.50ではSwiftPMを無効にしているとCLIが警告を出すようになり、将来は無効化そのものができなくなると明記されました。<code>pod deintegrate</code>からの撤去手順もまとまっているので、iOSアプリを持つなら年内に片付けておくのが安全です。</p>
+            <p><a class="more" href="https://docs.flutter.dev/packages-and-plugins/swift-package-manager/for-app-developers" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/ai/tools" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd"><a href="https://docs.flutter.dev/ai/tools" target="_blank" rel="noopener noreferrer">公式のエージェント用プラグインとアクセシビリティ監査エージェント</a></h3>
+            <p>スキル、Dart/Flutter MCPサーバー、専用エージェント、ルールを束ねた公式プラグインの全体像がドキュメントにまとまりました。ラベルのないボタンや48px未満のタップ領域を洗い出す<em>Flutter Accessibility Agent</em>は、AIに任せやすい点検作業の好例です。</p>
+            <p><a class="more" href="https://docs.flutter.dev/ai/tools" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/platform-integration/web/wasm" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd s"><a href="https://docs.flutter.dev/platform-integration/web/wasm" target="_blank" rel="noopener noreferrer">Flutter WebのWasm、Safari 26.2とFirefox 147でも有効化できるように</a></h3>
+            <p><em>wasmAllowList</em>で明示的にオンにすると、重い画面でJavaScript版の2倍以上の描画速度が出るとされます。非対応の環境では自動でJS版に戻ります。</p>
+            <p><a class="more" href="https://docs.flutter.dev/platform-integration/web/wasm" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://pub.dev/packages/material_ui" target="_blank" rel="noopener noreferrer">pub.dev · 4d</a></p>
+            <h3 class="hd s"><a href="https://pub.dev/packages/material_ui" target="_blank" rel="noopener noreferrer">material_ui 1.11.0が公開　SDKとは別に毎週更新される体制に</a></h3>
+            <p>Materialの部品は今後、SDKのリリースを待たずに週単位で直っていきます。<code>pubspec.yaml</code>でバージョンを管理する対象が1つ増える点は覚えておきたいところです。</p>
+            <p><a class="more" href="https://pub.dev/packages/material_ui" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">FLUTTER</span><a href="https://docs.flutter.dev/release/breaking-changes/dropdownbuttonformfield-enabled-parameter" target="_blank" rel="noopener noreferrer">Flutter公式 · 11/11</a></p>
+            <h3 class="hd s"><a href="https://docs.flutter.dev/release/breaking-changes/dropdownbuttonformfield-enabled-parameter" target="_blank" rel="noopener noreferrer">DropdownButtonFormFieldに enabled が追加、onChanged は省略可能に</a></h3>
+            <p>これまで<code>onChanged</code>をnullにして無効化していたフォームは、書き方を見直す必要があります。3.50の破壊的変更一覧には、ソフトハイフンやRTL文中のWidgetSpanの扱いの変更も並んでいます。</p>
+            <p><a class="more" href="https://docs.flutter.dev/release/breaking-changes/dropdownbuttonformfield-enabled-parameter" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section class="men">
+        <h2 class="men-head"><span class="no"></span><span class="ttl">セキュリティ</span><span class="en">SECURITY</span></h2>
+        <div class="cols">
+          <article class="story top">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://b.hatena.ne.jp/entry/s/k-tai.watch.impress.co.jp/docs/news/2156449.html" target="_blank" rel="noopener noreferrer">はてなブックマーク · 102 users</a></p>
+            <h3 class="hd l"><a href="https://k-tai.watch.impress.co.jp/docs/news/2156449.html" target="_blank" rel="noopener noreferrer">マネックス証券に不正アクセス　メールアドレス最大113万件、本人確認書類の画像1592件が漏えいの恐れ</a></h3>
+            <figure><img src="https://k-tai.watch.impress.co.jp/img/ktw/list/2156/449/01.jpg" alt=""><figcaption>画像:ケータイ Watch</figcaption></figure>
+            <p>侵入されたのは委託先が運用する口座開設のシステムで、マイナンバーカード表面や運転免許証、自撮り写真の画像が含まれます。取引システムは別のため資産への影響はないとしていますが、申し込みだけして口座を作らなかった人のアドレスも対象です。証券会社を名乗るフィッシングが増えると考え、身構えておくべき事案です。</p>
+            <p><a class="more" href="https://k-tai.watch.impress.co.jp/docs/news/2156449.html" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://news.ycombinator.com/item?id=50486258" target="_blank" rel="noopener noreferrer">Hacker News · 5h, 76p, 10 comments</a></p>
+            <h3 class="hd"><a href="https://status.apify.com/incidents/sxd1dj5j6749" target="_blank" rel="noopener noreferrer">スクレイピング基盤のApifyに侵入　流出した認証情報で顧客アカウントにもアクセス</a></h3>
+            <p>11月9〜10日に、漏れた認証情報から内部システムに入られ、一部の顧客アカウントが閲覧されました。GitHub連携のOAuthは予防的に取り消されています。公開設定のストレージはIDを知る誰でも読めるため、<em>Restricted</em>への変更が推奨されています。</p>
+            <p><a class="more" href="https://status.apify.com/incidents/sxd1dj5j6749" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+          <article class="story">
+            <p class="meta"><span class="cat">SECURITY</span><a href="https://b.hatena.ne.jp/entry/s/www.itmedia.co.jp/news/article/2611/13/2000003186/" target="_blank" rel="noopener noreferrer">はてなブックマーク · 31 users</a></p>
+            <h3 class="hd s"><a href="https://www.itmedia.co.jp/news/article/2611/13/2000003186/" target="_blank" rel="noopener noreferrer">Qoo10に不正アクセス　住所の座標や身体的特徴まで閲覧された可能性</a></h3>
+            <p>会員3000万超のECで、氏名や住所に加え、利用者が任意で入れた体の情報まで対象になりました。決済情報とパスワードの流出は確認されていません。アプリで「念のため」集めている項目が、漏れたときの被害を広げる例です。</p>
+            <p><a class="more" href="https://www.itmedia.co.jp/news/article/2611/13/2000003186/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+          </article>
+        </div>
+      </section>
+
+  </main>
+
+  <div class="bottom">
+      <section class="side-box solo">
+        <h2 class="side-head">暮らし欄<small>CAREER</small></h2>
+        <article class="story">
+          <p class="meta"><span class="cat">CAREER</span><a href="https://b.hatena.ne.jp/entry/s/gigazine.net/news/20261113-ai-users-have-long-worktime-than-non-ai-users/" target="_blank" rel="noopener noreferrer">はてなブックマーク · 29 users</a></p>
+          <h3 class="hd"><a href="https://gigazine.net/news/20261113-ai-users-have-long-worktime-than-non-ai-users/" target="_blank" rel="noopener noreferrer">AIを使う人ほど働く時間が長い　最大で1日90分、集中も途切れやすく</a></h3>
+          <figure><img src="https://i.gzn.jp/img/2026/11/12/ai-users-have-long-worktime-than-non-ai-users/00.jpg" alt=""><figcaption>画像:GIGAZINE</figcaption></figure>
+          <p><strong>ActivTrak</strong>が約9000人の行動データを分析したところ、AIをよく使う人ほどアプリの切り替えが多く、集中が続く時間は約22%短くなっていました。一方、普段の作業アプリに組み込まれたAIを使うエンジニアは切り替えが少なかったといいます。AIで浮いた時間がどこへ消えているのか、自分の働き方を見直すきっかけになります。</p>
+          <p><a class="more" href="https://gigazine.net/news/20261113-ai-users-have-long-worktime-than-non-ai-users/" target="_blank" rel="noopener noreferrer">詳細を読む</a></p>
+        </article>
+      </section>
+
+      <section class="side-box quote">
+        <h2 class="side-head">きょうの名言<small>QUOTE</small></h2>
+        <div class="quote-body">
+          <blockquote>私は何を知っているか</blockquote>
+          <p class="who">ミシェル・ド・モンテーニュ</p>
+        </div>
+        <p class="bio"><span class="cat">人物</span>ルネサンス期フランスの思想家で、ボルドー市長も務めました。法官を辞して自邸の塔にこもり、自分自身を題材に考えを書き綴った『エセー』は、「エッセイ」という形式の始まりとされます。この言葉は、人間の知識の確かさを疑う懐疑の姿勢を表すもので、彼は自らの標語として、天秤の図とともに記念のメダルにも刻ませました。</p>
+        <p class="src">思想家・モラリスト、1533年〜1592年<br>出典:『エセー』第2巻第12章「レーモン・スボンの弁護」</p>
+      </section>
+  </div>
+
+  <footer class="okuzuke">
+    <p>Daily Dispatch は自動編集の個人用日刊紙です。</p>
+    <p>要約は各リンク先の元記事に基づきます。詳しくは元記事をご覧ください。</p>
+  </footer>
+</div>
+</body>
+</html>
